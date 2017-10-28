@@ -23,15 +23,15 @@ public class Vector {
     }
 
     public void push(Integer value) {
-        Integer[] tmp = new Integer[data.length+1];
+        Integer[] tmp = new Integer[data.length + 1];
         System.arraycopy(data, 0, tmp, 0, data.length);
         data = tmp;
     }
 
     public void drop(int i) {
-        Integer[] tmp = new Integer[data.length-1];
+        Integer[] tmp = new Integer[data.length - 1];
         System.arraycopy(data, 0, tmp, 0, i);
-        System.arraycopy(data, i+1, tmp, i, data.length-1-i);
+        System.arraycopy(data, i + 1, tmp, i, data.length - 1 - i);
         data = tmp;
     }
 
@@ -47,8 +47,8 @@ public class Vector {
         Map<Integer, Integer> occurrances = calculateOccurances(data);
         LOG.debug("occurances: {}", occurrances);
         Integer valueOfMaxOccurrence = null;
-        for(Map.Entry<Integer, Integer> e : occurrances.entrySet()) {
-            if(valueOfMaxOccurrence == null || e.getValue() > occurrances.get(valueOfMaxOccurrence)) {
+        for (Map.Entry<Integer, Integer> e : occurrances.entrySet()) {
+            if (valueOfMaxOccurrence == null || e.getValue() > occurrances.get(valueOfMaxOccurrence)) {
                 valueOfMaxOccurrence = e.getKey();
             }
         }

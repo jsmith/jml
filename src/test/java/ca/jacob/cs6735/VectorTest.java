@@ -15,9 +15,14 @@ public class VectorTest {
     }
 
     @Test
+    public void testDrop() {
+        v.drop(3);
+        v.drop(0);
+        assertEquals(new Integer[]{2, 3, 4}, v.toArray());
+    }
+
+    @Test
     public void testValueOfMaxOccurrance() {
         assertEquals((Integer) 4, v.valueOfMaxOccurrance());
-        v = new Vector(new Integer[]{1, 0, 0});
-        assertEquals((Integer) 0, v.valueOfMaxOccurrance());
     }
 }

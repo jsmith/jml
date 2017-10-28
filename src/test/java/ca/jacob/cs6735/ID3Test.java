@@ -34,7 +34,8 @@ public class ID3Test {
     @Test
     public void testPredict() {
         id3.train();
-
         assertEquals(1, id3.predict(new Integer[]{1, 1, 1}));
+        assertEquals(0, id3.predict(new Integer[]{1, 0, 1}));
+        assertEquals(1, id3.predict(new Integer[]{0, 1, 1}));
     }
 }

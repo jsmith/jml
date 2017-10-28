@@ -10,7 +10,7 @@ public class ID3 {
     }
 
     public void train() {
-        if(!trained) {
+        if (!trained) {
             root.split();
             trained = true;
         }

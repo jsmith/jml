@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static ca.jacob.cs6735.utils.Matrix.calculateOccurances;
-import static ca.jacob.cs6735.utils.Matrix.log2;
+import static ca.jacob.cs6735.utils.Math.calculateOccurrences;
+import static ca.jacob.cs6735.utils.Math.log2;
 
 public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
@@ -46,7 +46,7 @@ public class Node {
         LOG.info("entropy - starting");
         if (this.entropy != null) return entropy;
 
-        Map<Integer, Integer> classes = calculateOccurances(data.col(data.colCount()-1));
+        Map<Integer, Integer> classes = calculateOccurrences(data.col(data.colCount() - 1));
         LOG.debug("there are {} classes", classes.size());
 
         double sum = 0;
@@ -90,25 +90,25 @@ public class Node {
 
             Double entropy = 0.;
             for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
-                entropy += new Node(entry.getValue(), level+1).entropy();
+                entropy += new Node(entry.getValue(), level + 1).entropy();
             }
             LOG.debug("the total entropy of the child nodes for attribute {} is {}", j, entropy);
 
-            if(minEntropy == null || entropy < minEntropy) {
+            if (minEntropy == null || entropy < minEntropy) {
                 LOG.debug("attribute {} is the best attribute", j);
 
                 minEntropy = entropy;
                 predictor = j;
                 nodes = new HashMap<Integer, Node>();
                 for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
-                    nodes.put(entry.getKey(), new Node(entry.getValue(), level+1));
+                    nodes.put(entry.getKey(), new Node(entry.getValue(), level + 1));
                 }
             }
         }
 
-        for(Map.Entry<Integer, Node> entry : nodes.entrySet()) {
+        for (Map.Entry<Integer, Node> entry : nodes.entrySet()) {
             Node node = entry.getValue();
-            if(node.entropy() != 0 || node.entryCount() > 1) {
+            if (node.entropy() != 0 || node.entryCount() > 1) {
                 node.split();
             } else {
                 node.isLeaf(true);
@@ -126,15 +126,15 @@ public class Node {
 
     public Integer predict(Integer[] e) {
         LOG.info("predict - starting for level {} and attribute {}", level, predictor);
-        if(this.leaf) {
+        if (this.leaf) {
             LOG.debug("a leaf was found");
-            Vector v = new Vector(data.col(data.colCount()-1));
-            Integer valueOfMaxOccurrance  = v.valueOfMaxOccurrance();
+            Vector v = new Vector(data.col(data.colCount() - 1));
+            Integer valueOfMaxOccurrance = v.valueOfMaxOccurrance();
             LOG.debug("value of max occurrance for vector {} is {}", v, valueOfMaxOccurrance);
             return valueOfMaxOccurrance;
         } else {
-            for(Map.Entry<Integer, Node> entry : nodes.entrySet()) {
-                if(e[predictor] == entry.getKey()) {
+            for (Map.Entry<Integer, Node> entry : nodes.entrySet()) {
+                if (e[predictor] == entry.getKey()) {
                     return entry.getValue().predict(e);
                 }
             }

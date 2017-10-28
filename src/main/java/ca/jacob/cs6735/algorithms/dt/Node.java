@@ -14,32 +14,39 @@ public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
 
     private Double entropy;
+    private int predictor;
+    private boolean leaf;
     private Matrix data;
-    private ArrayList<Node> nodes;
+    private Map<Integer, Node> nodes;
+    private int level;
 
-    public Node(Integer[][] x, Integer[] y) {
+    public Node(Integer[][] x, Integer[] y, int level) {
         this.data = new Matrix(x);
         this.data.pushCol(y);
-        this.initNodes();
+        this.init(level);
     }
 
-    public Node(Integer[][] data) {
+    public Node(Integer[][] data, int level) {
         this.data = new Matrix(data);
+        this.init(level);
     }
 
-    public Node(Matrix data) {
+    public Node(Matrix data, int level) {
         this.data = data;
+        this.init(level);
     }
 
-    public void initNodes() {
-        this.nodes = new ArrayList<Node>();
+    private void init(int level) {
+        this.nodes = new HashMap<Integer, Node>();
+        this.leaf = false;
+        this.level = level;
     }
 
     public Double entropy() {
         LOG.info("entropy - starting");
         if (this.entropy != null) return entropy;
 
-        Map<Integer, Integer> classes = calculateOccurances(y);
+        Map<Integer, Integer> classes = calculateOccurances(data.col(data.colCount()-1));
         LOG.debug("there are {} classes", classes.size());
 
         double sum = 0;
@@ -58,21 +65,22 @@ public class Node {
     }
 
     public void split() {
-        LOG.info("split - starting");
+        LOG.info("split - starting for level {}", level);
         int numOfAttributes = data.colCount() - 1;
 
         Double minEntropy = null;
         for (int j = 0; j < numOfAttributes; j++) {
             LOG.trace("checking attribute {}", j);
             Map<Integer, Matrix> split = new HashMap<Integer, Matrix>();
-            for (int i = 0; j < data.rowCount(); j++) {
+            for (int i = 0; i < data.rowCount(); i++) {
                 LOG.trace("checking row {}", i);
                 Integer value = data.at(i, j);
 
                 Matrix entry = split.get(value);
                 if (entry == null) {
-                    LOG.debug("entry for {} not found", value);
+                    LOG.debug("entry for output {} not found", value);
                     entry = new Matrix();
+                    split.put(value, entry);
                 }
 
                 Vector v = new Vector(data.row(i));
@@ -81,22 +89,53 @@ public class Node {
             }
 
             Double entropy = 0.;
-            for (Matrix entry : split.values()) {
-                entropy += new Node(entry).entropy();
+            for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
+                entropy += new Node(entry.getValue(), level+1).entropy();
             }
             LOG.debug("the total entropy of the child nodes for attribute {} is {}", j, entropy);
 
             if(minEntropy == null || entropy < minEntropy) {
-                minEntropy = entropy;
-
                 LOG.debug("attribute {} is the best attribute", j);
-                nodes = new ArrayList<Node>();
-                for (Matrix entry : split.values()) {
-                    nodes.add(new Node(entry));
+
+                minEntropy = entropy;
+                predictor = j;
+                nodes = new HashMap<Integer, Node>();
+                for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
+                    nodes.put(entry.getKey(), new Node(entry.getValue(), level+1));
                 }
+            }
+        }
+
+        for(Map.Entry<Integer, Node> entry : nodes.entrySet()) {
+            Node node = entry.getValue();
+            if(node.entropy() != 0 || node.entryCount() > 1) {
+                node.split();
+            } else {
+                this.leaf = true;
             }
         }
     }
 
+    public Map<Integer, Node> getNodes() {
+        return nodes;
+    }
+
+    public int entryCount() {
+        return data.rowCount();
+    }
+
+    public Integer predict(Integer[] e) {
+        if(this.leaf) {
+            Vector v = new Vector(data.col(data.colCount()-1));
+            return v.valueOfMaxOccurrance();
+        } else {
+            for(Map.Entry<Integer, Node> entry : nodes.entrySet()) {
+                if(e[predictor] == entry.getKey()) {
+                    return entry.getValue().predict(e);
+                }
+            }
+        }
+        throw new ID3PredictionException("no predictor found for attribute " + predictor);
+    }
 
 }

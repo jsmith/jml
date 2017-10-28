@@ -5,7 +5,9 @@
         </encoder>
     </appender>
 
-    <root level="debug">
+    <logger name="ca.jacob.cs6735.algorithms.dt.Node" level="debug"></logger>
+
+    <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

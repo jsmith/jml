@@ -1,10 +1,17 @@
 package ca.jacob.cs6735.utils;
 
+import ca.jacob.cs6735.algorithms.dt.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
 import java.util.Map;
 
 import static ca.jacob.cs6735.utils.Matrix.calculateOccurances;
 
 public class Vector {
+    private static final Logger LOG = LoggerFactory.getLogger(Vector.class);
+
     private Integer[] data;
 
     public Vector(Integer[] values) {
@@ -38,12 +45,17 @@ public class Vector {
 
     public Integer valueOfMaxOccurrance() {
         Map<Integer, Integer> occurrances = calculateOccurances(data);
+        LOG.debug("occurances: {}", occurrances);
         Integer valueOfMaxOccurrence = null;
         for(Map.Entry<Integer, Integer> e : occurrances.entrySet()) {
             if(valueOfMaxOccurrence == null || e.getValue() > occurrances.get(valueOfMaxOccurrence)) {
                 valueOfMaxOccurrence = e.getKey();
             }
         }
-        return occurrances.get(valueOfMaxOccurrence);
+        return valueOfMaxOccurrence;
+    }
+
+    public String toString() {
+        return Arrays.toString(data);
     }
 }

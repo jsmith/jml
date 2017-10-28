@@ -17,5 +17,7 @@ public class VectorTest {
     @Test
     public void testValueOfMaxOccurrance() {
         assertEquals((Integer) 4, v.valueOfMaxOccurrance());
+        v = new Vector(new Integer[]{1, 0, 0});
+        assertEquals((Integer) 0, v.valueOfMaxOccurrance());
     }
 }

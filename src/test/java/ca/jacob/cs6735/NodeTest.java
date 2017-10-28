@@ -28,4 +28,5 @@ public class NodeTest {
         assertEquals(0, node.getNodes().get(0).getNodes().size());
         assertEquals(0, node.getNodes().get(1).getNodes().size());
     }
+
 }

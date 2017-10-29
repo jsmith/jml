@@ -19,27 +19,29 @@ public class Node {
     private Matrix data;
     private Map<Integer, Node> nodes;
     private int level;
+    private int maxLevel;
 
-    public Node(Integer[][] x, Integer[] y, int level) {
+    public Node(Integer[][] x, Integer[] y, int level, int maxLevel) {
         this.data = new Matrix(x);
         this.data.pushCol(y);
-        this.init(level);
+        this.init(level, maxLevel);
     }
 
-    public Node(Integer[][] data, int level) {
+    public Node(Integer[][] data, int level, int maxLevel) {
         this.data = new Matrix(data);
-        this.init(level);
+        this.init(level, maxLevel);
     }
 
-    public Node(Matrix data, int level) {
+    public Node(Matrix data, int level, int maxLevel) {
         this.data = data;
-        this.init(level);
+        this.init(level, maxLevel);
     }
 
-    private void init(int level) {
+    private void init(int level, int maxLevel) {
         nodes = new HashMap<Integer, Node>();
         leaf = false;
         this.level = level;
+        this.maxLevel = maxLevel;
     }
 
     public Double entropy() {
@@ -66,6 +68,12 @@ public class Node {
 
     public void split() {
         LOG.info("split - starting for level {}", level);
+
+        if(level == maxLevel) {
+            this.leaf = true;
+            return;
+        }
+
         int numOfAttributes = data.colCount() - 1;
 
         Double minEntropy = null;
@@ -90,7 +98,7 @@ public class Node {
 
             Double entropy = 0.;
             for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
-                entropy += new Node(entry.getValue(), level + 1).entropy();
+                entropy += new Node(entry.getValue(), level + 1, maxLevel).entropy();
             }
             LOG.debug("the total entropy of the child nodes for attribute {} is {}", j, entropy);
 
@@ -101,17 +109,17 @@ public class Node {
                 predictor = j;
                 nodes = new HashMap<Integer, Node>();
                 for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
-                    nodes.put(entry.getKey(), new Node(entry.getValue(), level + 1));
+                    nodes.put(entry.getKey(), new Node(entry.getValue(), level + 1, maxLevel));
                 }
             }
         }
 
         for (Map.Entry<Integer, Node> entry : nodes.entrySet()) {
             Node node = entry.getValue();
-            if (node.entropy() != 0 || node.entryCount() > 1) {
-                node.split();
-            } else {
+            if (node.entropy() == 0 || node.entryCount() <= 1) {
                 node.isLeaf(true);
+            } else {
+                node.split();
             }
         }
     }

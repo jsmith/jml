@@ -1,11 +1,13 @@
 package ca.jacob.cs6735.algorithms.dt;
 
 public class ID3 {
+    public static final int LEVEL_NONE = -1;
+
     private boolean trained;
     private Node root;
 
-    public ID3(Integer[][] x, Integer[] y) {
-        root = new Node(x, y, 1);
+    public ID3(Integer[][] x, Integer[] y, int maxLevel) {
+        root = new Node(x, y, 1, maxLevel);
         trained = false;
     }
 

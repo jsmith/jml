@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertArrayEquals;
 
 public class VectorTest {
     private Vector v;
@@ -18,7 +19,7 @@ public class VectorTest {
     public void testDrop() {
         v.drop(3);
         v.drop(0);
-        assertEquals(new Integer[]{2, 3, 4}, v.toArray());
+        assertArrayEquals(new Integer[]{2, 3, 4}, v.toArray());
     }
 
     @Test

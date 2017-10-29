@@ -13,7 +13,7 @@ public class ID3Test {
 
     @Before
     public void init() {
-        id3 = new ID3(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0});
+        id3 = new ID3(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0}, ID3.LEVEL_NONE);
     }
 
     @Test
@@ -37,5 +37,15 @@ public class ID3Test {
         assertEquals(1, id3.predict(new Integer[]{1, 1, 1}));
         assertEquals(0, id3.predict(new Integer[]{1, 0, 1}));
         assertEquals(1, id3.predict(new Integer[]{0, 1, 1}));
+    }
+
+    @Test
+    public void testMaxLevel() {
+        id3 = new ID3(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0}, 1);
+        id3.train();
+
+        Node root = id3.getRoot();
+        assertEquals(0, root.getNodes().size());
+        assertEquals(0, id3.predict(new Integer[]{1, 1, 1}));
     }
 }

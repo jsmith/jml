@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.Map;
 
-import static ca.jacob.cs6735.utils.Matrix.calculateOccurances;
+import static ca.jacob.cs6735.utils.Math.calculateOccurrences;
 
 public class Vector {
     private static final Logger LOG = LoggerFactory.getLogger(Vector.class);
@@ -44,7 +44,7 @@ public class Vector {
     }
 
     public Integer valueOfMaxOccurrance() {
-        Map<Integer, Integer> occurrances = calculateOccurances(data);
+        Map<Integer, Integer> occurrances = calculateOccurrences(data);
         LOG.debug("occurances: {}", occurrances);
         Integer valueOfMaxOccurrence = null;
         for (Map.Entry<Integer, Integer> e : occurrances.entrySet()) {

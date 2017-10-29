@@ -1,5 +1,6 @@
 package ca.jacob.cs6735;
 
+import ca.jacob.cs6735.algorithms.dt.ID3;
 import ca.jacob.cs6735.algorithms.dt.Node;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class NodeTest {
     @Before
     public void setup() {
         Integer[][] data = new Integer[][]{{0, 1, 1, 1}, {0, 0, 0, 0}};
-        node = new Node(data, 1);
+        node = new Node(data, 1, ID3.LEVEL_NONE);
     }
 
     @Test

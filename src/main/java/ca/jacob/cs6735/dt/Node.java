@@ -1,4 +1,4 @@
-package ca.jacob.cs6735.algorithms.dt;
+package ca.jacob.cs6735.dt;
 
 import ca.jacob.cs6735.utils.Matrix;
 import ca.jacob.cs6735.utils.Vector;
@@ -14,30 +14,30 @@ public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
 
     private Double entropy;
-    private int predictor;
+    private Integer predictor;
     private boolean leaf;
     private Matrix data;
     private Map<Integer, Node> nodes;
-    private int level;
-    private int maxLevel;
+    private Integer level;
+    private Integer maxLevel;
 
-    public Node(Integer[][] x, Integer[] y, int level, int maxLevel) {
+    public Node(Integer[][] x, Integer[] y, Integer level, Integer maxLevel) {
         this.data = new Matrix(x);
         this.data.pushCol(y);
         this.init(level, maxLevel);
     }
 
-    public Node(Integer[][] data, int level, int maxLevel) {
+    public Node(Integer[][] data, Integer level, Integer maxLevel) {
         this.data = new Matrix(data);
         this.init(level, maxLevel);
     }
 
-    public Node(Matrix data, int level, int maxLevel) {
+    public Node(Matrix data, Integer level, Integer maxLevel) {
         this.data = data;
         this.init(level, maxLevel);
     }
 
-    private void init(int level, int maxLevel) {
+    private void init(Integer level, Integer maxLevel) {
         nodes = new HashMap<Integer, Node>();
         leaf = false;
         this.level = level;
@@ -48,10 +48,10 @@ public class Node {
         LOG.info("entropy - starting");
         if (this.entropy != null) return entropy;
 
-        Map<Integer, Integer> classes = calculateOccurrences(data.col(data.colCount() - 1));
+        Map<Double, Integer> classes = calculateOccurrences(data.col(data.colCount() - 1));
         LOG.debug("there are {} classes", classes.size());
 
-        double sum = 0;
+        Double sum = 0.;
         for (Integer count : classes.values()) {
             sum += count;
         }
@@ -74,15 +74,15 @@ public class Node {
             return;
         }
 
-        int numOfAttributes = data.colCount() - 1;
+        Integer numOfAttributes = data.colCount() - 1;
 
         Double minEntropy = null;
-        for (int j = 0; j < numOfAttributes; j++) {
+        for (Integer j = 0; j < numOfAttributes; j++) {
             LOG.trace("checking attribute {}", j);
             Map<Integer, Matrix> split = new HashMap<Integer, Matrix>();
-            for (int i = 0; i < data.rowCount(); i++) {
+            for (Integer i = 0; i < data.rowCount(); i++) {
                 LOG.trace("checking row {}", i);
-                Integer value = data.at(i, j);
+                Integer value = data.at(i, j).intValue();
 
                 Matrix entry = split.get(value);
                 if (entry == null) {
@@ -128,29 +128,29 @@ public class Node {
         return nodes;
     }
 
-    public int entryCount() {
+    public Integer entryCount() {
         return data.rowCount();
     }
 
-    public Integer predict(Integer[] e) {
+    public Integer classify(Integer[] e) {
         LOG.info("predict - starting for level {} and attribute {}", level, predictor);
         if (this.leaf) {
             LOG.debug("a leaf was found");
             Vector v = new Vector(data.col(data.colCount() - 1));
-            Integer valueOfMaxOccurrance = v.valueOfMaxOccurrance();
+            Integer valueOfMaxOccurrance = (Integer)v.valueOfMaxOccurrance();
             LOG.debug("value of max occurrance for vector {} is {}", v, valueOfMaxOccurrance);
             return valueOfMaxOccurrance;
         } else {
             for (Map.Entry<Integer, Node> entry : nodes.entrySet()) {
                 if (e[predictor] == entry.getKey()) {
-                    return entry.getValue().predict(e);
+                    return entry.getValue().classify(e);
                 }
             }
         }
         throw new ID3PredictionException("no predictor found for attribute " + predictor);
     }
 
-    public int getPredictor() {
+    public Integer getPredictor() {
         return predictor;
     }
 

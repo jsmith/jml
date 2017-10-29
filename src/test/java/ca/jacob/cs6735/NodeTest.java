@@ -1,14 +1,14 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.cs6735.algorithms.dt.ID3;
-import ca.jacob.cs6735.algorithms.dt.Node;
+import ca.jacob.cs6735.dt.ID3;
+import ca.jacob.cs6735.dt.Node;
 import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
 public class NodeTest {
-    private static final double DELTA =  1e-10;
+    private static final Double DELTA =  1e-10;
     private Node node;
 
     @Before

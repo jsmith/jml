@@ -30,11 +30,11 @@ public class MatrixTest {
 
     @Test
     public void testCalculateOccurrences() {
-        Integer[] vec = new Integer[]{1, 2, 3, 1, 1};
-        Map<Integer, Integer> expected = new HashMap<Integer, Integer>();
-        expected.put(1, 3);
-        expected.put(2, 1);
-        expected.put(3, 1);
+        Double[] vec = new Double[]{1., 2., 3., 1., 1.};
+        Map<Double, Integer> expected = new HashMap<Double, Integer>();
+        expected.put(1., 3);
+        expected.put(2., 1);
+        expected.put(3., 1);
         assertEquals(expected, calculateOccurrences(vec));
     }
 }

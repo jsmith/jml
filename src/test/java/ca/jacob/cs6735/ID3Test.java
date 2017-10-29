@@ -1,7 +1,7 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.cs6735.algorithms.dt.ID3;
-import ca.jacob.cs6735.algorithms.dt.Node;
+import ca.jacob.cs6735.dt.ID3;
+import ca.jacob.cs6735.dt.Node;
 import ca.jacob.cs6735.utils.Matrix;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,12 +13,12 @@ public class ID3Test {
 
     @Before
     public void init() {
-        id3 = new ID3(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0}, ID3.LEVEL_NONE);
+        id3 = new ID3(ID3.LEVEL_NONE);
     }
 
     @Test
     public void testTrain() {
-        id3.train();
+        Model model = id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0});
 
         Node root = id3.getRoot();
         assertEquals(1, root.getPredictor());
@@ -33,19 +33,19 @@ public class ID3Test {
 
     @Test
     public void testPredict() {
-        id3.train();
-        assertEquals(1, id3.predict(new Integer[]{1, 1, 1}));
-        assertEquals(0, id3.predict(new Integer[]{1, 0, 1}));
-        assertEquals(1, id3.predict(new Integer[]{0, 1, 1}));
+        Model model = id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0});
+        assertEquals(1, model.predict(new Integer[]{1, 1, 1}));
+        assertEquals(0, model.predict(new Integer[]{1, 0, 1}));
+        assertEquals(1, model.predict(new Integer[]{0, 1, 1}));
     }
 
     @Test
     public void testMaxLevel() {
-        id3 = new ID3(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0}, 1);
-        id3.train();
+        id3.setMaxLevel(1);
+        Model model = id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0});
 
         Node root = id3.getRoot();
         assertEquals(0, root.getNodes().size());
-        assertEquals(0, id3.predict(new Integer[]{1, 1, 1}));
+        assertEquals(0, model.predict(new Integer[]{1, 1, 1}));
     }
 }

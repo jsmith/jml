@@ -3,74 +3,63 @@ package ca.jacob.cs6735.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class Matrix {
     private static final Logger LOG = LoggerFactory.getLogger(Matrix.class);
 
-    private Integer[][] values;
+    private Double[][] data;
 
-    public Matrix(Integer[][] values) {
-        this.values = values;
+    public Matrix(Double[][] values) {
+        this.data = values;
     }
 
-    public Matrix() {
-        this.values = new Integer[0][0];
-    }
-
-    public Integer[] row(int i) {
-        return values[i];
+    public Double[] row(Integer i) {
+        return data[i];
     }
 
     public void pushRow(Integer[] row) {
-        Integer[][] tmp = new Integer[this.rowCount() + 1][this.colCount()];
-        System.arraycopy(values, 0, tmp, 0, this.rowCount());
-        tmp[this.rowCount()] = row;
-        values = tmp;
-    }
-
-    public void pushRow(Vector v) {
-        this.pushRow(v.toArray());
+        Double[][] tmp = new Double[this.rowCount() + 1][this.colCount()];
+        System.arraycopy(data, 0, tmp, 0, this.rowCount());
+        for(Integer j = 0; j < data[0].length; j++) {
+            tmp[this.rowCount()][j] = row[j];
+        }
+        data = tmp;
     }
 
     public void pushCol(Integer[] col) {
-        Integer[][] tmp = new Integer[this.rowCount()][this.colCount() + 1];
-        for (int i = 0; i < this.rowCount(); i++) {
-            System.arraycopy(values[i], 0, tmp[i], 0, this.colCount());
+        Double[][] tmp = new Double[this.rowCount()][this.colCount() + 1];
+        for (Integer i = 0; i < this.rowCount(); i++) {
+            System.arraycopy(data[i], 0, tmp[i], 0, this.colCount());
             tmp[i][this.colCount()] = col[i];
         }
-        values = tmp;
+        data = tmp;
     }
 
-    public Integer[] col(int j) {
-        Integer[] col = new Integer[values.length];
-        for (int i = 0; i < values.length; i++) {
-            col[i] = values[i][j];
+    public Double[] col(Integer j) {
+        Double[] col = new Double[data.length];
+        for (Integer i = 0; i < data.length; i++) {
+            col[i] = data[i][j];
         }
         return col;
     }
 
-    public Integer at(int i, int j) {
-        return values[i][j];
+    public Double at(Integer i, Integer j) {
+        return data[i][j];
     }
 
-    public int rowCount() {
-        return values.length;
+    public Integer rowCount() {
+        return data.length;
     }
 
-    public int colCount() {
-        if (values.length == 0) {
+    public Integer colCount() {
+        if (data.length == 0) {
             return 0;
         }
 
-        return values[0].length;
+        return data[0].length;
     }
 
     @Override
-    public int hashCode() {
+    public Integer hashCode() {
         return 0;
     }
 
@@ -91,8 +80,8 @@ public class Matrix {
             return false;
         }
 
-        for (int i = 0; i < this.rowCount(); i++) {
-            for (int j = 0; j < this.colCount(); j++) {
+        for (Integer i = 0; i < this.rowCount(); i++) {
+            for (Integer j = 0; j < this.colCount(); j++) {
                 if (this.at(i, j) != other.at(i, j)) {
                     return false;
                 }

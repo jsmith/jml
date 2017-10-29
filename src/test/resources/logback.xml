@@ -5,7 +5,7 @@
         </encoder>
     </appender>
 
-    <logger name="ca.jacob.cs6735.algorithms.dt.Node" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.dt.Node" level="debug"></logger>
     <logger name="ca.jacob.cs6735.utils.Vector" level="debug"></logger>
 
 

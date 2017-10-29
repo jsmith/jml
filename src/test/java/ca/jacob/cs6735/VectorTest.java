@@ -8,6 +8,7 @@ import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 
 public class VectorTest {
+    private static final Double DELTA = 1e-10;
     private Vector v;
 
     @Before
@@ -19,7 +20,7 @@ public class VectorTest {
     public void testDrop() {
         v.drop(3);
         v.drop(0);
-        assertArrayEquals(new Integer[]{2, 3, 4}, v.toArray());
+        assertArrayEquals(new Double[]{2, 3, 4}, v.toArray(), DELTA);
     }
 
     @Test

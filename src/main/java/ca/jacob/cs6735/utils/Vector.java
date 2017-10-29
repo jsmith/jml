@@ -18,7 +18,7 @@ public class Vector implements Iterable<Double> {
     public Vector(Integer[] data) {
         this.data = new Double[data.length];
         for(Integer i = 0; i < data.length; i++) {
-            this.data[i] = data[i];
+            this.data[i] = data[i].doubleValue();
         }
     }
 
@@ -31,7 +31,7 @@ public class Vector implements Iterable<Double> {
     public void push(Integer value) {
         Double[] tmp = new Double[data.length + 1];
         System.arraycopy(data, 0, tmp, 0, data.length);
-        tmp[tmp.length-1] = value;
+        tmp[tmp.length-1] = value.doubleValue();
         data = tmp;
     }
 
@@ -51,7 +51,7 @@ public class Vector implements Iterable<Double> {
     }
 
     public Double valueOfMaxOccurrance() {
-        Map<Double, Integer> occurrances = calculateOccurrences(DoubleStream.of(data).boxed().toArray(Double[]::new));
+        Map<Double, Integer> occurrances = calculateOccurrences(data);
         LOG.debug("occurances: {}", occurrances);
         Double valueOfMaxOccurrence = null;
         for (Map.Entry<Double, Integer> e : occurrances.entrySet()) {
@@ -75,7 +75,7 @@ public class Vector implements Iterable<Double> {
             throw new MathException("vector lengths must match");
         }
 
-        Double sum = 0;
+        Double sum = 0.;
         for(Integer i = 0; i < this.length(); i++) {
             sum += this.at(i) * other.at(i);
         }
@@ -84,7 +84,7 @@ public class Vector implements Iterable<Double> {
     }
 
     public Double sum() {
-        Double sum = 0;
+        Double sum = 0.;
         for(Integer i = 0; i < this.length(); i++) {
             sum += this.at(i);
         }

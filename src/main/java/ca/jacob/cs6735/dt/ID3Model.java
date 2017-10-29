@@ -22,4 +22,8 @@ public class ID3Model implements Model {
         }
         return predictions;
     }
+
+    public Node getRoot() {
+        return root;
+    }
 }

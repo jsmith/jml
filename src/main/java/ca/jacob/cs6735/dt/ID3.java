@@ -7,7 +7,6 @@ public class ID3 implements Algorithm {
     public static final Integer LEVEL_NONE = -1;
 
     private Integer maxLevel;
-    private Node root;
 
     public ID3(Integer maxLevel) {
         this.maxLevel = maxLevel;
@@ -21,9 +20,5 @@ public class ID3 implements Algorithm {
         Node root = new Node(x, y, 1, maxLevel);
         root.split();
         return new ID3Model(root);
-    }
-
-    public Node getRoot() {
-        return root;
     }
 }

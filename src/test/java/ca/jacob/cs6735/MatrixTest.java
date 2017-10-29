@@ -20,12 +20,12 @@ public class MatrixTest {
 
     @Test
     public void testRow() {
-        assertArrayEquals(new Integer[]{1, 2, 3}, matrix.row(0));
+        assertArrayEquals(new Double[]{1., 2., 3.}, matrix.row(0));
     }
 
     @Test
     public void testCol() {
-        assertArrayEquals(new Integer[]{2, 2}, matrix.col(1));
+        assertArrayEquals(new Double[]{2., 2.}, matrix.col(1));
     }
 
     @Test

@@ -137,7 +137,7 @@ public class Node {
         if (this.leaf) {
             LOG.debug("a leaf was found");
             Vector v = new Vector(data.col(data.colCount() - 1));
-            Integer valueOfMaxOccurrance = (Integer)v.valueOfMaxOccurrance();
+            Integer valueOfMaxOccurrance = v.valueOfMaxOccurrance().intValue();
             LOG.debug("value of max occurrance for vector {} is {}", v, valueOfMaxOccurrance);
             return valueOfMaxOccurrance;
         } else {

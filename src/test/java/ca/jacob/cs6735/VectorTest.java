@@ -20,11 +20,11 @@ public class VectorTest {
     public void testDrop() {
         v.drop(3);
         v.drop(0);
-        assertArrayEquals(new Double[]{2, 3, 4}, v.toArray(), DELTA);
+        assertArrayEquals(new Double[]{2., 3., 4.}, v.toArray());
     }
 
     @Test
     public void testValueOfMaxOccurrance() {
-        assertEquals((Integer) 4, v.valueOfMaxOccurrance());
+        assertEquals(4., v.valueOfMaxOccurrance());
     }
 }

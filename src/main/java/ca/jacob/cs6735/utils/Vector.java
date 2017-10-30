@@ -10,7 +10,7 @@ import java.util.stream.DoubleStream;
 
 import static ca.jacob.cs6735.utils.Math.calculateOccurrences;
 
-public class Vector implements Iterable<Double> {
+public class Vector {
     private static final Logger LOG = LoggerFactory.getLogger(Vector.class);
 
     private Double[] data;
@@ -43,7 +43,7 @@ public class Vector implements Iterable<Double> {
     }
 
     public Double[] toArray() {
-        return data;
+        return Arrays.copyOf(data, data.length);
     }
 
     public Double at(Integer i) {
@@ -111,24 +111,16 @@ public class Vector implements Iterable<Double> {
         return new Vector(data);
     }
 
+    public Vector div(Double value) {
+        Double[] data = new Double[this.data.length];
+        for(Integer i = 0; i < data.length; i++) {
+            data[i] = this.data[i] / value;
+        }
+        return new Vector(data);
+    }
+
     public String toString() {
         return Arrays.toString(data);
     }
 
-    @Override
-    public Iterator<Double> iterator() {
-        return new Iterator<Double>() {
-            private Integer currentIndex = 0;
-
-            @Override
-            public boolean hasNext() {
-                return currentIndex < length();
-            }
-
-            @Override
-            public Double next() {
-                return at(currentIndex++);
-            }
-        };
-    }
 }

@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.E;
+import static java.lang.Math.log;
+import static java.lang.Math.random;
+
 public class Math {
     private static final Logger LOG = LoggerFactory.getLogger(Math.class);
 
@@ -40,10 +44,10 @@ public class Math {
         }
     }
 
-    public static Integer[] error(Integer[] one, Integer[] two) {
+    public static Integer[] predictionError(Integer[] one, Integer[] two) {
         Integer[] error = new Integer[one.length];
         for(Integer i = 0; i < one.length; i++) {
-            if(one[i] == two[i]) {
+            if(one[i] != two[i]) {
                 error[i] = 1;
             } else {
                 error[i] = 0;
@@ -53,11 +57,11 @@ public class Math {
     }
 
     public static Double log2(Double value) {
-        return java.lang.Math.log(value) / java.lang.Math.log(2);
+        return log(value) / log(2);
     }
 
     public static Double ln(Double value) {
-        return java.lang.Math.log(value) / java.lang.Math.log(java.lang.Math.E);
+        return log(value) / log(E);
     }
 
     public static Vector exp(Vector v) {
@@ -66,5 +70,28 @@ public class Math {
             data[i] = java.lang.Math.exp(v.at(i));
         }
         return new Vector(data);
+    }
+
+    public static Integer sign(Double n) {
+        if(n >= 0) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    public static Integer[] generateIndices(Vector weights) {
+        Integer[] indices = new Integer[weights.length()];
+        for(Integer i = 0; i < weights.length(); i++) {
+            Double rand = random();
+            Double cumulativeProbability = 0.0;
+            for (Integer j = 0; j < weights.length(); j++) {
+                cumulativeProbability += weights.at(j);
+                if (rand <= cumulativeProbability) {
+                    indices[i] = j;
+                }
+            }
+        }
+        return indices;
     }
 }

@@ -3,25 +3,37 @@ package ca.jacob.cs6735.ensemble;
 import ca.jacob.cs6735.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static ca.jacob.cs6735.utils.Math.sign;
 
 public class AdaboostModel implements Model {
-    private List<Model> models;
+    private Map<Model, Double> models;
 
     @Override
     public Integer predict(Integer[] e) {
-        return 0;
+        Double sum = 0.;
+        for(Map.Entry<Model, Double> model : models.entrySet()) {
+            sum += model.getValue() * model.getKey().predict(e);
+        }
+        return sign(sum);
     }
 
     @Override
     public Integer[] predict(Integer[][] data) {
-        return new Integer[0];
+        Integer[] predictions = new Integer[data.length];
+        for(int i = 0; i < data.length; i++) {
+            predictions[i] = predict(data[i]);
+        }
+        return predictions;
     }
 
-    public void add(Model model) {
+    public void add(Model model, Double stage) {
         if(models == null) {
-            models = new ArrayList<Model>();
+            models = new HashMap<Model, Double>();
         }
-        models.add(model);
+        models.put(model, stage);
     }
 }

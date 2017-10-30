@@ -16,7 +16,7 @@ public class ID3 implements Algorithm {
         this.maxLevel = maxLevel;
     }
 
-    public Model train(Integer[][] x, Integer[] y, Double[] weights) {
+    public Model train(Integer[][] x, Integer[] y) {
         Node root = new Node(x, y, 1, maxLevel);
         root.split();
         return new ID3Model(root);

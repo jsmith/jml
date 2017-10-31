@@ -23,6 +23,15 @@ public class Matrix {
         }
     }
 
+    public Matrix(String[][] data) {
+        this.data = new Double[data.length][data[0].length];
+        for(int i = 0; i < data.length; i++) {
+            for(int j = 0; j < data[0].length; j++) {
+                this.data[i][j] = Double.parseDouble(data[i][j]);
+            }
+        }
+    }
+
     public Matrix() {
         this.data = new Double[0][0];
     }
@@ -62,12 +71,39 @@ public class Matrix {
         data = tmp;
     }
 
+    public void dropCol(int j) {
+        Double[][] tmp = new Double[this.rowCount()][this.colCount() - 1];
+        for (Integer i = 0; i < this.rowCount(); i++) {
+            System.arraycopy(data[i], 0, tmp[i], 0, j);
+            System.arraycopy(data[i], j + 1, tmp[i], j, data[i].length - 1 - j);
+        }
+        data = tmp;
+    }
+
     public Double[] col(Integer j) {
         Double[] col = new Double[data.length];
         for (Integer i = 0; i < data.length; i++) {
             col[i] = data[i][j];
         }
         return col;
+    }
+
+    public Integer[] colAsInts(Integer j) {
+        Integer[] col = new Integer[data.length];
+        for (Integer i = 0; i < data.length; i++) {
+            col[i] = data[i][j].intValue();
+        }
+        return col;
+    }
+
+    public Integer[][] toIntArray() {
+        Integer[][] arr = new Integer[data.length][data[0].length];
+        for (Integer i = 0; i < data.length; i++) {
+            for (Integer j = 0; j < data[0].length; j++) {
+                arr[i][j] = data[i][j].intValue();
+            }
+        }
+        return arr;
     }
 
     public Double at(Integer i, Integer j) {

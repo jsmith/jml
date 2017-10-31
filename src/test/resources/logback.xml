@@ -7,6 +7,8 @@
 
     <logger name="ca.jacob.cs6735.dt.Node" level="debug"></logger>
     <logger name="ca.jacob.cs6735.utils.Vector" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.ID3Test" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.utils.File" level="debug"></logger>
 
 
     <root level="info">

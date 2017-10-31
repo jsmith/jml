@@ -32,19 +32,19 @@ public class Adaboost implements Algorithm {
                 yWeighted[j] = y[indices[j]];
             }
 
-            Model m = algorithm.train(xWeighted, yWeighted);
-            Integer[] predictions = m.predict(x);
+            Model classifier = algorithm.train(xWeighted, yWeighted);
+            Integer[] predictions = classifier.predict(x);
             Vector err = new Vector(predictionError(predictions, yWeighted));
 
-            Vector h = new Vector(predictions);
+            Vector pred = new Vector(predictions);
             Vector yHat = new Vector(yWeighted);
 
-            Double epsilon = weights.dot(predictions); // sum of the weights of misclassified
+            Double epsilon = weights.dot(err); // sum of the weights of misclassified
             Double alpha = (1/2)*ln((1-epsilon)/epsilon);
             Double Z = 2*sqrt(epsilon*(1-epsilon));
-            weights = weights.div(Z).mul(exp(yHat.mul(h).mul(-alpha)));
+            weights = weights.div(Z).mul(exp(yHat.mul(pred).mul(-alpha)));
 
-            model.add(m, alpha);
+            model.add(classifier, alpha);
         }
 
         return model;

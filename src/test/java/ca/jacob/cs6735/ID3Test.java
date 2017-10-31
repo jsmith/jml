@@ -6,10 +6,16 @@ import ca.jacob.cs6735.dt.Node;
 import ca.jacob.cs6735.utils.Matrix;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import static ca.jacob.cs6735.utils.File.readCSV;
+import static ca.jacob.cs6735.utils.ML.removeSamplesWith;
 import static junit.framework.Assert.assertEquals;
 
 public class ID3Test {
+    private static final Logger LOG = LoggerFactory.getLogger(ID3Test.class);
+
     private ID3 id3;
 
     @Before
@@ -19,7 +25,7 @@ public class ID3Test {
 
     @Test
     public void testTrain() {
-        ID3Model model = (ID3Model) id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0}, new Double[]{1., 1., 1.});
+        ID3Model model = (ID3Model) id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0});
 
         Node root = model.getRoot();
         assertEquals((Integer)1, root.getPredictor());
@@ -34,7 +40,7 @@ public class ID3Test {
 
     @Test
     public void testPredict() {
-        Model model = id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0}, new Double[]{1., 1., 1.});
+        Model model = id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0});
         assertEquals((Integer) 1, model.predict(new Integer[]{1, 1, 1}));
         assertEquals((Integer)0, model.predict(new Integer[]{1, 0, 1}));
         assertEquals((Integer)1, model.predict(new Integer[]{0, 1, 1}));
@@ -43,10 +49,22 @@ public class ID3Test {
     @Test
     public void testMaxLevel() {
         id3.setMaxLevel(1);
-        ID3Model model = (ID3Model)id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0}, new Double[]{1., 1., 1.});
+        ID3Model model = (ID3Model)id3.train(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}}, new Integer[]{1, 0, 0});
 
         Node root = model.getRoot();
         assertEquals(0, root.getNodes().size());
         assertEquals((Integer)0, model.predict(new Integer[]{1, 1, 1}));
+    }
+
+    @Test
+    public void testWithData() throws Throwable {
+        String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
+        data = removeSamplesWith("?", data);
+        Matrix m = new Matrix(data);
+        Integer[] y = m.colAsInts(m.colCount()-1);
+        m.dropCol(m.colCount()-1);
+        Integer[][] x = m.toIntArray();
+        ID3 id3 = new ID3(ID3.LEVEL_NONE);
+        id3.train(x, y);
     }
 }

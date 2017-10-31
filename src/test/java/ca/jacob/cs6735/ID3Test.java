@@ -3,14 +3,14 @@ package ca.jacob.cs6735;
 import ca.jacob.cs6735.dt.ID3;
 import ca.jacob.cs6735.dt.ID3Model;
 import ca.jacob.cs6735.dt.Node;
-import ca.jacob.cs6735.utils.Matrix;
+import ca.jacob.cs6735.util.Matrix;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.cs6735.utils.File.readCSV;
-import static ca.jacob.cs6735.utils.ML.removeSamplesWith;
+import static ca.jacob.cs6735.util.File.readCSV;
+import static ca.jacob.cs6735.util.ML.removeSamplesWith;
 import static junit.framework.Assert.assertEquals;
 
 public class ID3Test {

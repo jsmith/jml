@@ -1,6 +1,8 @@
-package ca.jacob.cs6735.utils;
+package ca.jacob.cs6735.util;
 
 import java.util.ArrayList;
+
+import static java.lang.Math.random;
 
 public class ML {
     public static String[][] removeSamplesWith(String key, String[][] data) {
@@ -30,5 +32,28 @@ public class ML {
 
     public static Integer[] copy(Integer[] original) {
         return original.clone();
+    }
+
+    public static Integer sign(Double n) {
+        if(n >= 0) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
+
+    public static Integer[] generateIndices(Vector weights) {
+        Integer[] indices = new Integer[weights.length()];
+        for(Integer i = 0; i < weights.length(); i++) {
+            Double rand = random();
+            Double cumulativeProbability = 0.0;
+            for (Integer j = 0; j < weights.length(); j++) {
+                cumulativeProbability += weights.at(j);
+                if (rand <= cumulativeProbability) {
+                    indices[i] = j;
+                }
+            }
+        }
+        return indices;
     }
 }

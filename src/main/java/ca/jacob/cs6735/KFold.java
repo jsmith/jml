@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import static ca.jacob.cs6735.utils.ML.copy;
-
 public class KFold {
     private Integer numberOfSplits;
 

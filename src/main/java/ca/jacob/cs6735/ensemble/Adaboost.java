@@ -2,9 +2,10 @@ package ca.jacob.cs6735.ensemble;
 
 import ca.jacob.cs6735.Algorithm;
 import ca.jacob.cs6735.Model;
-import ca.jacob.cs6735.utils.Vector;
+import ca.jacob.cs6735.util.Vector;
 
-import static ca.jacob.cs6735.utils.Math.*;
+import static ca.jacob.cs6735.util.ML.generateIndices;
+import static ca.jacob.cs6735.util.Math.*;
 import static java.lang.Math.sqrt;
 
 

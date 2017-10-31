@@ -1,14 +1,14 @@
 package ca.jacob.cs6735.dt;
 
-import ca.jacob.cs6735.utils.Matrix;
-import ca.jacob.cs6735.utils.Vector;
+import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static ca.jacob.cs6735.utils.Math.calculateOccurrences;
-import static ca.jacob.cs6735.utils.Math.log2;
+import static ca.jacob.cs6735.util.Math.calculateOccurrences;
+import static ca.jacob.cs6735.util.Math.log2;
 
 public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);

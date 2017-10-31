@@ -1,14 +1,12 @@
-package ca.jacob.cs6735.utils;
+package ca.jacob.cs6735.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.stream.DoubleStream;
 
-import static ca.jacob.cs6735.utils.Math.calculateOccurrences;
+import static ca.jacob.cs6735.util.Math.calculateOccurrences;
 
 public class Vector {
     private static final Logger LOG = LoggerFactory.getLogger(Vector.class);

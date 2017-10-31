@@ -2,12 +2,10 @@ package ca.jacob.cs6735.ensemble;
 
 import ca.jacob.cs6735.Model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static ca.jacob.cs6735.utils.Math.sign;
+import static ca.jacob.cs6735.util.ML.sign;
 
 public class AdaboostModel implements Model {
     private Map<Model, Double> models;

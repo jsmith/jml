@@ -1,6 +1,6 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.cs6735.utils.Vector;
+import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 

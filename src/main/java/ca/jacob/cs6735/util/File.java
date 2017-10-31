@@ -1,4 +1,4 @@
-package ca.jacob.cs6735.utils;
+package ca.jacob.cs6735.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

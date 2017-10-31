@@ -1,10 +1,9 @@
-package ca.jacob.cs6735.utils;
+package ca.jacob.cs6735.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.E;
@@ -70,28 +69,5 @@ public class Math {
             data[i] = java.lang.Math.exp(v.at(i));
         }
         return new Vector(data);
-    }
-
-    public static Integer sign(Double n) {
-        if(n >= 0) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
-
-    public static Integer[] generateIndices(Vector weights) {
-        Integer[] indices = new Integer[weights.length()];
-        for(Integer i = 0; i < weights.length(); i++) {
-            Double rand = random();
-            Double cumulativeProbability = 0.0;
-            for (Integer j = 0; j < weights.length(); j++) {
-                cumulativeProbability += weights.at(j);
-                if (rand <= cumulativeProbability) {
-                    indices[i] = j;
-                }
-            }
-        }
-        return indices;
     }
 }

@@ -1,11 +1,19 @@
 package ca.jacob.cs6735;
 
+import ca.jacob.cs6735.util.Matrix;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import static ca.jacob.cs6735.util.ML.shuffle;
+
 public class KFold {
+    private static final Logger LOG = LoggerFactory.getLogger(KFold.class);
+
     private Integer numberOfSplits;
 
     public KFold(Integer numberOfSplits) {
@@ -20,26 +28,13 @@ public class KFold {
         for(int split = 0; split < numberOfSplits-1; split++) {
             Integer from = split*splitLength;
             Integer to = (split+1)*splitLength;
+            LOG.debug("split {}, from {} to {}", split, from, to);
             data.put(Arrays.copyOfRange(x, from, to), Arrays.copyOfRange(y, from, to));
         }
         Integer from = (numberOfSplits-1)*splitLength;
         Integer to = numberOfSamples;
+        LOG.debug("last split from {} to {}", from, to);
         data.put(Arrays.copyOfRange(x, from, to), Arrays.copyOfRange(y, from, to));
         return data;
-    }
-
-    public void shuffle(Integer[][] x, Integer[] y) {
-        Random random = new Random();
-        for (int i = x.length - 1; i > 0; i--) {
-            int index = random.nextInt(i + 1);
-
-            Integer[] tmp = x[index];
-            x[index] = x[i];
-            x[i] = tmp;
-
-            Integer temp = y[index];
-            y[index] = y[i];
-            y[i] = temp;
-        }
     }
 }

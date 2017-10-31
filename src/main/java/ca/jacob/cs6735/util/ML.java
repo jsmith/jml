@@ -1,6 +1,7 @@
 package ca.jacob.cs6735.util;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static java.lang.Math.random;
 
@@ -67,5 +68,20 @@ public class ML {
             }
         }
         return error;
+    }
+
+    public static void shuffle(Integer[][] x, Integer[] y) {
+        Random random = new Random();
+        for (int i = x.length - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+
+            Integer[] tmp = x[index];
+            x[index] = x[i];
+            x[i] = tmp;
+
+            Integer temp = y[index];
+            y[index] = y[i];
+            y[i] = temp;
+        }
     }
 }

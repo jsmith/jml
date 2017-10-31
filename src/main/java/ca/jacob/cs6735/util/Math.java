@@ -43,18 +43,6 @@ public class Math {
         }
     }
 
-    public static Integer[] predictionError(Integer[] one, Integer[] two) {
-        Integer[] error = new Integer[one.length];
-        for(Integer i = 0; i < one.length; i++) {
-            if(one[i] != two[i]) {
-                error[i] = 1;
-            } else {
-                error[i] = 0;
-            }
-        }
-        return error;
-    }
-
     public static Double log2(Double value) {
         return log(value) / log(2);
     }

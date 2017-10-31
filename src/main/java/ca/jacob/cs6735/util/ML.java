@@ -56,4 +56,16 @@ public class ML {
         }
         return indices;
     }
+
+    public static Integer[] error(Integer[] one, Integer[] two) {
+        Integer[] error = new Integer[one.length];
+        for(Integer i = 0; i < one.length; i++) {
+            if(!one[i].equals(two[i])) {
+                error[i] = 1;
+            } else {
+                error[i] = 0;
+            }
+        }
+        return error;
+    }
 }

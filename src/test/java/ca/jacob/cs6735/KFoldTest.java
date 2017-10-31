@@ -1,6 +1,9 @@
 package ca.jacob.cs6735;
 
+import ca.jacob.cs6735.dt.ID3;
+import ca.jacob.cs6735.dt.ID3Model;
 import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -10,6 +13,7 @@ import java.util.Map;
 
 import static ca.jacob.cs6735.util.File.readCSV;
 import static ca.jacob.cs6735.util.ML.removeSamplesWith;
+import static ca.jacob.cs6735.util.ML.shuffle;
 import static junit.framework.Assert.assertEquals;
 
 public class KFoldTest {
@@ -24,11 +28,6 @@ public class KFoldTest {
         kFold = new KFold(5);
         x = new Integer[][]{{1}, {0}, {1}, {0}, {1}, {1}};
         y = new Integer[]{1, 0, 1, 0, 1, 1};
-    }
-
-    @Test
-    public void testShuffle() {
-        kFold.shuffle(x, y);
     }
 
     @Test
@@ -47,8 +46,14 @@ public class KFoldTest {
     public void testKFoldProcess() throws Throwable {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);
-        Matrix m = new Matrix(data);
-        y = m.col(m.colCount()-1).toIntegerArray();
-        x = m.toIntArray();
+        Matrix mat = new Matrix(data);
+        y = mat.col(mat.colCount()-1).toIntegerArray();
+        x = mat.toIntArray();
+        Vector accuracy = new Vector();
+        for(Map.Entry<Integer[][], Integer[]> entry : kFold.split(x, y).entrySet()) {
+            Algorithm a = new ID3(ID3.LEVEL_NONE);
+            Model m = a.fit(entry.getKey(), entry.getValue());
+            accuracy.add(m.accuracy(x, y));
+        }
     }
 }

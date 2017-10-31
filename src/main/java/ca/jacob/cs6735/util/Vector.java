@@ -7,7 +7,7 @@ import java.util.*;
 
 import static ca.jacob.cs6735.util.Math.calculateOccurrences;
 
-public class Vector {
+public class Vector implements Iterable<Double> {
     private static final Logger LOG = LoggerFactory.getLogger(Vector.class);
 
     private List<Double> data;
@@ -43,7 +43,7 @@ public class Vector {
     }
 
     public void remove(Integer i) {
-        data.remove(i);
+        data.remove(i.intValue());
     }
 
     public Double[] toArray() {
@@ -63,7 +63,7 @@ public class Vector {
     }
 
     public Double valueOfMaxOccurrance() {
-        Map<Double, Integer> occurrances = calculateOccurrences(data);
+        Map<Double, Integer> occurrances = calculateOccurrences(this);
         LOG.debug("occurances: {}", occurrances);
         Double valueOfMaxOccurrence = null;
         for (Map.Entry<Double, Integer> e : occurrances.entrySet()) {
@@ -165,5 +165,22 @@ public class Vector {
         }
 
         return true;
+    }
+
+    @Override
+    public Iterator<Double> iterator() {
+        return new Iterator<Double>() {
+            private Integer currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < length();
+            }
+
+            @Override
+            public Double next() {
+                return at(currentIndex++);
+            }
+        };
     }
 }

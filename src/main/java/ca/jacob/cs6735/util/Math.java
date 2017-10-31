@@ -14,9 +14,9 @@ import static java.lang.Math.random;
 public class Math {
     private static final Logger LOG = LoggerFactory.getLogger(Math.class);
 
-    public static Map<Double, Integer> calculateOccurrences(List<Double> values) {
+    public static Map<Double, Integer> calculateOccurrences(Vector v) {
         Map<Double, Integer> map = new HashMap<Double, Integer>();
-        for (Double value : values) {
+        for (Double value : v) {
             LOG.debug("adding {} to map", value);
             Integer count = map.get(value);
             updateMap(map, value, count);

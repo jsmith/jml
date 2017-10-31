@@ -1,5 +1,6 @@
 package ca.jacob.cs6735;
 
+import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,21 +21,23 @@ public class MatrixTest {
 
     @Test
     public void testRow() {
-        assertArrayEquals(new Double[]{1., 2., 3.}, matrix.row(0));
+        Vector v = new Vector(new Double[]{1., 2., 3.});
+        assertEquals(v, matrix.row(0));
     }
 
     @Test
     public void testCol() {
-        assertArrayEquals(new Double[]{2., 2.}, matrix.col(1));
+        Vector v = new Vector(new Double[]{2., 2.});
+        assertEquals(v, matrix.col(1));
     }
 
     @Test
     public void testCalculateOccurrences() {
-        Double[] vec = new Double[]{1., 2., 3., 1., 1.};
+        Vector v = new Vector(new Double[]{1., 2., 3., 1., 1.});
         Map<Double, Integer> expected = new HashMap<Double, Integer>();
         expected.put(1., 3);
         expected.put(2., 1);
         expected.put(3., 1);
-        assertEquals(expected, calculateOccurrences(vec));
+        assertEquals(expected, calculateOccurrences(v));
     }
 }

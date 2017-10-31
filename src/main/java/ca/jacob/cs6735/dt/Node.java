@@ -91,7 +91,7 @@ public class Node {
                     split.put(value, entry);
                 }
 
-                Vector v = new Vector(data.row(i));
+                Vector v = data.row(i);
                 v.remove(j);
                 entry.pushRow(v);
             }
@@ -136,7 +136,7 @@ public class Node {
         LOG.info("predict - starting for level {} and attribute {}", level, attribute);
         if (this.leaf) {
             LOG.debug("a leaf was found");
-            Vector v = new Vector(data.col(data.colCount() - 1));
+            Vector v = data.col(data.colCount() - 1);
             Integer valueOfMaxOccurrance = v.valueOfMaxOccurrance().intValue();
             LOG.debug("value of max occurrance for vector {} is {}", v, valueOfMaxOccurrance);
             return valueOfMaxOccurrance;

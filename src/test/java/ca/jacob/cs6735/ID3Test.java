@@ -61,7 +61,7 @@ public class ID3Test {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);
         Matrix m = new Matrix(data);
-        Integer[] y = m.colAsInts(m.colCount()-1);
+        Integer[] y = m.col(m.colCount()-1).toIntegerArray();
         m.dropCol(m.colCount()-1);
         Integer[][] x = m.toIntArray();
         ID3 id3 = new ID3(ID3.LEVEL_NONE);

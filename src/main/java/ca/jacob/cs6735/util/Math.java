@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Math.E;
@@ -13,7 +14,7 @@ import static java.lang.Math.random;
 public class Math {
     private static final Logger LOG = LoggerFactory.getLogger(Math.class);
 
-    public static Map<Double, Integer> calculateOccurrences(Double[] values) {
+    public static Map<Double, Integer> calculateOccurrences(List<Double> values) {
         Map<Double, Integer> map = new HashMap<Double, Integer>();
         for (Double value : values) {
             LOG.debug("adding {} to map", value);

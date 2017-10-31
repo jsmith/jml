@@ -18,8 +18,8 @@ public class VectorTest {
 
     @Test
     public void testDrop() {
-        v.drop(3);
-        v.drop(0);
+        v.remove(3);
+        v.remove(0);
         assertArrayEquals(new Double[]{2., 3., 4.}, v.toArray());
     }
 

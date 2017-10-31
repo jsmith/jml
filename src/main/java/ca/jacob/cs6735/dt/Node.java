@@ -92,7 +92,7 @@ public class Node {
                 }
 
                 Vector v = new Vector(data.row(i));
-                v.drop(j);
+                v.remove(j);
                 entry.pushRow(v);
             }
 

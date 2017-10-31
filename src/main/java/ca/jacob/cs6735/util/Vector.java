@@ -3,49 +3,63 @@ package ca.jacob.cs6735.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
 
 import static ca.jacob.cs6735.util.Math.calculateOccurrences;
 
 public class Vector {
     private static final Logger LOG = LoggerFactory.getLogger(Vector.class);
 
-    private Double[] data;
+    private List<Double> data;
 
     public Vector(Integer[] data) {
-        this.data = new Double[data.length];
+        this.data = new ArrayList<Double>();
         for(Integer i = 0; i < data.length; i++) {
-            this.data[i] = data[i].doubleValue();
+            this.data.add(data[i].doubleValue());
         }
     }
 
-    public Vector() {}
+    public Vector() {
+        this.data = new ArrayList<Double>();
+    }
 
     public Vector(Double[] data) {
-        this.data = data;
+        this.data = Arrays.asList(data);
     }
 
-    public void push(Integer value) {
-        Double[] tmp = new Double[data.length + 1];
-        System.arraycopy(data, 0, tmp, 0, data.length);
-        tmp[tmp.length-1] = value.doubleValue();
-        data = tmp;
+    public Vector(String[] data) {
+        this.data = new ArrayList<Double>();
+        for(Integer i = 0; i < data.length; i++) {
+            this.data.add(Double.parseDouble(data[i]));
+        }
     }
 
-    public void drop(Integer i) {
-        Double[] tmp = new Double[data.length - 1];
-        System.arraycopy(data, 0, tmp, 0, i);
-        System.arraycopy(data, i + 1, tmp, i, data.length - 1 - i);
-        data = tmp;
+    public void add(Integer value) {
+        data.add(value.doubleValue());
+    }
+
+    public void add(Double value) {
+        data.add(value);
+    }
+
+    public void remove(Integer i) {
+        data.remove(i);
     }
 
     public Double[] toArray() {
-        return Arrays.copyOf(data, data.length);
+        return data.toArray(new Double[data.size()]);
+    }
+
+    public Integer[] toIntegerArray() {
+        Integer[] arr = new Integer[this.length()];
+        for(Integer i = 0; i < this.length(); i++) {
+            arr[i] = this.at(i).intValue();
+        }
+        return arr;
     }
 
     public Double at(Integer i) {
-        return data[i];
+        return data.get(i);
     }
 
     public Double valueOfMaxOccurrance() {
@@ -61,7 +75,7 @@ public class Vector {
     }
 
     public void fill(Double value) {
-        Arrays.fill(this.data, value);
+        Collections.fill(data, value);
     }
 
     public Double dot(Integer[] other) {
@@ -69,7 +83,7 @@ public class Vector {
     }
 
     public Double dot(Vector other) {
-        if(this.length() != other.length()) {
+        if(!this.length().equals(other.length())) {
             throw new MathException("vector lengths must match");
         }
 
@@ -90,35 +104,66 @@ public class Vector {
     }
 
     public Integer length() {
-        return data.length;
+        return data.size();
     }
 
     public Vector mul(Double value) {
-        Double[] data = new Double[this.data.length];
-        for(Integer i = 0; i < data.length; i++) {
-            data[i] = this.data[i] * value;
+        Vector v = new Vector(new Double[this.length()]);
+        for(Integer i = 0; i < length(); i++) {
+            v.set(i, this.at(i) * value);
         }
-        return new Vector(data);
+        return v;
     }
 
     public Vector mul(Vector other) {
-        Double[] data = new Double[this.data.length];
-        for(Integer i = 0; i < data.length; i++) {
-            data[i] = this.at(i) * other.at(i);
+        if(!this.length().equals(other.length())) {
+            throw new MathException("vector lengths must match");
         }
-        return new Vector(data);
+
+        Vector v = new Vector(new Double[this.length()]);
+        for(Integer i = 0; i < this.length(); i++) {
+            v.set(i, this.at(i) * other.at(i));
+        }
+        return v;
     }
 
     public Vector div(Double value) {
-        Double[] data = new Double[this.data.length];
-        for(Integer i = 0; i < data.length; i++) {
-            data[i] = this.data[i] / value;
+        Vector v = new Vector(new Double[this.length()]);
+        for(Integer i = 0; i < length(); i++) {
+            v.set(i, this.at(i) / value);
         }
-        return new Vector(data);
+        return v;
     }
 
+    public void set(Integer i, Double value) {
+        data.set(i, value);
+    }
+
+    @Override
     public String toString() {
-        return Arrays.toString(data);
+        return data.toString();
     }
 
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        if (!(object instanceof Vector)) {
+            return false;
+        }
+
+        Vector other = (Vector) object;
+        if (!this.length().equals(other.length())) {
+            return false;
+        }
+
+        for (int i = 0; i < this.length(); i++) {
+            if(!this.at(i).equals(other.at(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

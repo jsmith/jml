@@ -3,57 +3,49 @@ package ca.jacob.cs6735.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Matrix {
     private static final Logger LOG = LoggerFactory.getLogger(Matrix.class);
 
-    private Double[][] data;
+    private List<Vector> data;
 
     public Matrix(Double[][] data) {
-        this.data = data;
+        this.data = new ArrayList<Vector>();
+        for(Double[] row : data) {
+            this.data.add(new Vector(row));
+        }
     }
 
     public Matrix(Integer[][] data) {
-        this.data = new Double[data.length][data[0].length];
-        for(int i = 0; i < data.length; i++) {
-            for(int j = 0; j < data[0].length; j++) {
-                this.data[i][j] = data[i][j].doubleValue();
-            }
+        this.data = new ArrayList<Vector>();
+        for(Integer[] row : data) {
+            this.data.add(new Vector(row));
         }
     }
 
     public Matrix(String[][] data) {
-        this.data = new Double[data.length][data[0].length];
-        for(int i = 0; i < data.length; i++) {
-            for(int j = 0; j < data[0].length; j++) {
-                this.data[i][j] = Double.parseDouble(data[i][j]);
-            }
+        this.data = new ArrayList<Vector>();
+        for(String[] row : data) {
+            this.data.add(new Vector(row));
         }
     }
 
     public Matrix() {
-        this.data = new Double[0][0];
+        data = new ArrayList<Vector>();
     }
 
-    public Double[] row(Integer i) {
-        return data[i];
+    public Vector row(Integer i) {
+        return data.get(i);
     }
 
     public void pushRow(Double[] row) {
-        Double[][] tmp = new Double[this.rowCount() + 1][row.length];
-        System.arraycopy(data, 0, tmp, 0, this.rowCount());
-        for(Integer j = 0; j < row.length; j++) {
-            tmp[this.rowCount()][j] = row[j];
-        }
-        data = tmp;
+        data.add(new Vector(row));
     }
 
     public void pushRow(Integer[] row) {
-        Double[][] tmp = new Double[this.rowCount() + 1][this.colCount()];
-        System.arraycopy(data, 0, tmp, 0, this.rowCount());
-        for(Integer j = 0; j < data[0].length; j++) {
-            tmp[this.rowCount()][j] = row[j].doubleValue();
-        }
-        data = tmp;
+        data.add(new Vector(row));
     }
 
     public void pushRow(Vector v) {
@@ -61,63 +53,77 @@ public class Matrix {
     }
 
     public void pushCol(Integer[] col) {
-        Double[][] tmp = new Double[this.rowCount()][this.colCount() + 1];
         for (Integer i = 0; i < this.rowCount(); i++) {
-            System.arraycopy(data[i], 0, tmp[i], 0, this.colCount());
-            tmp[i][this.colCount()] = col[i].doubleValue();
+            data.get(i).add(col[i]);
         }
-        data = tmp;
     }
 
     public void dropCol(int j) {
-        Double[][] tmp = new Double[this.rowCount()][this.colCount() - 1];
         for (Integer i = 0; i < this.rowCount(); i++) {
-            System.arraycopy(data[i], 0, tmp[i], 0, j);
-            System.arraycopy(data[i], j + 1, tmp[i], j, data[i].length - 1 - j);
+            data.get(i).remove(j);
         }
-        data = tmp;
     }
 
-    public Double[] col(Integer j) {
-        Double[] col = new Double[data.length];
-        for (Integer i = 0; i < data.length; i++) {
-            col[i] = data[i][j];
+    public Vector col(Integer j) {
+        Vector v = new Vector();
+        for (Integer i = 0; i < this.rowCount(); i++) {
+            v.add(data.get(i).at(j));
         }
-        return col;
-    }
-
-    public Integer[] colAsInts(Integer j) {
-        Integer[] col = new Integer[data.length];
-        for (Integer i = 0; i < data.length; i++) {
-            col[i] = data[i][j].intValue();
-        }
-        return col;
+        return v;
     }
 
     public Integer[][] toIntArray() {
-        Integer[][] arr = new Integer[data.length][data[0].length];
-        for (Integer i = 0; i < data.length; i++) {
-            for (Integer j = 0; j < data[0].length; j++) {
-                arr[i][j] = data[i][j].intValue();
-            }
+        Integer[][] arr = new Integer[this.rowCount()][this.colCount()];
+        for(Integer i = 0; i < this.rowCount(); i++) {
+            arr[i] = data.get(i).toIntegerArray();
         }
         return arr;
     }
 
     public Double at(Integer i, Integer j) {
-        return data[i][j];
+        return data.get(i).at(j);
     }
 
     public Integer rowCount() {
-        return data.length;
+        return data.size();
     }
 
     public Integer colCount() {
-        if (data.length == 0) {
+        if (this.rowCount() == 0) {
             return 0;
         }
+        return data.get(0).length();
+    }
 
-        return data[0].length;
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        if (!(object instanceof Matrix)) {
+            return false;
+        }
+
+        Matrix other = (Matrix) object;
+        if (!this.rowCount().equals(other.rowCount())) {
+            return false;
+        }
+        if (!this.colCount().equals(other.colCount())) {
+            return false;
+        }
+
+        for (int i = 0; i < this.rowCount(); i++) {
+            if(!this.row(i).equals(other.row(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return data.toString();
     }
 
 }

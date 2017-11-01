@@ -14,7 +14,7 @@ public class Vector implements Iterable<Double> {
 
     public Vector(Integer[] data) {
         this.data = new ArrayList<Double>();
-        for(Integer i = 0; i < data.length; i++) {
+        for(int i = 0; i < data.length; i++) {
             this.data.add(data[i].doubleValue());
         }
     }
@@ -24,12 +24,12 @@ public class Vector implements Iterable<Double> {
     }
 
     public Vector(Double[] data) {
-        this.data = Arrays.asList(data);
+        this.data = new ArrayList<Double>(Arrays.asList(data));
     }
 
     public Vector(String[] data) {
         this.data = new ArrayList<Double>();
-        for(Integer i = 0; i < data.length; i++) {
+        for(int i = 0; i < data.length; i++) {
             this.data.add(Double.parseDouble(data[i]));
         }
     }
@@ -133,6 +133,10 @@ public class Vector implements Iterable<Double> {
             v.set(i, this.at(i) / value);
         }
         return v;
+    }
+
+    public Vector clone() {
+        return new Vector(this.toArray().clone());
     }
 
     public void set(Integer i, Double value) {

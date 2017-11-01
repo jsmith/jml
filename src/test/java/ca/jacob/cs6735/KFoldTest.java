@@ -50,10 +50,5 @@ public class KFoldTest {
         y = mat.col(mat.colCount()-1).toIntegerArray();
         x = mat.toIntArray();
         Vector accuracy = new Vector();
-        for(Map.Entry<Integer[][], Integer[]> entry : kFold.split(x, y).entrySet()) {
-            Algorithm a = new ID3(ID3.LEVEL_NONE);
-            Model m = a.fit(entry.getKey(), entry.getValue());
-            accuracy.add(m.accuracy(x, y));
-        }
     }
 }

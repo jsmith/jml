@@ -4,10 +4,13 @@ import ca.jacob.cs6735.dt.ID3;
 import ca.jacob.cs6735.dt.Node;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static junit.framework.Assert.assertEquals;
 
 public class NodeTest {
+    private static final Logger LOG = LoggerFactory.getLogger(NodeTest.class);
     private static final Double DELTA =  1e-10;
     private Node node;
 

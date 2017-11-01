@@ -15,7 +15,7 @@ public class Node {
 
     private Double entropy;
     private Integer attribute;
-    private boolean leaf;
+    private Boolean leaf;
     private Matrix data;
     private Map<Integer, Node> nodes;
     private Integer level;

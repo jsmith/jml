@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class Matrix {
     }
 
     public Vector row(Integer i) {
-        return data.get(i);
+        return data.get(i).clone();
     }
 
     public void pushRow(Double[] row) {

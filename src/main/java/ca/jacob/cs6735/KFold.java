@@ -1,8 +1,10 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Vector;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static ca.jacob.cs6735.util.ML.range;
 import static ca.jacob.cs6735.util.ML.shuffle;
@@ -27,19 +29,19 @@ public class KFold {
         this.seed = seed;
     }
 
-    public Map<List<Integer>, List<Integer>> split(Matrix x) {
+    public Map<Vector, Vector> split(Matrix x) {
         Integer numberOfSamples = x.rowCount();
         Integer splitLength = numberOfSamples / numberOfSplits;
 
         // List of indices ex. 1, 2, 3 ... n-1, n
-        List<Integer> indices = new ArrayList<Integer>();
-        indices.addAll(range(0, numberOfSamples));
+        Vector indices = new Vector();
+        indices.concat(range(0, numberOfSamples));
         shuffle(indices, seed); // shuffle that list
 
-        Map<List<Integer>, List<Integer>> trainTestIndices = new HashMap<List<Integer>, List<Integer>>();
+        Map<Vector, Vector> trainTestIndices = new HashMap<Vector, Vector>();
         for(int split = 0; split < numberOfSplits-1; split++) {
-            List<Integer> trainIndices = new ArrayList<Integer>();
-            List<Integer> testIndices = new ArrayList<Integer>();
+            Vector trainIndices = new Vector();
+            Vector testIndices = new Vector();
 
             // get test range
             Integer from = split*splitLength;
@@ -47,24 +49,24 @@ public class KFold {
             LOG.debug("split from {} to {}", from, to);
 
             // add shuffled indices
-            testIndices.addAll(indices.subList(from, to));
-            trainIndices.addAll(indices.subList(0, from));
-            trainIndices.addAll(indices.subList(to, numberOfSamples));
+            testIndices.concat(indices.subVector(from, to));
+            trainIndices.concat(indices.subVector(0, from));
+            trainIndices.concat(indices.subVector(to, numberOfSamples));
 
             trainTestIndices.put(trainIndices, testIndices);
         }
 
         // adding remaining elements
-        List<Integer> trainIndices = new ArrayList<Integer>();
-        List<Integer> testIndices = new ArrayList<Integer>();
+        Vector trainIndices = new Vector();
+        Vector testIndices = new Vector();
 
         Integer from = (numberOfSplits-1)*splitLength;
         Integer to = numberOfSamples;
         LOG.debug("last split from {} to {}", from, to);
 
-        testIndices.addAll(indices.subList(from, to));
-        trainIndices.addAll(indices.subList(0, from));
-        trainIndices.addAll(indices.subList(to, numberOfSamples));
+        testIndices.add(indices.subVector(from, to));
+        trainIndices.add(indices.subVector(0, from));
+        trainIndices.add(indices.subVector(to, numberOfSamples));
 
         trainTestIndices.put(trainIndices, testIndices);
 

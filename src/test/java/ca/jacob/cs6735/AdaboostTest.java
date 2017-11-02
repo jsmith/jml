@@ -7,7 +7,8 @@ import org.junit.Test;
 public class AdaboostTest {
     @Test
     public void testTrain() {
-        ID3 id3 = new ID3(1);
-        Adaboost adaboost = new Adaboost(id3, 50);
+        ID3 id3 = new ID3(1); // stumps
+        Adaboost adaboost = new Adaboost(id3, 10);
+        adaboost.
     }
 }

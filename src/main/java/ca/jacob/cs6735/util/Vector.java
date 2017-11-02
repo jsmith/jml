@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import static ca.jacob.cs6735.util.Math.calculateOccurrences;
 
@@ -34,12 +35,24 @@ public class Vector implements Iterable<Double> {
         }
     }
 
+    public Vector(List<Double> data) {
+        this.data = data;
+    }
+
     public void add(Integer value) {
         data.add(value.doubleValue());
     }
 
     public void add(Double value) {
         data.add(value);
+    }
+
+    public void concat(Vector v) {
+        this.data.addAll(v.getData());
+    }
+
+    public Vector subVector(Integer from, Integer to) {
+        return new Vector(this.data.subList(from, to));
     }
 
     public void remove(Integer i) {
@@ -141,6 +154,10 @@ public class Vector implements Iterable<Double> {
 
     public void set(Integer i, Double value) {
         data.set(i, value);
+    }
+
+    public List<Double> getData() {
+        return data;
     }
 
     @Override

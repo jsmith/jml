@@ -1,6 +1,9 @@
 package ca.jacob.cs6735.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import static java.lang.Math.random;
 
@@ -55,5 +58,39 @@ public class ML {
             }
         }
         return indices;
+    }
+
+    public static List<Integer> range(Integer from, Integer to) {
+        Integer[] range = new Integer[from-to];
+        for(int i = 0; i < to-from; i++) {
+            range[i] = from+i;
+        }
+        return Arrays.asList(range);
+    }
+
+    public static void shuffle(List list) {
+        Random random = new Random();
+
+        for (int i = list.size() - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            Object tmp = list.get(i);
+            list.set(index, list.get(i));
+            list.set(i, tmp);
+        }
+    }
+
+    public static void shuffle(List list, Long seed) {
+        if(seed == null) {
+            shuffle(list);
+            return;
+        }
+
+        Random random = new Random(seed);
+        for (int i = list.size() - 1; i > 0; i--) {
+            int index = random.nextInt(i + 1);
+            Object tmp = list.get(i);
+            list.set(index, list.get(i));
+            list.set(i, tmp);
+        }
     }
 }

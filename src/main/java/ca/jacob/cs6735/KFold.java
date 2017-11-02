@@ -1,45 +1,64 @@
 package ca.jacob.cs6735;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import ca.jacob.cs6735.util.Matrix;
+
+import java.util.*;
+
+import static ca.jacob.cs6735.util.ML.range;
+import static ca.jacob.cs6735.util.ML.shuffle;
 
 public class KFold {
     private Integer numberOfSplits;
+    private Long seed;
 
     public KFold(Integer numberOfSplits) {
         this.numberOfSplits = numberOfSplits;
     }
 
-    public Map<Integer[][], Integer[]> split(Integer[][] x, Integer[] y) {
-        Map<Integer[][], Integer[]> data = new HashMap<Integer[][], Integer[]>();
-        shuffle(x, y);
-        Integer numberOfSamples = x.length;
-        Integer splitLength = numberOfSamples / numberOfSplits;
-        for(int split = 0; split < numberOfSplits-1; split++) {
-            Integer from = split*splitLength;
-            Integer to = (split+1)*splitLength;
-            data.put(Arrays.copyOfRange(x, from, to), Arrays.copyOfRange(y, from, to));
-        }
-        Integer from = (numberOfSplits-1)*splitLength;
-        Integer to = numberOfSamples;
-        data.put(Arrays.copyOfRange(x, from, to), Arrays.copyOfRange(y, from, to));
-        return data;
+    public KFold(Integer numberOfSplits, Long seed) {
+        this.numberOfSplits = numberOfSplits;
+        this.seed = seed;
     }
 
-    public void shuffle(Integer[][] x, Integer[] y) {
-        Random random = new Random();
-        for (int i = x.length - 1; i > 0; i--) {
-            int index = random.nextInt(i + 1);
+    public Map<List<Integer>, List<Integer>> split(Matrix x) {
+        Integer numberOfSamples = x.rowCount();
+        Integer splitLength = numberOfSamples / numberOfSplits;
 
-            Integer[] tmp = x[index];
-            x[index] = x[i];
-            x[i] = tmp;
+        // List of indices ex. 1, 2, 3 ... n-1, n
+        List<Integer> indices = new ArrayList<Integer>();
+        indices.addAll(range(0, numberOfSamples));
+        shuffle(indices, seed); // shuffle that list
 
-            Integer temp = y[index];
-            y[index] = y[i];
-            y[i] = temp;
+        Map<List<Integer>, List<Integer>> trainTestIndices = new HashMap<List<Integer>, List<Integer>>();
+        for(int split = 0; split < numberOfSplits-1; split++) {
+            List<Integer> trainIndices = new ArrayList<Integer>();
+            List<Integer> testIndices = new ArrayList<Integer>();
+
+            // get test range
+            Integer from = split*splitLength;
+            Integer to = (split+1)*splitLength;
+
+            // add shuffled indices
+            testIndices.addAll(indices.subList(from, to));
+            trainIndices.addAll(indices.subList(0, from));
+            trainIndices.addAll(indices.subList(to, numberOfSamples));
+
+            trainTestIndices.put(trainIndices, testIndices);
         }
+
+        // adding remaining elements
+        List<Integer> trainIndices = new ArrayList<Integer>();
+        List<Integer> testIndices = new ArrayList<Integer>();
+
+        Integer from = (numberOfSplits-1)*splitLength;
+        Integer to = numberOfSamples;
+
+        testIndices.addAll(indices.subList(from, to));
+        trainIndices.addAll(indices.subList(0, from));
+        trainIndices.addAll(indices.subList(to, numberOfSamples));
+
+        trainTestIndices.put(trainIndices, testIndices);
+
+        return trainTestIndices;
     }
 }

@@ -28,9 +28,9 @@ public class NodeTest {
     @Test
     public void testSplit() {
         node.split();
-        assertEquals(2, node.getNodes().size());
-        assertEquals(0, node.getNodes().get(0).getNodes().size());
-        assertEquals(0, node.getNodes().get(1).getNodes().size());
+        assertEquals(2, node.getChildren().size());
+        assertEquals(0, node.getChildren().get(0).getChildren().size());
+        assertEquals(0, node.getChildren().get(1).getChildren().size());
     }
 
 }

@@ -1,6 +1,8 @@
 package ca.jacob.cs6735.dt;
 
 import ca.jacob.cs6735.Model;
+import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Vector;
 
 public class ID3Model extends Model {
     private Node root;
@@ -10,15 +12,15 @@ public class ID3Model extends Model {
     }
 
     @Override
-    public Integer predict(Integer[] e) {
+    public Integer predict(Vector e) {
         return root.classify(e);
     }
 
     @Override
-    public Integer[] predict(Integer[][] data) {
-        Integer[] predictions = new Integer[data.length];
-        for(Integer i = 0; i < data.length; i++) {
-            predictions[i] = predict(data[i]);
+    public Vector predict(Matrix data) {
+        Vector predictions = new Vector(new Integer[data.rowCount()]);
+        for(Integer i = 0; i < data.rowCount(); i++) {
+            predictions.set(i, predict(data.row(i)));
         }
         return predictions;
     }

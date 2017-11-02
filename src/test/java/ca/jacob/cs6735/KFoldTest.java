@@ -43,7 +43,7 @@ public class KFoldTest {
     @Test
     public void testKFoldProcess() throws Throwable {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = removeSamplesWith("?", data);
+        data = removeSamplesWith("?", data); //ignore these for now
         Matrix mat = new Matrix(data);
 
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE);

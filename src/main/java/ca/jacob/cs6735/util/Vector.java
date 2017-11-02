@@ -75,6 +75,14 @@ public class Vector implements Iterable<Double> {
         return data.get(i);
     }
 
+    public Vector at(Vector indices) {
+        Vector v = new Vector(new Double[indices.length()]);
+        for(int i = 0; i < indices.length(); i++) {
+            v.set(i, this.data.get(v.at(i).intValue()));
+        }
+        return v;
+    }
+
     public Double valueOfMaxOccurrance() {
         Map<Double, Integer> occurrances = calculateOccurrences(this);
         LOG.debug("occurances: {}", occurrances);
@@ -154,6 +162,10 @@ public class Vector implements Iterable<Double> {
 
     public void set(Integer i, Double value) {
         data.set(i, value);
+    }
+
+    public void set(Integer i, Integer value) {
+        data.set(i, value.doubleValue());
     }
 
     public List<Double> getData() {

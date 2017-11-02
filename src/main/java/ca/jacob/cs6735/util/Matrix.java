@@ -67,8 +67,14 @@ public class Matrix {
     }
 
     public void pushCol(Integer[] col) {
-        for (Integer i = 0; i < this.rowCount(); i++) {
-            data.get(i).add(col[i]);
+        for (int j = 0; j < this.rowCount(); j++) {
+            data.get(j).add(col[j]);
+        }
+    }
+
+    public void pushCol(Vector col) {
+        for(int j = 0; j < this.rowCount(); j++) {
+            data.get(j).add(col.at(j));
         }
     }
 

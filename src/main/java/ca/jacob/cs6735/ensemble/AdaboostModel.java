@@ -1,6 +1,8 @@
 package ca.jacob.cs6735.ensemble;
 
 import ca.jacob.cs6735.Model;
+import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +13,7 @@ public class AdaboostModel extends Model {
     private Map<Model, Double> models;
 
     @Override
-    public Integer predict(Integer[] e) {
+    public Integer predict(Vector e) {
         Double sum = 0.;
         for(Map.Entry<Model, Double> model : models.entrySet()) {
             sum += model.getValue() * model.getKey().predict(e);
@@ -20,10 +22,10 @@ public class AdaboostModel extends Model {
     }
 
     @Override
-    public Integer[] predict(Integer[][] data) {
-        Integer[] predictions = new Integer[data.length];
-        for(int i = 0; i < data.length; i++) {
-            predictions[i] = predict(data[i]);
+    public Vector predict(Matrix data) {
+        Vector predictions = new Vector(new Integer[data.rowCount()]);
+        for(int i = 0; i < data.rowCount(); i++) {
+            predictions.set(i, predict(data.row(i)));
         }
         return predictions;
     }

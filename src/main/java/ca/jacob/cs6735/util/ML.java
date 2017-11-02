@@ -46,15 +46,15 @@ public class ML {
         }
     }
 
-    public static Integer[] generateIndices(Vector weights) {
-        Integer[] indices = new Integer[weights.length()];
+    public static Vector generateIndices(Vector weights) {
+        Vector indices = new Vector(new Integer[weights.length()]);
         for(Integer i = 0; i < weights.length(); i++) {
             Double rand = random();
             Double cumulativeProbability = 0.0;
             for (Integer j = 0; j < weights.length(); j++) {
                 cumulativeProbability += weights.at(j);
                 if (rand <= cumulativeProbability) {
-                    indices[i] = j;
+                    indices.set(i, j);
                 }
             }
         }

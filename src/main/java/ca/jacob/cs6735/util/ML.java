@@ -61,47 +61,43 @@ public class ML {
         return indices;
     }
 
-    public static List<Integer> range(Integer from, Integer to) {
-        Integer[] range = new Integer[from-to];
+    public static Vector range(Integer from, Integer to) {
+        Integer[] range = new Integer[to-from];
         for(int i = 0; i < to-from; i++) {
             range[i] = from+i;
         }
-        return Arrays.asList(range);
+        return new Vector(range);
     }
 
-    public static void shuffle(List list) {
+    public static void shuffle(Vector v) {
         Random random = new Random();
 
-        for (int i = list.size() - 1; i > 0; i--) {
+        for (int i = v.length() - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);
-            Object tmp = list.get(i);
-            list.set(index, list.get(i));
-            list.set(i, tmp);
+            v.swap(i, index);
         }
     }
 
-    public static void shuffle(List list, Long seed) {
+    public static void shuffle(Vector v, Long seed) {
         if(seed == null) {
-            shuffle(list);
+            shuffle(v);
             return;
         }
 
         Random random = new Random(seed);
-        for (int i = list.size() - 1; i > 0; i--) {
+        for (int i = v.length() - 1; i > 0; i--) {
             int index = random.nextInt(i + 1);
-            Object tmp = list.get(i);
-            list.set(index, list.get(i));
-            list.set(i, tmp);
+            v.swap(i, index);
         }
     }
 
-    public static Integer[] error(Integer[] one, Integer[] two) {
-        Integer[] error = new Integer[one.length];
-        for(Integer i = 0; i < one.length; i++) {
-            if(!one[i].equals(two[i])) {
-                error[i] = 1;
+    public static Vector error(Vector one, Vector two) {
+        Vector error = new Vector(new Double[one.length()]);
+        for(Integer i = 0; i < one.length(); i++) {
+            if(!one.at(i).equals(two.at(i))) {
+                error.set(i, 1.);
             } else {
-                error[i] = 0;
+                error.set(i, 0.);
             }
         }
         return error;

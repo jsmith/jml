@@ -1,7 +1,6 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.cs6735.dt.ID3;
-import ca.jacob.cs6735.dt.ID3Model;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
@@ -20,26 +19,25 @@ public class KFoldTest {
     private static final Logger LOG = LoggerFactory.getLogger(KFoldTest.class);
 
     private KFold kFold;
-    private Integer[][] x;
-    private Integer[] y;
+    private Matrix x;
+    private Vector y;
 
     @Before
     public void init() {
         kFold = new KFold(5);
-        x = new Integer[][]{{1}, {0}, {1}, {0}, {1}, {1}};
-        y = new Integer[]{1, 0, 1, 0, 1, 1};
+        x = new Matrix(new Integer[][]{{1}, {0}, {1}, {0}, {1}, {1}});
+        y = new Vector(new Integer[]{1, 0, 1, 0, 1, 1});
     }
 
     @Test
     public void testSplit() {
-        Map<Integer[][], Integer[]> map = kFold.split(x, y);
+        Map<Vector, Vector> map = kFold.split(x);
         assertEquals(map.size(), 5);
-        int count = 0;
-        for(Map.Entry<Integer[][], Integer[]> entry : map.entrySet()) {
-            assertEquals(entry.getKey()[0][0], entry.getValue()[0]);
-            count += entry.getKey().length;
+        for(Map.Entry<Vector, Vector> entry : map.entrySet()) {
+            Vector trainIndices = entry.getKey();
+            Vector testIndices = entry.getValue();
+            assertEquals(6, trainIndices.length() + testIndices.length());
         }
-        assertEquals(6, count);
     }
 
     @Test
@@ -47,8 +45,23 @@ public class KFoldTest {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);
         Matrix mat = new Matrix(data);
-        y = mat.col(mat.colCount()-1).toIntegerArray();
-        x = mat.toIntArray();
-        Vector accuracy = new Vector();
+
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE);
+
+        Map<Vector, Vector> indices = kFold.split(mat);
+        for(Map.Entry<Vector, Vector> entry : indices.entrySet()) {
+            Vector trainIndices = entry.getKey();
+            Vector testIndices = entry.getValue();
+
+            Matrix x = mat.rows(trainIndices);
+            Vector y = mat.col(x.colCount()-1);
+            x.dropCol(x.colCount()-1);
+            Model m = a.fit(x, y);
+
+            x = mat.rows(testIndices);
+            y = mat.col(x.colCount()-1);
+            x.dropCol(x.colCount()-1);
+            m.accuracy(x, y);
+        }
     }
 }

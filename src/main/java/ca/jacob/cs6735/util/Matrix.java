@@ -42,6 +42,14 @@ public class Matrix {
         return data.get(i).clone();
     }
 
+    public Matrix rows(Vector indices) {
+        Matrix m = new Matrix(new Double[indices.length()][this.colCount()]);
+        for(int i = 0; i < indices.length(); i++) {
+            m.setRow(i, this.row(indices.at(i).intValue()));
+        }
+        return m;
+    }
+
     public void pushRow(Double[] row) {
         data.add(new Vector(row));
     }
@@ -52,6 +60,10 @@ public class Matrix {
 
     public void pushRow(Vector v) {
         this.pushRow(v.toArray());
+    }
+
+    public void setRow(Integer i, Vector v) {
+        data.set(i, v);
     }
 
     public void pushCol(Integer[] col) {

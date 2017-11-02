@@ -64,9 +64,9 @@ public class KFold {
         Integer to = numberOfSamples;
         LOG.debug("last split from {} to {}", from, to);
 
-        testIndices.add(indices.subVector(from, to));
-        trainIndices.add(indices.subVector(0, from));
-        trainIndices.add(indices.subVector(to, numberOfSamples));
+        testIndices.concat(indices.subVector(from, to));
+        trainIndices.concat(indices.subVector(0, from));
+        trainIndices.concat(indices.subVector(to, numberOfSamples));
 
         trainTestIndices.put(trainIndices, testIndices);
 

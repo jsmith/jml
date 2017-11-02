@@ -160,6 +160,12 @@ public class Vector implements Iterable<Double> {
         return data;
     }
 
+    public void swap(Integer i, Integer j) {
+        Double tmp = data.get(i);
+        data.set(j, data.get(i));
+        data.set(i, tmp);
+    }
+
     @Override
     public String toString() {
         return data.toString();

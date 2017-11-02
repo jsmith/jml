@@ -20,7 +20,7 @@ public class ID3Test {
 
     @Before
     public void init() {
-        id3 = new ID3(ID3.LEVEL_NONE);
+        id3 = new ID3(ID3.MAX_LEVEL_NONE);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class ID3Test {
         Integer[] y = m.col(m.colCount()-1).toIntegerArray();
         m.dropCol(m.colCount()-1);
         Integer[][] x = m.toIntArray();
-        ID3 id3 = new ID3(ID3.LEVEL_NONE);
+        ID3 id3 = new ID3(ID3.MAX_LEVEL_NONE);
         Model model = id3.fit(x, y);
         Double accuracy = model.accuracy(x, y);
         assertEquals(accuracy, 100.);

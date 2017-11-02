@@ -4,7 +4,7 @@ import ca.jacob.cs6735.Model;
 import ca.jacob.cs6735.Algorithm;
 
 public class ID3 implements Algorithm {
-    public static final Integer LEVEL_NONE = -1;
+    public static final Integer MAX_LEVEL_NONE = -1;
 
     private Integer maxLevel;
 

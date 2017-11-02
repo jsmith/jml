@@ -45,7 +45,6 @@ public class Node {
     }
 
     public Double entropy() {
-        LOG.info("entropy - starting");
         if (this.entropy != null) return entropy;
 
         Map<Double, Integer> classes = calculateOccurrences(data.col(data.colCount() - 1));
@@ -86,7 +85,7 @@ public class Node {
 
                 Matrix entry = split.get(value);
                 if (entry == null) {
-                    LOG.debug("entry for output {} not found", value);
+                    LOG.debug("adding node for value {}", value);
                     entry = new Matrix();
                     split.put(value, entry);
                 }
@@ -100,10 +99,10 @@ public class Node {
             for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
                 entropy += new Node(entry.getValue(), level + 1, maxLevel).entropy();
             }
-            LOG.debug("the total entropy of the child children for attribute {} is {}", j, entropy);
+            LOG.debug("the total entropy of the children when splitting on attribute {} is {}", j, entropy);
 
             if (minEntropy == null || entropy < minEntropy) {
-                LOG.debug("attribute {} is the best attribute", j);
+                LOG.trace("attribute {} is now the best attribute", j);
 
                 minEntropy = entropy;
                 attribute = j;
@@ -113,6 +112,7 @@ public class Node {
                 }
             }
         }
+        LOG.debug("the best attribute is {} for level {}", attribute, level);
 
         for (Map.Entry<Integer, Node> entry : children.entrySet()) {
             Node node = entry.getValue();

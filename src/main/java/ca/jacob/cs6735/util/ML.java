@@ -3,6 +3,7 @@ package ca.jacob.cs6735.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import java.util.Random;
 
 import static java.lang.Math.random;
@@ -93,4 +94,17 @@ public class ML {
             list.set(i, tmp);
         }
     }
+
+    public static Integer[] error(Integer[] one, Integer[] two) {
+        Integer[] error = new Integer[one.length];
+        for(Integer i = 0; i < one.length; i++) {
+            if(!one[i].equals(two[i])) {
+                error[i] = 1;
+            } else {
+                error[i] = 0;
+            }
+        }
+        return error;
+    }
+
 }

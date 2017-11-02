@@ -7,7 +7,14 @@ import java.util.*;
 import static ca.jacob.cs6735.util.ML.range;
 import static ca.jacob.cs6735.util.ML.shuffle;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static ca.jacob.cs6735.util.ML.shuffle;
+
 public class KFold {
+    private static final Logger LOG = LoggerFactory.getLogger(KFold.class);
+
     private Integer numberOfSplits;
     private Long seed;
 
@@ -37,6 +44,7 @@ public class KFold {
             // get test range
             Integer from = split*splitLength;
             Integer to = (split+1)*splitLength;
+            LOG.debug("split from {} to {}", from, to);
 
             // add shuffled indices
             testIndices.addAll(indices.subList(from, to));
@@ -52,6 +60,7 @@ public class KFold {
 
         Integer from = (numberOfSplits-1)*splitLength;
         Integer to = numberOfSamples;
+        LOG.debug("last split from {} to {}", from, to);
 
         testIndices.addAll(indices.subList(from, to));
         trainIndices.addAll(indices.subList(0, from));

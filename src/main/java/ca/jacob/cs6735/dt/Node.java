@@ -14,8 +14,8 @@ public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
 
     private Double entropy;
-    private Integer predictor;
-    private boolean leaf;
+    private Integer attribute;
+    private Boolean leaf;
     private Matrix data;
     private Map<Integer, Node> nodes;
     private Integer level;
@@ -91,8 +91,8 @@ public class Node {
                     split.put(value, entry);
                 }
 
-                Vector v = new Vector(data.row(i));
-                v.drop(j);
+                Vector v = data.row(i);
+                v.remove(j);
                 entry.pushRow(v);
             }
 
@@ -106,7 +106,7 @@ public class Node {
                 LOG.debug("attribute {} is the best attribute", j);
 
                 minEntropy = entropy;
-                predictor = j;
+                attribute = j;
                 nodes = new HashMap<Integer, Node>();
                 for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
                     nodes.put(entry.getKey(), new Node(entry.getValue(), level + 1, maxLevel));
@@ -133,25 +133,25 @@ public class Node {
     }
 
     public Integer classify(Integer[] e) {
-        LOG.info("predict - starting for level {} and attribute {}", level, predictor);
+        LOG.info("predict - starting for level {} and attribute {}", level, attribute);
         if (this.leaf) {
             LOG.debug("a leaf was found");
-            Vector v = new Vector(data.col(data.colCount() - 1));
+            Vector v = data.col(data.colCount() - 1);
             Integer valueOfMaxOccurrance = v.valueOfMaxOccurrance().intValue();
             LOG.debug("value of max occurrance for vector {} is {}", v, valueOfMaxOccurrance);
             return valueOfMaxOccurrance;
         } else {
             for (Map.Entry<Integer, Node> entry : nodes.entrySet()) {
-                if (e[predictor] == entry.getKey()) {
+                if (e[attribute].equals(entry.getKey())) {
                     return entry.getValue().classify(e);
                 }
             }
+            throw new ID3PredictionException("no attribute found for attribute " + attribute);
         }
-        throw new ID3PredictionException("no predictor found for attribute " + predictor);
     }
 
-    public Integer getPredictor() {
-        return predictor;
+    public Integer getAttribute() {
+        return attribute;
     }
 
     public Matrix getData() {

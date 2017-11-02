@@ -2,7 +2,7 @@ package ca.jacob.cs6735.dt;
 
 import ca.jacob.cs6735.Model;
 
-public class ID3Model implements Model {
+public class ID3Model extends Model {
     private Node root;
 
     public ID3Model(Node root) {

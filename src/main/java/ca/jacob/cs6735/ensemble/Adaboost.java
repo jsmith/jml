@@ -4,6 +4,7 @@ import ca.jacob.cs6735.Algorithm;
 import ca.jacob.cs6735.Model;
 import ca.jacob.cs6735.util.Vector;
 
+import static ca.jacob.cs6735.util.ML.error;
 import static ca.jacob.cs6735.util.ML.generateIndices;
 import static ca.jacob.cs6735.util.Math.*;
 import static java.lang.Math.sqrt;
@@ -18,7 +19,7 @@ public class Adaboost implements Algorithm {
         this.numberOfEstimators = numberOfEstimators;
     }
 
-    public Model train(Integer[][] x, Integer[] y) {
+    public Model fit(Integer[][] x, Integer[] y) {
         AdaboostModel model = new AdaboostModel();
 
         Vector weights = new Vector(new Double[x.length]);
@@ -33,9 +34,9 @@ public class Adaboost implements Algorithm {
                 yWeighted[j] = y[indices[j]];
             }
 
-            Model classifier = algorithm.train(xWeighted, yWeighted);
+            Model classifier = algorithm.fit(xWeighted, yWeighted);
             Integer[] predictions = classifier.predict(x);
-            Vector err = new Vector(predictionError(predictions, yWeighted));
+            Vector err = new Vector(error(predictions, yWeighted));
 
             Vector pred = new Vector(predictions);
             Vector yHat = new Vector(yWeighted);

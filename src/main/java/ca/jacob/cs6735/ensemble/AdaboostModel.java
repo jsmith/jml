@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static ca.jacob.cs6735.util.ML.sign;
 
-public class AdaboostModel implements Model {
+public class AdaboostModel extends Model {
     private Map<Model, Double> models;
 
     @Override

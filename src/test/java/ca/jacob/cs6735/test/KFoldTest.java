@@ -59,7 +59,7 @@ public class KFoldTest {
             Vector testIndices = entry.getValue();
 
             Matrix x = mat.rows(trainIndices);
-            Vector y = mat.col(x.colCount()-1);
+            Vector y = x.col(x.colCount()-1);
             x.dropCol(x.colCount()-1);
             ID3Model m = (ID3Model)a.fit(x, y);
 

@@ -37,19 +37,23 @@ public class Adaboost implements Algorithm {
             Vector indices = generateIndices(weights);
             Matrix xWeighted = x.rows(indices);
             Vector yWeighted = y.at(indices);
+            LOG.debug("row 0: {}, class 0: {}", xWeighted.row(0), y.at(0));
 
             Model classifier = algorithm.fit(xWeighted, yWeighted);
             Vector pred = classifier.predict(x);
-            Vector err = error(pred, yWeighted);
+            LOG.debug("actual: {}, predict: {}", yWeighted.subVector(0, 5), pred.subVector(0, 5));
 
 
-            double epsilon = weights.dot(err); // sum of the weights of misclassified
-            double alpha = (1/2)*ln((1-epsilon)/epsilon);
-            double Z = 2*sqrt(epsilon*(1-epsilon));
-            weights = weights.div(Z).mul(exp(yWeighted.mul(pred).mul(-alpha)));
+            Vector terror = error(pred, yWeighted);
+            double error = weights.dot(terror) / weights.sum();
+            LOG.debug("error: {}", error);
 
-            LOG.debug("alpha: {}", alpha);
-            model.add(classifier, alpha);
+            double stage = ln((1-error)/error);
+            weights = weights.mul(exp(terror.mul(stage)));
+            LOG.debug("weights on iter {}: {}", i+1, weights.subVector(0, 5));
+
+            LOG.debug("stage: {}", stage);
+            model.add(classifier, stage);
         }
 
         return model;

@@ -1,4 +1,4 @@
-package ca.jacob.cs6735;
+package ca.jacob.cs6735.test;
 
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
@@ -24,6 +24,12 @@ public class MatrixTest {
     public void testRow() {
         Vector v = new Vector(new double[]{1., 2., 3.});
         assertEquals(v, matrix.row(0));
+    }
+
+    @Test
+    public void testRows() {
+        Matrix m = matrix.rows(new Vector(new int[]{0}));
+        assertEquals(new Matrix(new int[][]{{1, 2, 3}}), m);
     }
 
     @Test

@@ -53,14 +53,24 @@ public class ML {
     }
 
     public static Vector generateIndices(Vector weights) {
-        Vector indices = new Vector(new int[weights.length()]);
+        Vector probabilities = new Vector(new double[weights.length()]);
+        double sum = weights.sum();
         for(int i = 0; i < weights.length(); i++) {
+            probabilities.set(i, weights.at(i)/sum);
+        }
+        LOG.debug("probabilies sum is {}", probabilities.sum());
+
+        Vector indices = new Vector(new int[weights.length()]);
+        for(int i = 0; i < probabilities.length(); i++) {
             double rand = random();
+            LOG.trace("rand for index {} is {}", i, rand);
             double cumulativeProbability = 0.0;
-            for (int j = 0; j < weights.length(); j++) {
-                cumulativeProbability += weights.at(j);
+            for (int j = 0; j < probabilities.length(); j++) {
+                cumulativeProbability += probabilities.at(j);
                 if (rand <= cumulativeProbability) {
+                    LOG.trace("setting index {} to {}", i, j);
                     indices.set(i, j);
+                    break;
                 }
             }
         }

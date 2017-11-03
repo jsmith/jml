@@ -1,5 +1,6 @@
-package ca.jacob.cs6735;
+package ca.jacob.cs6735.test;
 
+import ca.jacob.cs6735.Model;
 import ca.jacob.cs6735.dt.ID3;
 import ca.jacob.cs6735.dt.ID3Model;
 import ca.jacob.cs6735.dt.Node;

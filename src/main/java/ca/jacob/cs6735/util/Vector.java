@@ -79,7 +79,8 @@ public class Vector implements Iterable<Double> {
     public Vector at(Vector indices) {
         Vector v = new Vector(new double[indices.length()]);
         for(int i = 0; i < indices.length(); i++) {
-            v.set(i, this.data.get(v.intAt(i)));
+            LOG.debug("setting index {} to {}", i, this.data.get(v.intAt(i)));
+            v.set(i, this.data.get(indices.intAt(i)));
         }
         return v;
     }

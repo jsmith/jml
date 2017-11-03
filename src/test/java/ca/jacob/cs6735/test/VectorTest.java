@@ -1,4 +1,4 @@
-package ca.jacob.cs6735;
+package ca.jacob.cs6735.test;
 
 import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
@@ -71,5 +71,11 @@ public class VectorTest {
     public void testReplace() {
         v.replace(4, 1);
         assertEquals(new Vector(new int[]{1, 2, 3, 1, 1}), v);
+    }
+
+    @Test
+    public void testAtIndices() {
+        Vector vector = v.at(new Vector(new int[]{1, 0, 2}));
+        assertEquals(new Vector(new int[]{2, 1, 3}), vector);
     }
 }

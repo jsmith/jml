@@ -6,7 +6,10 @@
     </appender>
 
     <logger name="ca.jacob.cs6735.ensemble.Adaboost" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.test.AdaboostTest" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.util.ML" level="info"></logger>
 
+    <logger name="ca.jacob.cs6735.test" level="info"></logger>
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

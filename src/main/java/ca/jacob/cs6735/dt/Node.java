@@ -71,7 +71,7 @@ public class Node {
     public void split() {
         LOG.info("split - starting for level {}", level);
 
-        if(level == maxLevel || this.entropy() == 0 || this.entryCount() <= 1 || this.entryCount() < minNumberOfSamples) {
+        if(level == (maxLevel+1) || this.entropy() == 0 || this.entryCount() <= 1 || this.entryCount() < minNumberOfSamples) {
             LOG.info("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.entryCount());
             this.leaf = true;
             return;
@@ -134,9 +134,9 @@ public class Node {
     }
 
     public int classify(Vector e) {
-        LOG.info("predict - starting for level {} and attribute {}", level, attribute);
+        LOG.trace("classify - starting for level {} and attribute {}", level, attribute);
         if (this.leaf) {
-            LOG.debug("a leaf was found, now classifying!");
+            LOG.trace("a leaf was found, now classifying!");
             return this.predict(e);
         } else {
             for (Map.Entry<Integer, Node> entry : children.entrySet()) {
@@ -150,6 +150,7 @@ public class Node {
     }
 
     public int predict(Vector e) {
+        LOG.trace("predicting starting on level {}", level);
         Vector v = data.col(data.colCount() - 1);
         return (int)v.valueOfMaxOccurrence();
     }

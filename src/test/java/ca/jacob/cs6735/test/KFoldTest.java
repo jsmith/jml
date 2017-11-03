@@ -5,6 +5,7 @@ import ca.jacob.cs6735.KFold;
 import ca.jacob.cs6735.dt.ID3;
 import ca.jacob.cs6735.dt.ID3Model;
 import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Report;
 import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,26 +53,8 @@ public class KFoldTest {
 
         Algorithm a = new ID3(5, 200);
 
-        Vector accuracies = new Vector();
-        Map<Vector, Vector> indices = kFold.split(mat);
-        for(Map.Entry<Vector, Vector> entry : indices.entrySet()) {
-            Vector trainIndices = entry.getKey();
-            Vector testIndices = entry.getValue();
-
-            Matrix x = mat.rows(trainIndices);
-            Vector y = x.col(x.colCount()-1);
-            x.dropCol(x.colCount()-1);
-            ID3Model m = (ID3Model)a.fit(x, y);
-
-            x = mat.rows(testIndices);
-            y = x.col(x.colCount()-1);
-            assertEquals(x.rowCount(), y.length());
-
-            x.dropCol(x.colCount()-1);
-            double accuracy = m.accuracy(x, y);
-            accuracies.add(accuracy);
-            LOG.info("model depth is {}", m.depth());
-        }
+        Report r = kFold.generateReport(a, mat);
+        Vector accuracies = r.getAccuracies();
         LOG.info("kfold test accuracy: {}", accuracies.sum()/accuracies.length());
     }
 }

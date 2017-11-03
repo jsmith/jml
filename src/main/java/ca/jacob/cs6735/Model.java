@@ -16,8 +16,6 @@ public abstract class Model {
 
     public double accuracy(Matrix x, Vector y) {
         Vector yHat = predict(x);
-        LOG.debug("expected: {}", y);
-        LOG.debug("actual: {}", yHat);
         Vector err = error(y, yHat);
         return (1 - err.sum() / err.length()) * 100;
     }

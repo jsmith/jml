@@ -52,16 +52,16 @@ public class ML {
         }
     }
 
-    public static Vector generateIndices(Vector weights) {
+    public static Vector generateIndices(Vector weights, int numberOfIndices) {
         Vector probabilities = new Vector(new double[weights.length()]);
         double sum = weights.sum();
         for(int i = 0; i < weights.length(); i++) {
             probabilities.set(i, weights.at(i)/sum);
         }
-        LOG.debug("probabilies sum is {}", probabilities.sum());
+        LOG.debug("probabilities sum is {}", probabilities.sum());
 
-        Vector indices = new Vector(new int[weights.length()]);
-        for(int i = 0; i < probabilities.length(); i++) {
+        Vector indices = new Vector(new int[numberOfIndices]);
+        for(int i = 0; i < numberOfIndices; i++) {
             double rand = random();
             LOG.trace("rand for index {} is {}", i, rand);
             double cumulativeProbability = 0.0;
@@ -70,6 +70,35 @@ public class ML {
                 if (rand <= cumulativeProbability) {
                     LOG.trace("setting index {} to {}", i, j);
                     indices.set(i, j);
+                    break;
+                }
+            }
+        }
+        return indices;
+    }
+
+    public static Vector generateIndicesWithoutReplacement(Vector weights, int numberOfIndices) {
+        Vector probabilities = new Vector(new double[weights.length()]);
+        double sum = weights.sum();
+        for(int i = 0; i < weights.length(); i++) {
+            probabilities.set(i, weights.at(i)/sum);
+        }
+        LOG.debug("probabilities sum is {}", probabilities.sum());
+
+        Vector indices = new Vector(new int[numberOfIndices]);
+        for(int i = 0; i < numberOfIndices; i++) {
+            double rand = random();
+            LOG.trace("rand for index {} is {}", i, rand);
+            double cumulativeProbability = 0.0;
+            for (int j = 0; j < probabilities.length(); j++) {
+                cumulativeProbability += probabilities.at(j);
+                if (rand <= cumulativeProbability) {
+                    if(indices.contains(j)) {
+                        i--;
+                    } else {
+                        LOG.trace("setting index {} to {}", i, j);
+                        indices.set(i, j);
+                    }
                     break;
                 }
             }

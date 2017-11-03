@@ -101,4 +101,21 @@ public class ID3Test {
         double accuracy = model.accuracy(x, y);
         assertEquals((double) 100, accuracy);
     }
+
+    @Test
+    public void testDepthOne() throws Throwable {
+        String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
+        data = removeSamplesWith("?", data);
+
+        Matrix x = new Matrix(data);
+        Vector y = x.col(x.colCount()-1);
+        x.dropCol(x.colCount()-1);
+
+        ID3 id3 = new ID3(1);
+        ID3Model model = (ID3Model) id3.fit(x, y);
+
+        double accuracy = model.accuracy(x, y);
+        assertEquals(1, model.depth());
+        LOG.info("accuracy for max depth 1 is {}", accuracy);
+    }
 }

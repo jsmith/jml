@@ -1,6 +1,7 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Report;
 import ca.jacob.cs6735.util.Vector;
 
 import java.util.HashMap;
@@ -27,6 +28,27 @@ public class KFold {
     public KFold(int numberOfSplits, Long seed) {
         this.numberOfSplits = numberOfSplits;
         this.seed = seed;
+    }
+
+    public Report generateReport(Algorithm a, Matrix data) {
+        Vector accuracies = new Vector();
+        Map<Vector, Vector> indices = this.split(data);
+        for(Map.Entry<Vector, Vector> entry : indices.entrySet()) {
+            Vector trainIndices = entry.getKey();
+            Vector testIndices = entry.getValue();
+
+            Matrix x = data.rows(trainIndices);
+            Vector y = x.col(x.colCount()-1);
+            x.dropCol(x.colCount()-1);
+            Model m = a.fit(x, y);
+
+            x = data.rows(testIndices);
+            y = x.col(x.colCount()-1);
+            x.dropCol(x.colCount()-1);
+
+            accuracies.add(m.accuracy(x, y));
+        }
+        return new Report(accuracies);
     }
 
     public Map<Vector, Vector> split(Matrix x) {

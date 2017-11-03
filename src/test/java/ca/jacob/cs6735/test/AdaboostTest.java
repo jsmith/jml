@@ -30,7 +30,7 @@ public class AdaboostTest {
     @Test
     public void testWithData() throws Throwable {
         ID3 id3 = new ID3(1); // stumps
-        Adaboost adaboost = new Adaboost(id3, 5);
+        Adaboost adaboost = new Adaboost(id3, 1);
 
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data); //ignore these for now

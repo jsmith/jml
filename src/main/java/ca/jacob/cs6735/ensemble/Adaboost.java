@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.util.ML.error;
 import static ca.jacob.cs6735.util.ML.generateIndices;
+import static ca.jacob.cs6735.util.ML.removeSamplesWith;
 import static ca.jacob.cs6735.util.Math.*;
 import static java.lang.Math.sqrt;
 
@@ -29,7 +30,6 @@ public class Adaboost implements Algorithm {
 
         Vector weights = new Vector(new double[x.rowCount()]);
         weights.fill(1./x.rowCount());
-        LOG.debug("init weights: {}", weights);
 
         for(int i = 0; i < numberOfEstimators; i++) {
             LOG.debug("starting iteration {}", i+1);
@@ -38,21 +38,21 @@ public class Adaboost implements Algorithm {
             Matrix xWeighted = x.rows(indices);
             Vector yWeighted = y.at(indices);
 
-            Model classifier = algorithm.fit(xWeighted, yWeighted);
-            Vector h = classifier.predict(x);
-            LOG.debug("actual: {}, predict: {}", y.subVector(0, 5), h.subVector(0, 5));
+            Model m = algorithm.fit(xWeighted, yWeighted);
+            Vector h = m.predict(x);
 
             Vector err = error(h, y);
 
-            double epsilon = weights.dot(err); // sum of the weights of misclassified
-            double alpha = (1/2)*ln((1-epsilon)/epsilon);
+            double epsilon = err.sum()/weights.length(); // sum of the weights of misclassified
+            LOG.debug("epsilon: {}", epsilon);
+            double alpha = ln((1-epsilon)/epsilon)/2;
+            LOG.debug("alpha: {}", alpha);
             double Z = weights.sum(); //regularization factor
 
+            // updating weights
             weights = weights.mul(exp(y.mul(h).mul(-alpha)).div(Z));
-            LOG.debug("weights on iter {}: {}", i+1, weights.subVector(0, 5));
 
-            LOG.debug("alpha: {}", alpha);
-            model.add(classifier, alpha);
+            model.add(m, alpha);
         }
 
         return model;

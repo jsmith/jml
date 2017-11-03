@@ -5,10 +5,10 @@
         </encoder>
     </appender>
 
-    <logger name="ca.jacob.cs6735.dt.Node" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.ensemble.Adaboost" level="debug"></logger>
 
 
-    <root level="info">
+    <root level="warn">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

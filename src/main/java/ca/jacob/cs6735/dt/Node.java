@@ -22,23 +22,23 @@ public class Node {
     private int maxLevel;
     private int minNumberOfSamples;
 
-    public Node(Matrix x, Vector y, Integer level, Integer maxLevel, Integer minNumberOfSamples) {
+    public Node(Matrix x, Vector y, int level, int maxLevel, int minNumberOfSamples) {
         this.data = x;
         this.data.pushCol(y);
         this.init(level, maxLevel, minNumberOfSamples);
     }
 
-    public Node(Integer[][] data, Integer level, Integer maxLevel, Integer minNumberOfSamples) {
+    public Node(int[][] data, int level, int maxLevel, int minNumberOfSamples) {
         this.data = new Matrix(data);
         this.init(level, maxLevel, minNumberOfSamples);
     }
 
-    public Node(Matrix data, Integer level, Integer maxLevel, Integer minNumberOfSamples) {
+    public Node(Matrix data, int level, int maxLevel, int minNumberOfSamples) {
         this.data = data;
         this.init(level, maxLevel, minNumberOfSamples);
     }
 
-    private void init(Integer level, Integer maxLevel, Integer minNumberOfSamples) {
+    private void init(int level, int maxLevel, int minNumberOfSamples) {
         children = new HashMap<Integer, Node>();
         leaf = false;
         this.level = level;
@@ -47,20 +47,20 @@ public class Node {
         this.entropy = -1;
     }
 
-    public Double entropy() {
+    public double entropy() {
         if (this.entropy >= 0) return entropy;
 
         Map<Double, Integer> classes = calculateOccurrences(data.col(data.colCount() - 1));
         LOG.trace("there are {} potential values", classes.size());
 
-        Double sum = 0.;
-        for (Integer count : classes.values()) {
+        double sum = 0.;
+        for (int count : classes.values()) {
             sum += count;
         }
         LOG.trace("sum is " + sum);
 
         entropy = 0.;
-        for (Integer count : classes.values()) {
+        for (int count : classes.values()) {
             entropy -= count / sum * log2(count / sum);
         }
         LOG.trace("the entropy for a node on leve {} is {}", level, entropy);
@@ -71,21 +71,21 @@ public class Node {
     public void split() {
         LOG.info("split - starting for level {}", level);
 
-        if(level.equals(maxLevel) || this.entropy().equals(0) || this.entryCount() <= 1 || this.entryCount() < minNumberOfSamples) {
+        if(level == maxLevel || this.entropy() == 0 || this.entryCount() <= 1 || this.entryCount() < minNumberOfSamples) {
             LOG.info("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.entryCount());
             this.leaf = true;
             return;
         }
 
-        Integer numOfAttributes = data.colCount() - 1;
+        int numOfAttributes = data.colCount() - 1;
 
-        Double minEntropy = null;
-        for (Integer j = 0; j < numOfAttributes; j++) {
+        double minEntropy = -1;
+        for(int j = 0; j < numOfAttributes; j++) {
             LOG.trace("checking attribute {}", j);
             Map<Integer, Matrix> split = new HashMap<Integer, Matrix>();
-            for (Integer i = 0; i < data.rowCount(); i++) {
+            for (int i = 0; i < data.rowCount(); i++) {
                 LOG.trace("checking row {}", i);
-                Integer value = data.at(i, j).intValue();
+                int value = (int)data.at(i, j);
 
                 Matrix entry = split.get(value);
                 if (entry == null) {
@@ -99,13 +99,13 @@ public class Node {
                 entry.pushRow(v);
             }
 
-            Double entropy = 0.;
+            double entropy = 0.;
             for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
                 entropy += new Node(entry.getValue(), level + 1, maxLevel, minNumberOfSamples).entropy();
             }
             LOG.debug("the total entropy of the children when splitting on attribute {} is {}", j, entropy);
 
-            if (minEntropy == null || entropy < minEntropy) {
+            if (minEntropy < 0 || entropy < minEntropy) {
                 LOG.trace("attribute {} is now the best attribute", j);
 
                 minEntropy = entropy;
@@ -129,18 +129,18 @@ public class Node {
         return children;
     }
 
-    public Integer entryCount() {
+    public int entryCount() {
         return data.rowCount();
     }
 
-    public Integer classify(Vector e) {
+    public int classify(Vector e) {
         LOG.info("predict - starting for level {} and attribute {}", level, attribute);
         if (this.leaf) {
-            LOG.debug("a leaf was found");
+            LOG.debug("a leaf was found, now classifying!");
             return this.predict(e);
         } else {
             for (Map.Entry<Integer, Node> entry : children.entrySet()) {
-                if (e.intAt(attribute).equals(entry.getKey())) {
+                if (e.intAt(attribute)== entry.getKey()) {
                     return entry.getValue().classify(e);
                 }
             }
@@ -149,13 +149,12 @@ public class Node {
         }
     }
 
-    public Integer predict(Vector e) {
+    public int predict(Vector e) {
         Vector v = data.col(data.colCount() - 1);
-        Integer valueOfMaxOccurrance = v.valueOfMaxOccurrance().intValue();
-        return valueOfMaxOccurrance;
+        return (int)v.valueOfMaxOccurrence();
     }
 
-    public Integer getAttribute() {
+    public int getAttribute() {
         return attribute;
     }
 
@@ -171,18 +170,22 @@ public class Node {
         this.leaf = leaf;
     }
 
-    public Integer depth() {
+    public int depth() {
         if(children == null) {
             return 1;
         } else {
-            Integer max = 0;
+            int max = 0;
             for(Map.Entry<Integer, Node> entry : children.entrySet()) {
-                Integer depth = entry.getValue().depth();
+                int depth = entry.getValue().depth();
                 if(depth > max) {
                     max = depth;
                 }
             }
             return 1 + max;
         }
+    }
+
+    public void setChildren(Map<Integer, Node> children) {
+        this.children = children;
     }
 }

@@ -12,14 +12,14 @@ public class ID3Model extends Model {
     }
 
     @Override
-    public Integer predict(Vector e) {
+    public int predict(Vector e) {
         return root.classify(e);
     }
 
     @Override
     public Vector predict(Matrix data) {
-        Vector predictions = new Vector(new Double[data.rowCount()]);
-        for(Integer i = 0; i < data.rowCount(); i++) {
+        Vector predictions = new Vector(new double[data.rowCount()]);
+        for(int i = 0; i < data.rowCount(); i++) {
             predictions.set(i, predict(data.row(i)));
         }
         return predictions;
@@ -29,7 +29,7 @@ public class ID3Model extends Model {
         return root;
     }
 
-    public Integer depth() {
+    public int depth() {
         return root.depth();
     }
 }

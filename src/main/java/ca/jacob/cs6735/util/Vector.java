@@ -4,8 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.function.Consumer;
 
+import static ca.jacob.cs6735.util.ML.arrayAsList;
+import static ca.jacob.cs6735.util.ML.toPrimitiveArray;
 import static ca.jacob.cs6735.util.Math.calculateOccurrences;
 
 public class Vector implements Iterable<Double> {
@@ -13,10 +14,10 @@ public class Vector implements Iterable<Double> {
 
     private List<Double> data;
 
-    public Vector(Integer[] data) {
+    public Vector(int[] data) {
         this.data = new ArrayList<Double>(Arrays.asList(new Double[data.length]));
         for(int i = 0; i < data.length; i++) {
-            this.data.set(i, data[i] == null ? null : data[i].doubleValue());
+            this.data.set(i, (double)data[i]);
         }
     }
 
@@ -24,8 +25,8 @@ public class Vector implements Iterable<Double> {
         this.data = new ArrayList<Double>();
     }
 
-    public Vector(Double[] data) {
-        this.data = new ArrayList<Double>(Arrays.asList(data));
+    public Vector(double[] data) {
+        this.data = arrayAsList(data);
     }
 
     public Vector(String[] data) {
@@ -39,11 +40,11 @@ public class Vector implements Iterable<Double> {
         this.data = data;
     }
 
-    public void add(Integer value) {
-        data.add(value.doubleValue());
+    public void add(int value) {
+        data.add((double)value);
     }
 
-    public void add(Double value) {
+    public void add(double value) {
         data.add(value);
     }
 
@@ -51,106 +52,106 @@ public class Vector implements Iterable<Double> {
         this.data.addAll(v.getData());
     }
 
-    public Vector subVector(Integer from, Integer to) {
+    public Vector subVector(int from, int to) {
         return new Vector(this.data.subList(from, to));
     }
 
-    public void remove(Integer i) {
-        data.remove(i.intValue());
+    public void remove(int i) {
+        data.remove(i);
     }
 
-    public Double[] toArray() {
-        return data.toArray(new Double[data.size()]);
+    public double[] toArray() {
+        return toPrimitiveArray(data);
     }
 
-    public Integer[] toIntegerArray() {
-        Integer[] arr = new Integer[this.length()];
-        for(Integer i = 0; i < this.length(); i++) {
-            arr[i] = this.at(i).intValue();
+    public int[] tointArray() {
+        int[] arr = new int[this.length()];
+        for(int i = 0; i < this.length(); i++) {
+            arr[i] = this.intAt(i);
         }
         return arr;
     }
 
-    public Double at(Integer i) {
+    public double at(int i) {
         return data.get(i);
     }
 
     public Vector at(Vector indices) {
-        Vector v = new Vector(new Double[indices.length()]);
+        Vector v = new Vector(new double[indices.length()]);
         for(int i = 0; i < indices.length(); i++) {
-            v.set(i, this.data.get(v.at(i).intValue()));
+            v.set(i, this.data.get(v.intAt(i)));
         }
         return v;
     }
 
-    public Double valueOfMaxOccurrance() {
-        Map<Double, Integer> occurrances = calculateOccurrences(this);
-        LOG.debug("occurances: {}", occurrances);
-        Double valueOfMaxOccurrence = null;
-        for (Map.Entry<Double, Integer> e : occurrances.entrySet()) {
-            if (valueOfMaxOccurrence == null || e.getValue() > occurrances.get(valueOfMaxOccurrence)) {
+    public double valueOfMaxOccurrence() {
+        Map<Double, Integer> occurrences = calculateOccurrences(this);
+        LOG.debug("occurances: {}", occurrences);
+        double valueOfMaxOccurrence = -1;
+        for (Map.Entry<Double, Integer> e : occurrences.entrySet()) {
+            if (valueOfMaxOccurrence < 0 || e.getValue().intValue() > occurrences.get(valueOfMaxOccurrence).intValue()) {
                 valueOfMaxOccurrence = e.getKey();
             }
         }
         return valueOfMaxOccurrence;
     }
 
-    public void fill(Double value) {
+    public void fill(double value) {
         Collections.fill(data, value);
     }
 
-    public Double dot(Integer[] other) {
+    public double dot(int[] other) {
         return dot(new Vector(other));
     }
 
-    public Double dot(Vector other) {
-        if(!this.length().equals(other.length())) {
+    public double dot(Vector other) {
+        if(this.length() != other.length()) {
             throw new MathException("vector lengths must match");
         }
 
-        Double sum = 0.;
-        for(Integer i = 0; i < this.length(); i++) {
+        double sum = 0.;
+        for(int i = 0; i < this.length(); i++) {
             sum += this.at(i) * other.at(i);
         }
 
         return sum;
     }
 
-    public Double sum() {
-        Double sum = 0.;
-        for(Integer i = 0; i < this.length(); i++) {
+    public double sum() {
+        double sum = 0.;
+        for(int i = 0; i < this.length(); i++) {
             sum += this.at(i);
         }
         return sum;
     }
 
-    public Integer length() {
+    public int length() {
         return data.size();
     }
 
-    public Vector mul(Double value) {
-        Vector v = new Vector(new Double[this.length()]);
-        for(Integer i = 0; i < length(); i++) {
+    public Vector mul(double value) {
+        Vector v = new Vector(new double[this.length()]);
+        for(int i = 0; i < length(); i++) {
             v.set(i, this.at(i) * value);
         }
         return v;
     }
 
     public Vector mul(Vector other) {
-        if(!this.length().equals(other.length())) {
+        if(this.length() != other.length()) {
             throw new MathException("vector lengths must match");
         }
 
-        Vector v = new Vector(new Double[this.length()]);
-        for(Integer i = 0; i < this.length(); i++) {
+        Vector v = new Vector(new double[this.length()]);
+        for(int i = 0; i < this.length(); i++) {
             v.set(i, this.at(i) * other.at(i));
         }
         return v;
     }
 
-    public Vector div(Double value) {
-        Vector v = new Vector(new Double[this.length()]);
-        for(Integer i = 0; i < length(); i++) {
+    public Vector div(double value) {
+        Vector v = new Vector(new double[this.length()]);
+        for(int i = 0; i < length(); i++) {
             v.set(i, this.at(i) / value);
         }
         return v;
@@ -160,20 +161,20 @@ public class Vector implements Iterable<Double> {
         return new Vector(this.toArray().clone());
     }
 
-    public void set(Integer i, Double value) {
+    public void set(int i, double value) {
         data.set(i, value);
     }
 
-    public void set(Integer i, Integer value) {
-        data.set(i, value.doubleValue());
+    public void set(int i, int value) {
+        data.set(i, (double)value);
     }
 
     public List<Double> getData() {
         return data;
     }
 
-    public void swap(Integer i, Integer j) {
-        Double tmp = data.get(i);
+    public void swap(int i, int j) {
+        double tmp = data.get(i);
         data.set(j, data.get(i));
         data.set(i, tmp);
     }
@@ -193,12 +194,12 @@ public class Vector implements Iterable<Double> {
         }
 
         Vector other = (Vector) object;
-        if (!this.length().equals(other.length())) {
+        if (this.length() != other.length()) {
             return false;
         }
 
         for (int i = 0; i < this.length(); i++) {
-            if(!this.at(i).equals(other.at(i))) {
+            if(this.at(i) != other.at(i)) {
                 return false;
             }
         }
@@ -223,7 +224,15 @@ public class Vector implements Iterable<Double> {
         };
     }
 
-    public Integer intAt(Integer i) {
-        return this.at(i).intValue();
+    public int intAt(int i) {
+        return (int)this.at(i);
+    }
+
+    public void replace(int one, int two) {
+        for(int i = 0; i < this.length();  i++) {
+            if(this.at(i) == one) {
+                this.set(i, two);
+            }
+        }
     }
 }

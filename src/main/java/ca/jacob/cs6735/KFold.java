@@ -17,21 +17,21 @@ import static ca.jacob.cs6735.util.ML.shuffle;
 public class KFold {
     private static final Logger LOG = LoggerFactory.getLogger(KFold.class);
 
-    private Integer numberOfSplits;
+    private int numberOfSplits;
     private Long seed;
 
-    public KFold(Integer numberOfSplits) {
+    public KFold(int numberOfSplits) {
         this.numberOfSplits = numberOfSplits;
     }
 
-    public KFold(Integer numberOfSplits, Long seed) {
+    public KFold(int numberOfSplits, Long seed) {
         this.numberOfSplits = numberOfSplits;
         this.seed = seed;
     }
 
     public Map<Vector, Vector> split(Matrix x) {
-        Integer numberOfSamples = x.rowCount();
-        Integer splitLength = numberOfSamples / numberOfSplits;
+        int numberOfSamples = x.rowCount();
+        int splitLength = numberOfSamples / numberOfSplits;
 
         // List of indices ex. 1, 2, 3 ... n-1, n
         Vector indices = new Vector();
@@ -44,8 +44,8 @@ public class KFold {
             Vector testIndices = new Vector();
 
             // get test range
-            Integer from = split*splitLength;
-            Integer to = (split+1)*splitLength;
+            int from = split*splitLength;
+            int to = (split+1)*splitLength;
             LOG.debug("split from {} to {}", from, to);
 
             // add shuffled indices
@@ -60,8 +60,8 @@ public class KFold {
         Vector trainIndices = new Vector();
         Vector testIndices = new Vector();
 
-        Integer from = (numberOfSplits-1)*splitLength;
-        Integer to = numberOfSamples;
+        int from = (numberOfSplits-1)*splitLength;
+        int to = numberOfSamples;
         LOG.debug("last split from {} to {}", from, to);
 
         testIndices.concat(indices.subVector(from, to));

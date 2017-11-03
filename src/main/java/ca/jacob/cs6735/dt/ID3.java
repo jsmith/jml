@@ -6,27 +6,28 @@ import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 
 public class ID3 implements Algorithm {
-    public static final Integer MAX_LEVEL_NONE = -1;
-    public static final Integer MIN_SAMPLES_NONE = Integer.MAX_VALUE;
+    public static final int MAX_LEVEL_NONE = -1;
+    public static final int MIN_SAMPLES_NONE = Integer.MIN_VALUE;
 
-    private Integer maxLevel;
-    private Integer minNumberOfSamples;
+    private int maxLevel;
+    private int minNumberOfSamples;
+    private String[] labels;
 
-    public ID3(Integer maxLevel, Integer minNumberOfSamples) {
+    public ID3(int maxLevel, int minNumberOfSamples) {
         this.maxLevel = maxLevel;
         this.minNumberOfSamples = minNumberOfSamples;
     }
 
-    public ID3(Integer maxLevel) {
+    public ID3(int maxLevel) {
         this.maxLevel = maxLevel;
         this.minNumberOfSamples = MIN_SAMPLES_NONE;
     }
 
-    public void setMaxLevel(Integer maxLevel) {
+    public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
     }
 
-    public void setMinNumberOfSamples(Integer minNumberOfSamples) {
+    public void setMinNumberOfSamples(int minNumberOfSamples) {
         this.minNumberOfSamples = minNumberOfSamples;
     }
 

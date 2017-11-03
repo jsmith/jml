@@ -1,5 +1,6 @@
 package ca.jacob.cs6735.util;
 
+import javafx.scene.control.DatePicker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +17,7 @@ public class Math {
 
     public static Map<Double, Integer> calculateOccurrences(Vector v) {
         Map<Double, Integer> map = new HashMap<Double, Integer>();
-        for (Double value : v) {
+        for (double value : v) {
             LOG.debug("adding {} to map", value);
             Integer count = map.get(value);
             updateMap(map, value, count);
@@ -24,9 +25,9 @@ public class Math {
         return map;
     }
 
-    public static Map<Integer, Integer> calculateOccurrences(Integer[] values) {
+    public static Map<Integer, Integer> calculateOccurrences(int[] values) {
         Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for (Integer value : values) {
+        for (int value : values) {
             LOG.debug("adding {} to map", value);
             Integer count = map.get(value);
             updateMap(map, value, count);
@@ -44,17 +45,17 @@ public class Math {
         }
     }
 
-    public static Double log2(Double value) {
+    public static double log2(double value) {
         return log(value) / log(2);
     }
 
-    public static Double ln(Double value) {
+    public static double ln(double value) {
         return log(value) / log(E);
     }
 
     public static Vector exp(Vector v) {
-        Double[] data = new Double[v.length()];
-        for(Integer i = 0; i < data.length; i++) {
+        double[] data = new double[v.length()];
+        for(int i = 0; i < data.length; i++) {
             data[i] = java.lang.Math.exp(v.at(i));
         }
         return new Vector(data);

@@ -13,8 +13,8 @@ public class AdaboostModel extends Model {
     private Map<Model, Double> models;
 
     @Override
-    public Integer predict(Vector e) {
-        Double sum = 0.;
+    public int predict(Vector e) {
+        double sum = 0.;
         for(Map.Entry<Model, Double> model : models.entrySet()) {
             sum += model.getValue() * model.getKey().predict(e);
         }
@@ -23,14 +23,14 @@ public class AdaboostModel extends Model {
 
     @Override
     public Vector predict(Matrix data) {
-        Vector predictions = new Vector(new Integer[data.rowCount()]);
+        Vector predictions = new Vector(new double[data.rowCount()]);
         for(int i = 0; i < data.rowCount(); i++) {
             predictions.set(i, predict(data.row(i)));
         }
         return predictions;
     }
 
-    public void add(Model model, Double stage) {
+    public void add(Model model, double stage) {
         if(models == null) {
             models = new HashMap<Model, Double>();
         }

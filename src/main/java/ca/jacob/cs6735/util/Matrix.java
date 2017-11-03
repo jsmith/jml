@@ -13,16 +13,16 @@ public class Matrix {
 
     private List<Vector> data;
 
-    public Matrix(Double[][] data) {
+    public Matrix(double[][] data) {
         this.data = new ArrayList<Vector>();
-        for(Double[] row : data) {
+        for(double[] row : data) {
             this.data.add(new Vector(row));
         }
     }
 
-    public Matrix(Integer[][] data) {
+    public Matrix(int[][] data) {
         this.data = new ArrayList<Vector>();
-        for(Integer[] row : data) {
+        for(int[] row : data) {
             this.data.add(new Vector(row));
         }
     }
@@ -38,23 +38,23 @@ public class Matrix {
         data = new ArrayList<Vector>();
     }
 
-    public Vector row(Integer i) {
+    public Vector row(int i) {
         return data.get(i).clone();
     }
 
     public Matrix rows(Vector indices) {
-        Matrix m = new Matrix(new Double[indices.length()][this.colCount()]);
+        Matrix m = new Matrix(new double[indices.length()][this.colCount()]);
         for(int i = 0; i < indices.length(); i++) {
-            m.setRow(i, this.row(indices.at(i).intValue()));
+            m.setRow(i, this.row(indices.intAt(i)));
         }
         return m;
     }
 
-    public void pushRow(Double[] row) {
+    public void pushRow(double[] row) {
         data.add(new Vector(row));
     }
 
-    public void pushRow(Integer[] row) {
+    public void pushRow(int[] row) {
         data.add(new Vector(row));
     }
 
@@ -62,11 +62,11 @@ public class Matrix {
         this.pushRow(v.toArray());
     }
 
-    public void setRow(Integer i, Vector v) {
+    public void setRow(int i, Vector v) {
         data.set(i, v);
     }
 
-    public void pushCol(Integer[] col) {
+    public void pushCol(int[] col) {
         for (int j = 0; j < this.rowCount(); j++) {
             data.get(j).add(col[j]);
         }
@@ -79,36 +79,36 @@ public class Matrix {
     }
 
     public void dropCol(int j) {
-        for (Integer i = 0; i < this.rowCount(); i++) {
+        for (int i = 0; i < this.rowCount(); i++) {
             data.get(i).remove(j);
         }
     }
 
-    public Vector col(Integer j) {
+    public Vector col(int j) {
         Vector v = new Vector();
-        for (Integer i = 0; i < this.rowCount(); i++) {
+        for (int i = 0; i < this.rowCount(); i++) {
             v.add(data.get(i).at(j));
         }
         return v;
     }
 
-    public Integer[][] toIntArray() {
-        Integer[][] arr = new Integer[this.rowCount()][this.colCount()];
-        for(Integer i = 0; i < this.rowCount(); i++) {
-            arr[i] = data.get(i).toIntegerArray();
+    public int[][] toIntArray() {
+        int[][] arr = new int[this.rowCount()][this.colCount()];
+        for(int i = 0; i < this.rowCount(); i++) {
+            arr[i] = data.get(i).tointArray();
         }
         return arr;
     }
 
-    public Double at(Integer i, Integer j) {
+    public double at(int i, int j) {
         return data.get(i).at(j);
     }
 
-    public Integer rowCount() {
+    public int rowCount() {
         return data.size();
     }
 
-    public Integer colCount() {
+    public int colCount() {
         if (this.rowCount() == 0) {
             return 0;
         }
@@ -125,10 +125,10 @@ public class Matrix {
         }
 
         Matrix other = (Matrix) object;
-        if (!this.rowCount().equals(other.rowCount())) {
+        if (this.rowCount() != other.rowCount()) {
             return false;
         }
-        if (!this.colCount().equals(other.colCount())) {
+        if (this.colCount() != other.colCount()) {
             return false;
         }
 
@@ -144,5 +144,15 @@ public class Matrix {
     @Override
     public String toString() {
         return data.toString();
+    }
+
+    public void setCol(int col, Vector v) {
+        if(v.length() != this.rowCount()) {
+            throw new MathException("vector length must match matrix row count");
+        }
+
+        for(int i = 0; i < this.rowCount(); i++) {
+            this.data.get(i).set(col, v.at(i));
+        }
     }
 }

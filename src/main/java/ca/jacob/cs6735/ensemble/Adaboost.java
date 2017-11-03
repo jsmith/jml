@@ -4,6 +4,8 @@ import ca.jacob.cs6735.Algorithm;
 import ca.jacob.cs6735.Model;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.util.ML.error;
 import static ca.jacob.cs6735.util.ML.generateIndices;
@@ -12,10 +14,12 @@ import static java.lang.Math.sqrt;
 
 
 public class Adaboost implements Algorithm {
-    private Algorithm algorithm;
-    private Integer numberOfEstimators;
+    private static final Logger LOG = LoggerFactory.getLogger(Adaboost.class);
 
-    public Adaboost(Algorithm algorithm, Integer numberOfEstimators) {
+    private Algorithm algorithm;
+    private int numberOfEstimators;
+
+    public Adaboost(Algorithm algorithm, int numberOfEstimators) {
         this.algorithm = algorithm;
         this.numberOfEstimators = numberOfEstimators;
     }
@@ -23,10 +27,13 @@ public class Adaboost implements Algorithm {
     public Model fit(Matrix x, Vector y) {
         AdaboostModel model = new AdaboostModel();
 
-        Vector weights = new Vector(new Double[x.rowCount()]);
+        Vector weights = new Vector(new double[x.rowCount()]);
         weights.fill(1./x.rowCount());
+        LOG.debug("init weights: {}", weights);
 
-        for(Integer i = 0; i < numberOfEstimators; i++) {
+        for(int i = 0; i < numberOfEstimators; i++) {
+            LOG.debug("starting iteration {}", i+1);
+
             Vector indices = generateIndices(weights);
             Matrix xWeighted = x.rows(indices);
             Vector yWeighted = y.at(indices);
@@ -36,11 +43,12 @@ public class Adaboost implements Algorithm {
             Vector err = error(pred, yWeighted);
 
 
-            Double epsilon = weights.dot(err); // sum of the weights of misclassified
-            Double alpha = (1/2)*ln((1-epsilon)/epsilon);
-            Double Z = 2*sqrt(epsilon*(1-epsilon));
+            double epsilon = weights.dot(err); // sum of the weights of misclassified
+            double alpha = (1/2)*ln((1-epsilon)/epsilon);
+            double Z = 2*sqrt(epsilon*(1-epsilon));
             weights = weights.div(Z).mul(exp(yWeighted.mul(pred).mul(-alpha)));
 
+            LOG.debug("alpha: {}", alpha);
             model.add(classifier, alpha);
         }
 

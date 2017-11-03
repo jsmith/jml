@@ -1,6 +1,7 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.cs6735.dt.ID3;
+import ca.jacob.cs6735.dt.ID3Model;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
@@ -25,8 +26,8 @@ public class KFoldTest {
     @Before
     public void init() {
         kFold = new KFold(5, 23l);
-        x = new Matrix(new Integer[][]{{1}, {0}, {1}, {0}, {1}, {1}});
-        y = new Vector(new Integer[]{1, 0, 1, 0, 1, 1});
+        x = new Matrix(new int[][]{{1}, {0}, {1}, {0}, {1}, {1}});
+        y = new Vector(new int[]{1, 0, 1, 0, 1, 1});
     }
 
     @Test
@@ -47,7 +48,7 @@ public class KFoldTest {
         Matrix mat = new Matrix(data);
         mat.dropCol(0); // removing id
 
-        Algorithm a = new ID3(5);
+        Algorithm a = new ID3(5, 400);
 
         Vector accuracies = new Vector();
         Map<Vector, Vector> indices = kFold.split(mat);
@@ -58,16 +59,17 @@ public class KFoldTest {
             Matrix x = mat.rows(trainIndices);
             Vector y = mat.col(x.colCount()-1);
             x.dropCol(x.colCount()-1);
-            Model m = a.fit(x, y);
+            ID3Model m = (ID3Model)a.fit(x, y);
 
             x = mat.rows(testIndices);
             y = x.col(x.colCount()-1);
             assertEquals(x.rowCount(), y.length());
 
             x.dropCol(x.colCount()-1);
-            Double accuracy = m.accuracy(x, y);
+            double accuracy = m.accuracy(x, y);
             accuracies.add(accuracy);
+            LOG.info("model depth is {}", m.depth());
         }
-        LOG.info("kfold test accuracies: {}", accuracies);
+        LOG.info("kfold test accuracy: {}", accuracies.sum()/accuracies.length());
     }
 }

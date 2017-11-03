@@ -18,7 +18,7 @@ public class ID3Model extends Model {
 
     @Override
     public Vector predict(Matrix data) {
-        Vector predictions = new Vector(new Integer[data.rowCount()]);
+        Vector predictions = new Vector(new Double[data.rowCount()]);
         for(Integer i = 0; i < data.rowCount(); i++) {
             predictions.set(i, predict(data.row(i)));
         }
@@ -27,5 +27,9 @@ public class ID3Model extends Model {
 
     public Node getRoot() {
         return root;
+    }
+
+    public Integer depth() {
+        return root.depth();
     }
 }

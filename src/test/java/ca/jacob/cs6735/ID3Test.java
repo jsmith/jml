@@ -24,8 +24,14 @@ public class ID3Test {
     @Before
     public void init() {
         id3 = new ID3(ID3.MAX_LEVEL_NONE);
-        x = new Matrix(new Integer[][]{{1, 1, 1},{1,0, 1},{1,0, 0}});
-        y = new Vector(new Integer[]{1, 0, 0});
+        x = new Matrix(new Integer[][]{
+                {1, 1, 1},
+                {1,0, 1},
+                {1,0, 0}});
+        y = new Vector(new Integer[]{
+                1,
+                0,
+                0});
     }
 
     @Test
@@ -70,10 +76,12 @@ public class ID3Test {
         Vector y = x.col(x.colCount()-1);
         x.dropCol(x.colCount()-1);
 
-        ID3 id3 = new ID3(ID3.MAX_LEVEL_NONE);
-        Model model = id3.fit(x, y);
+        ID3 id3 = new ID3(5);
+        ID3Model model = (ID3Model) id3.fit(x, y);
 
         Double accuracy = model.accuracy(x, y);
-        assertEquals(accuracy, 100.);
+        //assertEquals(accuracy, 100.);
+
+        assertEquals((Integer) 5, model.depth());
     }
 }

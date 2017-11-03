@@ -14,9 +14,9 @@ public class Vector implements Iterable<Double> {
     private List<Double> data;
 
     public Vector(Integer[] data) {
-        this.data = new ArrayList<Double>();
+        this.data = new ArrayList<Double>(Arrays.asList(new Double[data.length]));
         for(int i = 0; i < data.length; i++) {
-            this.data.add(data[i].doubleValue());
+            this.data.set(i, data[i] == null ? null : data[i].doubleValue());
         }
     }
 
@@ -221,5 +221,9 @@ public class Vector implements Iterable<Double> {
                 return at(currentIndex++);
             }
         };
+    }
+
+    public Integer intAt(Integer i) {
+        return this.at(i).intValue();
     }
 }

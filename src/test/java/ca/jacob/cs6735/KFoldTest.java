@@ -24,7 +24,7 @@ public class KFoldTest {
 
     @Before
     public void init() {
-        kFold = new KFold(5);
+        kFold = new KFold(5, 23l);
         x = new Matrix(new Integer[][]{{1}, {0}, {1}, {0}, {1}, {1}});
         y = new Vector(new Integer[]{1, 0, 1, 0, 1, 1});
     }
@@ -45,9 +45,11 @@ public class KFoldTest {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data); //ignore these for now
         Matrix mat = new Matrix(data);
+        mat.dropCol(0); // removing id
 
-        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE);
+        Algorithm a = new ID3(5);
 
+        Vector accuracies = new Vector();
         Map<Vector, Vector> indices = kFold.split(mat);
         for(Map.Entry<Vector, Vector> entry : indices.entrySet()) {
             Vector trainIndices = entry.getKey();
@@ -59,9 +61,13 @@ public class KFoldTest {
             Model m = a.fit(x, y);
 
             x = mat.rows(testIndices);
-            y = mat.col(x.colCount()-1);
+            y = x.col(x.colCount()-1);
+            assertEquals(x.rowCount(), y.length());
+
             x.dropCol(x.colCount()-1);
-            m.accuracy(x, y);
+            Double accuracy = m.accuracy(x, y);
+            accuracies.add(accuracy);
         }
+        LOG.info("kfold test accuracies: {}", accuracies);
     }
 }

@@ -17,7 +17,7 @@ public class NodeTest {
     @Before
     public void setup() {
         Integer[][] data = new Integer[][]{{0, 1, 1, 1}, {0, 0, 0, 0}};
-        node = new Node(data, 1, ID3.MAX_LEVEL_NONE);
+        node = new Node(data, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
     }
 
     @Test

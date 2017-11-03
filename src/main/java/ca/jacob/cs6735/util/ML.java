@@ -92,6 +92,10 @@ public class ML {
     }
 
     public static Vector error(Vector one, Vector two) {
+        if(!one.length().equals(two.length())) {
+            throw new MathException("vector lengths must match");
+        }
+
         Vector error = new Vector(new Double[one.length()]);
         for(Integer i = 0; i < one.length(); i++) {
             if(!one.at(i).equals(two.at(i))) {

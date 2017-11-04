@@ -10,8 +10,12 @@ public class File {
     private static final Logger LOG = LoggerFactory.getLogger(File.class);
 
     public static String[][] readCSV(InputStream inputStream) throws Throwable {
+        return readCSV(inputStream, ",");
+    }
+
+    public static String[][] readCSV(InputStream inputStream, String deliminator) throws Throwable {
         String line;
-        String cvsSplitBy = ",";
+        String cvsSplitBy = deliminator;
         String[][] data;
 
         try {
@@ -20,6 +24,7 @@ public class File {
 
             int rows = 0;
             while ((line = br.readLine()) != null) {
+                line.replace(" ", "");
                 lines.add(line);
                 rows++;
             }

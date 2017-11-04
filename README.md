@@ -52,3 +52,30 @@ Hand in your report to C114 and submit your source code no later than midnight, 
    9. Normal Nucleoli               1 - 10
   10. Mitoses                       1 - 10
   11. Class:                        (2 for benign, 4 for malignant)
+  
+#### Ecoli
+  1.  Sequence Name: Accession number for the SWISS-PROT database
+  2.  mcg: McGeoch's method for signal sequence recognition.
+  3.  gvh: von Heijne's method for signal sequence recognition.
+  4.  lip: von Heijne's Signal Peptidase II consensus sequence score.
+           Binary attribute.
+  5.  chg: Presence of charge on N-terminus of predicted lipoproteins.
+	   Binary attribute.
+  6.  aac: score of discriminant analysis of the amino acid content of
+	   outer membrane and periplasmic proteins.
+  7. alm1: score of the ALOM membrane spanning region prediction program.
+  8. alm2: score of ALOM program after excluding putative cleavable signal
+	   regions from the sequence.
+  9. Class:   
+  >cp  (cytoplasm)                                    143  
+    im  (inner membrane without signal sequence)        77                 
+    pp  (perisplasm)                                    52  
+    imU (inner membrane, uncleavable signal sequence)   35  
+    om  (outer membrane)                                20  
+    omL (outer membrane lipoprotein)                     5  
+    imL (inner membrane lipoprotein)                     2  
+    imS (inner membrane, cleavable signal sequence)      2 
+    
+### References
+1. [Naive Bayes](https://stats.stackexchange.com/questions/136577/how-to-deal-with-mixture-of-continuous-and-discrete-features-when-using-naive-ba)
+1. Other

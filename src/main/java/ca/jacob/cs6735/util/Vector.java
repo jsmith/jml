@@ -261,4 +261,16 @@ public class Vector implements Iterable<Double> {
         }
         return v;
     }
+
+    public double prod() {
+        double sum = 1;
+        for(Double d : this) {
+            sum *= d;
+        }
+        return sum;
+    }
+
+    public double mean() {
+        return this.sum() / this.length();
+    }
 }

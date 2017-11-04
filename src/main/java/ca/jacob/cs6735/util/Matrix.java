@@ -155,4 +155,8 @@ public class Matrix {
             this.data.get(i).set(col, v.at(i));
         }
     }
+
+    public int intAt(int i, int j) {
+        return (int) this.at(i, j);
+    }
 }

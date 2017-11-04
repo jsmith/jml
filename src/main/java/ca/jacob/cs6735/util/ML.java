@@ -4,11 +4,7 @@ import ca.jacob.cs6735.dt.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import java.util.Random;
+import java.util.*;
 
 import static java.lang.Math.random;
 
@@ -175,6 +171,28 @@ public class ML {
             result.add(array[i]);
         }
         return result;
+    }
+
+    public static Map<Integer, Matrix> splitByColumn(Matrix mat, int j) {
+        Map<Integer, Matrix> separated = new HashMap<Integer, Matrix>();
+        LOG.debug("matrix dimensions: {} x {}", mat.rowCount(), mat.colCount());
+        LOG.debug("column to split by: {}", j);
+
+        for (int i = 0; i < mat.rowCount(); i++) {
+            LOG.trace("checking row {}", i);
+            int value = mat.intAt(i, j);
+
+            Matrix m = separated.get(value);
+            if (m == null) {
+                LOG.trace("adding new split based on value {}", value);
+                m = new Matrix();
+                separated.put(value, m);
+            }
+
+            Vector v = mat.row(i);
+            m.pushRow(v);
+        }
+        return separated;
     }
 
 }

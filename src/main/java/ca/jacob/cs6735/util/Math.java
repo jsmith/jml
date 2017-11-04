@@ -67,21 +67,4 @@ public class Math {
         double variance = v.sub(mean).pow(2).sum() / (v.length() - 1);
         return sqrt(variance);
     }
-
-    public static double gaussianProbability(double x, double mean, double stdev) {
-        double exponent = java.lang.Math.exp(-pow(x-mean, 2)/(2*pow(stdev, 2)));
-        return (1/ (sqrt(2*PI) *stdev)) * exponent;
-    }
-
-    public static Vector gaussianProbability(Vector x, Vector means, Vector stdevs) {
-        if(x.length() != means.length() || x.length() != stdevs.length()) {
-            LOG.warn("They aren't the same length! x length: {}; means length: {}; stdevs length: {}", x.length(), means.length(), stdevs.length());
-            throw new MathException("lengths must match!");
-        }
-        Vector probabilities = new Vector(new double[x.length()]);
-        for(int i = 0; i < means.length(); i++) {
-            probabilities.set(i, gaussianProbability(x.at(i), means.at(i), stdevs.at(i)));
-        }
-        return probabilities;
-    }
 }

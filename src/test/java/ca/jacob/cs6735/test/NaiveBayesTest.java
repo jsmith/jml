@@ -5,7 +5,7 @@ import ca.jacob.cs6735.KFold;
 import ca.jacob.cs6735.Model;
 import ca.jacob.cs6735.nb.NaiveBayes;
 import ca.jacob.cs6735.nb.NaiveBayesModel;
-import ca.jacob.cs6735.nb.Summary;
+import ca.jacob.cs6735.nb.ClassSummary;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Report;
 import ca.jacob.cs6735.util.Vector;
@@ -30,9 +30,9 @@ public class NaiveBayesTest {
         Matrix x = data;
         NaiveBayes gnb = new NaiveBayes();
         NaiveBayesModel m = (NaiveBayesModel) gnb.fit(x, y);
-        List<Summary> summaries = m.getSummaries();
+        List<ClassSummary> summaries = m.getSummaries();
         int i = 0;
-        for(Summary s : summaries) {
+        for(ClassSummary s : summaries) {
             if(i == 0) {
                 assertEquals(s.getMeans(), new Vector(new double[]{3, 21.5}));
                 assertEquals(s.getStdevs(), new Vector(new double[]{1.4142135623730951, 0.7071067811865476}));

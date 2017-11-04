@@ -1,8 +1,7 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.cs6735.util.Matrix;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.cs6735.util.Data;
 
 public interface Algorithm {
-    Model fit(Matrix x, Vector y);
+    Model fit(Data d);
 }

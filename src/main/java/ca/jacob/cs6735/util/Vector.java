@@ -273,4 +273,14 @@ public class Vector implements Iterable<Double> {
     public double mean() {
         return this.sum() / this.length();
     }
+
+    public int count(double value) {
+        int count = 0;
+        for(Double d : this.data) {
+            if(d.doubleValue() == value) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

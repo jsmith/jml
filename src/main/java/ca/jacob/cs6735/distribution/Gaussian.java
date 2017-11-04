@@ -1,55 +1,36 @@
 package ca.jacob.cs6735.distribution;
 
-import ca.jacob.cs6735.nb.Summary;
+import ca.jacob.cs6735.nb.ClassSummary;
+import ca.jacob.cs6735.util.MathException;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static ca.jacob.cs6735.util.Math.mean;
-import static ca.jacob.cs6735.util.Math.stdev;
+import static java.lang.Math.PI;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
-public class Gaussian {
+public class Gaussian implements Distribution {
     private static final Logger LOG = LoggerFactory.getLogger(Gaussian.class);
 
-    private List<Summary> summaries;
-
-    public Gaussian(Map<Integer, Matrix> data) {
-        int instanceCount = 0;
-        for(Map.Entry<Integer, Matrix> entry : data.entrySet()) {
-            instanceCount += entry.getValue().rowCount();
-        }
-
-        summaries = new ArrayList<Summary>();
-        for(Map.Entry<Integer, Matrix> entry : data.entrySet()) {
-            int classValue = entry.getKey();
-
-            Matrix instances = entry.getValue();
-            instances.dropCol(instances.colCount()-1);
-
-            double classProbability = ((double)instances.rowCount()) / instanceCount;
-
-            Vector means = new Vector(new double[instances.colCount()]);
-            Vector stdevs = new Vector(new double[instances.colCount()]);
-            for(int j = 0; j < instances.colCount(); j++) {
-                Vector col = instances.col(j);
-                means.set(j, mean(col));
-                stdevs.set(j, stdev(col));
-            }
-            LOG.debug("Class {}: means -> {}; stdevs -> {}", classValue, means, stdevs);
-            summaries.add(new Summary(classValue, classProbability, means, stdevs));
-        }
+    public double probability(double x, double mean, double stdev) {
+        double exponent = java.lang.Math.exp(-pow(x-mean, 2)/(2*pow(stdev, 2)));
+        return (1/ (sqrt(2*PI) *stdev)) * exponent;
     }
 
-    public List<Summary> getSummaries() {
-        return summaries;
-    }
-
-    public void setSummaries(List<Summary> summaries) {
-        this.summaries = summaries;
+    public Vector probability(Vector x, Vector means, Vector stdevs) {
+        if(x.length() != means.length() || x.length() != stdevs.length()) {
+            LOG.warn("They aren't the same length! x length: {}; means length: {}; stdevs length: {}", x.length(), means.length(), stdevs.length());
+            throw new MathException("lengths must match!");
+        }
+        Vector probabilities = new Vector(new double[x.length()]);
+        for(int i = 0; i < means.length(); i++) {
+            probabilities.set(i, probability(x.at(i), means.at(i), stdevs.at(i)));
+        }
+        return probabilities;
     }
 }

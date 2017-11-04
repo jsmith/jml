@@ -1,7 +1,6 @@
 package ca.jacob.cs6735.nb;
 
 import ca.jacob.cs6735.Model;
-import ca.jacob.cs6735.dt.Node;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.slf4j.Logger;
@@ -9,14 +8,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static ca.jacob.cs6735.util.Math.gaussianProbability;
-
 public class NaiveBayesModel extends Model {
     private static final Logger LOG = LoggerFactory.getLogger(NaiveBayesModel.class);
 
-    private List<Summary> summaries;
+    private List<ClassSummary> summaries;
 
-    public NaiveBayesModel(List<Summary> summaries) {
+    public NaiveBayesModel(List<ClassSummary> summaries) {
         this.summaries = summaries;
     }
 
@@ -24,12 +21,12 @@ public class NaiveBayesModel extends Model {
     public int predict(Vector e) {
         LOG.debug("predicting for e -> {}", e);
 
-        Summary maxSummary = null;
+        ClassSummary maxSummary = null;
         double maxProbability = -1;
-        for(Summary s : summaries) {
+        for(ClassSummary s : summaries) {
             Vector means = s.getMeans();
             Vector stdevs = s.getStdevs();
-            Vector conditionalProbabilities = gaussianProbability(e, means, stdevs);
+            Vector conditionalProbabilities = probability(e, means, stdevs);
             LOG.debug("\nmeans -> {};\nstdevs -> {};\nconditional probabilities -> {}", means, stdevs, conditionalProbabilities);
             double probability = conditionalProbabilities.prod();
             probability *= s.getClassProbability();
@@ -52,7 +49,7 @@ public class NaiveBayesModel extends Model {
         return predictions;
     }
 
-    public List<Summary> getSummaries() {
+    public List<ClassSummary> getSummaries() {
         return summaries;
     }
 }

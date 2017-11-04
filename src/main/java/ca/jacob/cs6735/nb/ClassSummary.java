@@ -2,13 +2,13 @@ package ca.jacob.cs6735.nb;
 
 import ca.jacob.cs6735.util.Vector;
 
-public class Summary {
+public class ClassSummary {
     private int classValue;
     private double classProbability;
     private Vector means;
     private Vector stdevs;
 
-    public Summary(int classValue, double classProbability, Vector means, Vector stdevs) {
+    public ClassSummary(int classValue, double classProbability, Vector means, Vector stdevs) {
         this.classValue = classValue;
         this.classProbability = classProbability;
         this.means = means;

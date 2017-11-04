@@ -245,4 +245,20 @@ public class Vector implements Iterable<Double> {
         }
         return false;
     }
+
+    public Vector sub(double mean) {
+        Vector v = new Vector(new double[this.length()]);
+        for(int i = 0; i < length(); i++) {
+            v.set(i, this.at(i) - mean);
+        }
+        return v;
+    }
+
+    public Vector pow(int n) {
+        Vector v = new Vector(new double[this.length()]);
+        for(int i = 0; i < length(); i++) {
+            v.set(i, java.lang.Math.pow(this.at(i), n));
+        }
+        return v;
+    }
 }

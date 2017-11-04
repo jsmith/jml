@@ -59,4 +59,14 @@ public class Math {
         }
         return new Vector(data);
     }
+
+    public static double mean(Vector v) {
+        return v.sum() / v.length();
+    }
+
+    public static double stdev(Vector v) {
+        double mean = mean(v);
+        double variance = v.sub(mean).pow(2).sum() / (v.length() - 1);
+        return java.lang.Math.sqrt(variance);
+    }
 }

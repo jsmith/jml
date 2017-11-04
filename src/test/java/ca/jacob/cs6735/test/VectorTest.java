@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 
 public class VectorTest {
     private static final double DELTA = 1e-10;
@@ -77,5 +78,17 @@ public class VectorTest {
     public void testAtIndices() {
         Vector vector = v.at(new Vector(new int[]{1, 0, 2}));
         assertEquals(new Vector(new int[]{2, 1, 3}), vector);
+    }
+
+    @Test
+    public void testSubtract() {
+        Vector result = v.sub(1);
+        assertEquals(new Vector(new int[]{0, 1, 2, 3, 3}), result);
+    }
+
+    @Test
+    public void testPower() {
+        Vector result = v.pow(3);
+        assertEquals(new Vector(new int[]{1, 8, 27, 64, 64}), result);
     }
 }

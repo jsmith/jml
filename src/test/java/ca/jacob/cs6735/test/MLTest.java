@@ -52,6 +52,13 @@ public class MLTest {
     }
 
     @Test
+    public void testIndicesDistributionFromTo() {
+        Vector indices = generateIndices(0, 10, 1000);
+        Map<Double, Integer> occurrences = calculateOccurrences(indices);
+        LOG.info("occurrences: {}", occurrences);
+    }
+
+    @Test
     public void testLn() {
         assertEquals((double) 0, ln(1), DELTA);
         assertEquals((double)1.609437912, ln(5), DELTA);

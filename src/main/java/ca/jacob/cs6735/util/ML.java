@@ -77,6 +77,12 @@ public class ML {
         return indices;
     }
 
+    public static Vector generateIndices(int from, int to, int numberOfIndices) {
+        Vector weights = new Vector(new double[to-from]);
+        weights.fill(1./(to-from));
+        return generateIndices(weights, numberOfIndices);
+    }
+
     public static Vector generateIndicesWithoutReplacement(Vector weights, int numberOfIndices) {
         Vector probabilities = new Vector(new double[weights.length()]);
         double sum = weights.sum();

@@ -2,6 +2,7 @@ package ca.jacob.cs6735.dt;
 
 import ca.jacob.cs6735.Model;
 import ca.jacob.cs6735.Algorithm;
+import ca.jacob.cs6735.util.Data;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 
@@ -31,8 +32,8 @@ public class ID3 implements Algorithm {
         this.minNumberOfSamples = minNumberOfSamples;
     }
 
-    public Model fit(Matrix x, Vector y) {
-        Node root = new Node(x, y, 1, maxLevel, minNumberOfSamples);
+    public Model fit(Data data) {
+        Node root = new Node(data, 1, maxLevel, minNumberOfSamples);
         root.split();
         return new ID3Model(root);
     }

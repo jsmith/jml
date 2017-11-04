@@ -2,6 +2,8 @@ package ca.jacob.cs6735.test;
 
 import ca.jacob.cs6735.dt.ID3;
 import ca.jacob.cs6735.dt.Node;
+import ca.jacob.cs6735.util.Matrix;
+import ca.jacob.cs6735.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -10,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ca.jacob.cs6735.util.Data.DISCRETE;
 import static junit.framework.Assert.assertEquals;
 
 public class NodeTest {
@@ -19,8 +22,9 @@ public class NodeTest {
 
     @Before
     public void setup() {
-        int[][] data = new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}};
-        node = new Node(data, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
+        Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
+        node = new Node(data, attributeTypes,1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
     }
 
     @Test
@@ -38,14 +42,16 @@ public class NodeTest {
 
     @Test
     public void testDepth() {
-        int[][] data = new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}};
+        Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
+        Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
 
         Map<Integer, Node> children = new HashMap<Integer, Node>();
-        children.put(1, new Node(data, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE));
+        children.put(1, new Node(data, attributeTypes, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE));
         node.setChildren(children);
 
+        data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
         children = new HashMap<Integer, Node>();
-        children.put(1, new Node(data, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE));
+        children.put(1, new Node(data, attributeTypes, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE));
         node.getChildren().get(1).setChildren(children);
 
         assertEquals(3, node.depth());

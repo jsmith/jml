@@ -2,53 +2,34 @@ package ca.jacob.cs6735.nb;
 
 import ca.jacob.cs6735.util.Vector;
 
+import java.util.List;
+
 public class ClassSummary {
     private int classValue;
     private double classProbability;
-    private Vector means;
-    private Vector stdevs;
+    List<Attribute> attributes;
 
-    public ClassSummary(int classValue, double classProbability, Vector means, Vector stdevs) {
+    public ClassSummary(int classValue, double classProbability, List<Attribute> attributes) {
         this.classValue = classValue;
         this.classProbability = classProbability;
-        this.means = means;
-        this.stdevs = stdevs;
+        this.attributes = attributes;
+    }
+
+    public double probability(Vector e) {
+        Vector conditionalProbabilities = new Vector(new double[attributes.size()]);
+        for(int i = 0; i < attributes.size(); i++) {
+            double attributeValue = e.at(i);
+            double probability = attributes.get(i).probability(attributeValue);
+            conditionalProbabilities.set(i, probability);
+        }
+        return conditionalProbabilities.prod() * classProbability;
     }
 
     public int getClassValue() {
         return classValue;
     }
 
-    public void setClassValue(int classValue) {
-        this.classValue = classValue;
-    }
-
-    public Vector getMeans() {
-        return means;
-    }
-
-    public void setMeans(Vector means) {
-        this.means = means;
-    }
-
-    public Vector getStdevs() {
-        return stdevs;
-    }
-
-    public void setStdevs(Vector stdevs) {
-        this.stdevs = stdevs;
-    }
-
-    public double getClassProbability() {
-        return classProbability;
-    }
-
-    public void setClassProbability(double classProbability) {
-        this.classProbability = classProbability;
-    }
-
-    @Override
-    public String toString() {
-        return "{"+classValue+": probability: "+classProbability+";means -> "+means+"; stdevs -> "+stdevs+"}";
+    public List<Attribute> getAttributes() {
+        return attributes;
     }
 }

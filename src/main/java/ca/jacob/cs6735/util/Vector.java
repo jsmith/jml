@@ -8,6 +8,7 @@ import java.util.*;
 import static ca.jacob.cs6735.util.ML.arrayAsList;
 import static ca.jacob.cs6735.util.ML.toPrimitiveArray;
 import static ca.jacob.cs6735.util.Math.calculateOccurrences;
+import static java.lang.Math.sqrt;
 
 public class Vector implements Iterable<Double> {
     private static final Logger LOG = LoggerFactory.getLogger(Vector.class);
@@ -282,5 +283,11 @@ public class Vector implements Iterable<Double> {
             }
         }
         return count;
+    }
+
+    public double stdev() {
+        double mean = this.mean();
+        double variance = this.sub(mean).pow(2).sum() / (this.length() - 1);
+        return sqrt(variance);
     }
 }

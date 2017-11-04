@@ -2,6 +2,7 @@ package ca.jacob.cs6735.ensemble;
 
 import ca.jacob.cs6735.Algorithm;
 import ca.jacob.cs6735.Model;
+import ca.jacob.cs6735.util.Data;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.slf4j.Logger;
@@ -25,23 +26,20 @@ public class RandomForest implements Algorithm {
         this.percentageOfSamples = percentageOfSamples;
     }
 
-    public Model fit(Matrix x, Vector y) {
+    public Model fit(Data data) {
         RandomForestModel forest = new RandomForestModel();
 
-        int numberOfSamples = (int)(percentageOfSamples * x.rowCount());
+        int numberOfSamples = (int)(percentageOfSamples * data.sampleCount());
         LOG.info("number of samples per tree is {}", numberOfSamples);
 
         for(int i = 0; i < sizeOfForest; i++) {
             LOG.debug("starting iteration {}", i+1);
 
-            Vector indices = generateIndices(0, x.rowCount(), numberOfSamples);
-            Matrix xSubSet = x.rows(indices);
-            LOG.debug("xSubSet rows: {}, cols: {}", xSubSet.rowCount(), xSubSet.colCount());
-            Vector ySubSet = y.at(indices);
-            LOG.debug("first row: {} -> {}", xSubSet.row(0), ySubSet.at(0));
+            Vector indices = generateIndices(0, data.sampleCount(), numberOfSamples);
+            Data subset = data.samples(indices);
 
-            Model m = algorithm.fit(xSubSet, ySubSet);
-            LOG.debug("accuracy of model: {}", m.accuracy(xSubSet, ySubSet));
+            Model m = algorithm.fit(subset);
+            LOG.debug("accuracy of model: {}", m.accuracy(subset));
 
             forest.add(m);
         }

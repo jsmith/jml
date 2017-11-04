@@ -1,5 +1,6 @@
 package ca.jacob.cs6735;
 
+import ca.jacob.cs6735.util.Data;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Report;
 import ca.jacob.cs6735.util.Vector;
@@ -30,29 +31,25 @@ public class KFold {
         this.seed = seed;
     }
 
-    public Report generateReport(Algorithm a, Matrix data) {
+    public Report generateReport(Algorithm a, Data data) {
         Vector accuracies = new Vector();
-        Map<Vector, Vector> indices = this.split(data);
+        Map<Vector, Vector> indices = this.generateIndices(data);
         for(Map.Entry<Vector, Vector> entry : indices.entrySet()) {
             Vector trainIndices = entry.getKey();
             Vector testIndices = entry.getValue();
 
-            Matrix x = data.rows(trainIndices);
-            Vector y = x.col(x.colCount()-1);
-            x.dropCol(x.colCount()-1);
-            Model m = a.fit(x, y);
+            Data trainingData = data.samples(trainIndices);
+            Model m = a.fit(trainingData);
 
-            x = data.rows(testIndices);
-            y = x.col(x.colCount()-1);
-            x.dropCol(x.colCount()-1);
+            Data testData = data.samples(testIndices);
 
-            accuracies.add(m.accuracy(x, y));
+            accuracies.add(m.accuracy(testData));
         }
         return new Report(accuracies);
     }
 
-    public Map<Vector, Vector> split(Matrix x) {
-        int numberOfSamples = x.rowCount();
+    public Map<Vector, Vector> generateIndices(Data data) {
+        int numberOfSamples = data.sampleCount();
         int splitLength = numberOfSamples / numberOfSplits;
 
         // List of indices ex. 1, 2, 3 ... n-1, n

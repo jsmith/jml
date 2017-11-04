@@ -172,27 +172,4 @@ public class ML {
         }
         return result;
     }
-
-    public static Map<Integer, Matrix> splitByColumn(Matrix mat, int j) {
-        Map<Integer, Matrix> separated = new HashMap<Integer, Matrix>();
-        LOG.debug("matrix dimensions: {} x {}", mat.rowCount(), mat.colCount());
-        LOG.debug("column to split by: {}", j);
-
-        for (int i = 0; i < mat.rowCount(); i++) {
-            LOG.trace("checking row {}", i);
-            int value = mat.intAt(i, j);
-
-            Matrix m = separated.get(value);
-            if (m == null) {
-                LOG.trace("adding new split based on value {}", value);
-                m = new Matrix();
-                separated.put(value, m);
-            }
-
-            Vector v = mat.row(i);
-            m.pushRow(v);
-        }
-        return separated;
-    }
-
 }

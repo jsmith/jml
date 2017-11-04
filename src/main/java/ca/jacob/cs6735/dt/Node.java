@@ -1,5 +1,6 @@
 package ca.jacob.cs6735.dt;
 
+import ca.jacob.cs6735.util.Data;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.slf4j.Logger;
@@ -16,29 +17,23 @@ public class Node {
     private double entropy;
     private int attribute;
     private boolean leaf;
-    private Matrix data;
+    private Data data;
     private Map<Integer, Node> children;
     private int level;
     private int maxLevel;
     private int minNumberOfSamples;
 
-    public Node(Matrix x, Vector y, int level, int maxLevel, int minNumberOfSamples) {
-        this.data = x;
-        this.data.pushCol(y);
-        this.init(level, maxLevel, minNumberOfSamples);
-    }
-
-    public Node(int[][] data, int level, int maxLevel, int minNumberOfSamples) {
-        this.data = new Matrix(data);
-        this.init(level, maxLevel, minNumberOfSamples);
-    }
-
-    public Node(Matrix data, int level, int maxLevel, int minNumberOfSamples) {
+    public Node(Data data, int level, int maxLevel, int minNumberOfSamples) {
         this.data = data;
         this.init(level, maxLevel, minNumberOfSamples);
     }
 
-    private void init(int level, int maxLevel, int minNumberOfSamples) {
+    public Node(Matrix data, Vector attributeTypes, int level, int maxLevel, int minNumberOfSamples) {
+        this.data = new Data(data, attributeTypes);
+        this.init(level, maxLevel, minNumberOfSamples);
+    }
+
+    public void init(int level, int maxLevel, int minNumberOfSamples) {
         children = new HashMap<Integer, Node>();
         leaf = false;
         this.level = level;
@@ -50,7 +45,7 @@ public class Node {
     public double entropy() {
         if (this.entropy >= 0) return entropy;
 
-        Map<Double, Integer> classes = calculateOccurrences(data.col(data.colCount() - 1));
+        Map<Double, Integer> classes = calculateOccurrences(data.classes());
         LOG.trace("there are {} potential values", classes.size());
 
         double sum = 0.;
@@ -71,37 +66,39 @@ public class Node {
     public void split() {
         LOG.info("split - starting for level {}", level);
 
-        if(level == (maxLevel+1) || this.entropy() == 0 || this.entryCount() <= 1 || this.entryCount() < minNumberOfSamples) {
-            LOG.info("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.entryCount());
+        if(level == (maxLevel+1) || this.entropy() == 0 || this.sampleCount() <= 1 || this.sampleCount() < minNumberOfSamples) {
+            LOG.info("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.sampleCount());
             this.leaf = true;
             return;
         }
 
-        int numOfAttributes = data.colCount() - 1;
+        int numOfAttributes = data.attributeCount();
 
         double minEntropy = -1;
         for(int j = 0; j < numOfAttributes; j++) {
             LOG.trace("checking attribute {}", j);
-            Map<Integer, Matrix> split = new HashMap<Integer, Matrix>();
-            for (int i = 0; i < data.rowCount(); i++) {
+            Map<Integer, Data> split = new HashMap<Integer, Data>();
+            for (int i = 0; i < data.sampleCount(); i++) {
                 LOG.trace("checking row {}", i);
                 int value = (int)data.at(i, j);
 
-                Matrix entry = split.get(value);
-                if (entry == null) {
+                Data subset = split.get(value);
+                if (subset == null) {
                     LOG.trace("adding test node for value {}", value);
-                    entry = new Matrix();
-                    split.put(value, entry);
+                    Vector attributeTypes = data.getDataTypes();
+                    attributeTypes.remove(j);
+                    subset = new Data(attributeTypes);
+                    split.put(value, subset);
                 }
 
-                Vector v = data.row(i);
+                Vector v = data.sample(i);
                 v.remove(j);
-                entry.pushRow(v);
+                subset.add(v);
             }
 
             double entropy = 0.;
-            for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
-                entropy += new Node(entry.getValue(), level + 1, maxLevel, minNumberOfSamples).entropy();
+            for (Map.Entry<Integer, Data> entry : split.entrySet()) {
+                entropy += new Node(entry.getValue(), 0, 0, 0).entropy();
             }
             LOG.debug("the total entropy of the children when splitting on attribute {} is {}", j, entropy);
 
@@ -111,7 +108,7 @@ public class Node {
                 minEntropy = entropy;
                 attribute = j;
                 children = new HashMap<Integer, Node>();
-                for (Map.Entry<Integer, Matrix> entry : split.entrySet()) {
+                for (Map.Entry<Integer, Data> entry : split.entrySet()) {
                     children.put(entry.getKey(), new Node(entry.getValue(), level + 1, maxLevel, minNumberOfSamples));
                 }
             }
@@ -129,8 +126,8 @@ public class Node {
         return children;
     }
 
-    public int entryCount() {
-        return data.rowCount();
+    public int sampleCount() {
+        return data.sampleCount();
     }
 
     public int classify(Vector e) {
@@ -151,15 +148,15 @@ public class Node {
 
     public int predict(Vector e) {
         LOG.trace("predicting starting on level {}", level);
-        Vector v = data.col(data.colCount() - 1);
-        return (int)v.valueOfMaxOccurrence();
+        Vector classes = data.classes();
+        return (int)classes.valueOfMaxOccurrence();
     }
 
     public int getAttribute() {
         return attribute;
     }
 
-    public Matrix getData() {
+    public Data getData() {
         return data;
     }
 

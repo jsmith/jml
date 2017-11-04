@@ -23,16 +23,11 @@ public class NaiveBayesModel extends Model {
 
         ClassSummary maxSummary = null;
         double maxProbability = -1;
-        for(ClassSummary s : summaries) {
-            Vector means = s.getMeans();
-            Vector stdevs = s.getStdevs();
-            Vector conditionalProbabilities = probability(e, means, stdevs);
-            LOG.debug("\nmeans -> {};\nstdevs -> {};\nconditional probabilities -> {}", means, stdevs, conditionalProbabilities);
-            double probability = conditionalProbabilities.prod();
-            probability *= s.getClassProbability();
+        for(ClassSummary c : summaries) {
+            double probability = c.probability(e);
             if(maxSummary == null || probability > maxProbability) {
                 LOG.debug("max probability is now: {}", probability);
-                maxSummary = s;
+                maxSummary = c;
                 maxProbability = probability;
             }
         }

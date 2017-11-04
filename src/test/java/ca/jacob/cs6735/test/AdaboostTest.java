@@ -4,6 +4,7 @@ import ca.jacob.cs6735.KFold;
 import ca.jacob.cs6735.Model;
 import ca.jacob.cs6735.dt.ID3;
 import ca.jacob.cs6735.ensemble.Adaboost;
+import ca.jacob.cs6735.util.Data;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Report;
 import ca.jacob.cs6735.util.Vector;
@@ -42,7 +43,10 @@ public class AdaboostTest {
         mat.setCol(mat.colCount()-1, v);
         mat.dropCol(0); // removing id
 
-        Report r = kFold.generateReport(adaboost, mat);
+        Vector attributeTypes = new Vector(new int[mat.colCount()]);
+        attributeTypes.fill(Data.DISCRETE);
+
+        Report r = kFold.generateReport(adaboost, new Data(mat, attributeTypes));
 
         Vector accuracies = r.getAccuracies();
         LOG.info("KFold test accuracy: {}", accuracies.sum()/accuracies.length());

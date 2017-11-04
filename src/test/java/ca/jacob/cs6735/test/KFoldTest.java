@@ -4,6 +4,7 @@ import ca.jacob.cs6735.Algorithm;
 import ca.jacob.cs6735.KFold;
 import ca.jacob.cs6735.dt.ID3;
 import ca.jacob.cs6735.dt.ID3Model;
+import ca.jacob.cs6735.util.Data;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Report;
 import ca.jacob.cs6735.util.Vector;
@@ -23,6 +24,7 @@ public class KFoldTest {
     private static final Logger LOG = LoggerFactory.getLogger(KFoldTest.class);
 
     private KFold kFold;
+    private Data dataset;
     private Matrix x;
     private Vector y;
 
@@ -31,11 +33,12 @@ public class KFoldTest {
         kFold = new KFold(5, 23l);
         x = new Matrix(new int[][]{{1}, {0}, {1}, {0}, {1}, {1}});
         y = new Vector(new int[]{1, 0, 1, 0, 1, 1});
+        dataset = new Data(x, y, Data.DISCRETE);
     }
 
     @Test
     public void testSplit() {
-        Map<Vector, Vector> map = kFold.split(x);
+        Map<Vector, Vector> map = kFold.generateIndices(dataset);
         assertEquals(map.size(), 5);
         for(Map.Entry<Vector, Vector> entry : map.entrySet()) {
             Vector trainIndices = entry.getKey();
@@ -51,9 +54,11 @@ public class KFoldTest {
         Matrix mat = new Matrix(data);
         mat.dropCol(0); // removing id
 
+        Data dataset = new Data(mat, Data.DISCRETE);
+
         Algorithm a = new ID3(5, 200);
 
-        Report r = kFold.generateReport(a, mat);
+        Report r = kFold.generateReport(a, dataset);
         Vector accuracies = r.getAccuracies();
         LOG.info("kfold test accuracy: {}", accuracies.sum()/accuracies.length());
     }

@@ -43,7 +43,7 @@ public class AdaboostTest {
         mat.setCol(mat.colCount()-1, v);
         mat.dropCol(0); // removing id
 
-        Vector attributeTypes = new Vector(new int[mat.colCount()]);
+        Vector attributeTypes = new Vector(new int[mat.colCount()-1]);
         attributeTypes.fill(Data.DISCRETE);
 
         Report r = kFold.generateReport(adaboost, new Data(mat, attributeTypes));

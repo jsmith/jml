@@ -66,8 +66,8 @@ public class ID3Test {
         ID3Model model = (ID3Model)id3.fit(dataset);
 
         Node root = model.getRoot();
-        assertEquals(0, root.getChildren().size());
-        assertEquals((int)0, model.predict(new Vector(new int[]{1, 1, 1})));
+        assertEquals(2, root.getChildren().size());
+        assertEquals((int)1, model.predict(new Vector(new int[]{1, 1, 1})));
     }
 
     @Test

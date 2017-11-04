@@ -1,6 +1,5 @@
 package ca.jacob.cs6735.util;
 
-import ca.jacob.cs6735.nb.NaiveBayesModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,11 +13,12 @@ public class Data {
 
     private Matrix x;
     private Vector y;
-    private final Vector dataTypes;
+    private final Vector attributeTypes;
 
-    public Data(Matrix x, Vector y, Vector dataTypes) {
-        if(x.colCount() != dataTypes.length()) {
-            throw new DataException("data types length must match attribute count");
+    public Data(Matrix x, Vector y, Vector attributeTypes) {
+        if(x.colCount() != attributeTypes.length()) {
+            LOG.error("length mismatch: attributes: {}, attribute types: {}", x.colCount(), attributeTypes.length());
+            throw new DataException("attribute type vector length must match attribute count");
         }
 
         if(x.rowCount() != y.length()) {
@@ -27,25 +27,25 @@ public class Data {
 
         this.x = x;
         this.y = y;
-        this.dataTypes = dataTypes;
+        this.attributeTypes = attributeTypes;
     }
 
-    public Data(Matrix data, Vector dataTypes) {
-        if(data.colCount()-1 != dataTypes.length()) {
-            LOG.error("length mismatch: attributes: {}, attribute types: {}", data.colCount()-1, dataTypes.length());
+    public Data(Matrix data, Vector attributeTypes) {
+        if(data.colCount()-1 != attributeTypes.length()) {
+            LOG.error("length mismatch: attributes: {}, attribute types: {}", data.colCount()-1, attributeTypes.length());
             throw new DataException("attribute type vector length must match attribute count");
         }
 
         this.x = data;
         this.y = x.col(x.colCount()-1);
         x.dropCol(x.colCount()-1);
-        this.dataTypes = dataTypes;
+        this.attributeTypes = attributeTypes;
     }
 
     public Data(Matrix data, int attributeType) {
         Vector dataTypes = new Vector(new int[data.colCount()-1]);
         dataTypes.fill(attributeType);
-        this.dataTypes = dataTypes;
+        this.attributeTypes = dataTypes;
 
         this.x = data;
         this.y = x.col(x.colCount()-1);
@@ -55,14 +55,14 @@ public class Data {
     public Data(Matrix x, Vector y, int attributeType) {
         Vector dataTypes = new Vector(new int[x.colCount()]);
         dataTypes.fill(attributeType);
-        this.dataTypes = dataTypes;
+        this.attributeTypes = dataTypes;
 
         this.x = x;
         this.y = y;
     }
 
-    public Data(Vector dataTypes) {
-        this.dataTypes = dataTypes;
+    public Data(Vector attributeTypes) {
+        this.attributeTypes = attributeTypes;
         this.x = new Matrix();
         this.y = new Vector();
     }
@@ -84,7 +84,7 @@ public class Data {
             Data d = separated.get(value);
             if (d == null) {
                 LOG.trace("adding new split based on value {}", value);
-                d = new Data(this.dataTypes);
+                d = new Data(this.attributeTypes);
                 separated.put(value, d);
             }
 
@@ -126,11 +126,11 @@ public class Data {
     }
 
     public int attributeType(int j) {
-        return dataTypes.intAt(j);
+        return attributeTypes.intAt(j);
     }
 
     public Data samples(Vector indices) {
-        return new Data(x.rows(indices), y.at(indices), dataTypes);
+        return new Data(x.rows(indices), y.at(indices), attributeTypes);
     }
 
     public Matrix getX() {
@@ -141,7 +141,7 @@ public class Data {
         return y;
     }
 
-    public Vector getDataTypes() {
-        return dataTypes.clone();
+    public Vector getAttributeTypes() {
+        return attributeTypes.clone();
     }
 }

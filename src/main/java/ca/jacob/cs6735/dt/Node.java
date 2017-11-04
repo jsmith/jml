@@ -85,7 +85,7 @@ public class Node {
                 Data subset = split.get(value);
                 if (subset == null) {
                     LOG.trace("adding test node for value {}", value);
-                    Vector attributeTypes = data.getDataTypes();
+                    Vector attributeTypes = data.getAttributeTypes();
                     attributeTypes.remove(j);
                     subset = new Data(attributeTypes);
                     split.put(value, subset);
@@ -169,8 +169,8 @@ public class Node {
     }
 
     public int depth() {
-        if(children == null) {
-            return 1;
+        if(children == null || this.isLeaf()) {
+            return 0;
         } else {
             int max = 0;
             for(Map.Entry<Integer, Node> entry : children.entrySet()) {

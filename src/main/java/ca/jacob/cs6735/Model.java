@@ -17,8 +17,7 @@ public abstract class Model {
 
     public double accuracy(Data data) {
         Matrix x = data.getX();
-        Vector y = x.col(x.colCount()-1);
-        x.dropCol(x.colCount()-1);
+        Vector y = data.getY();
         Vector yHat = predict(x);
         LOG.info("y {}, yHat {}", y.subVector(0, 5), yHat.subVector(0, 5));
         Vector err = error(y, yHat);

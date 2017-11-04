@@ -5,18 +5,23 @@
         </encoder>
     </appender>
 
+    <logger name="ca.jacob.cs6735.Model" level="warn"></logger>
+
     <logger name="ca.jacob.cs6735.dt.Node" level="warn"></logger>
-    <logger name="ca.jacob.cs6735.test.MathTest" level="debug"></logger>
+
     <logger name="ca.jacob.cs6735.nb.NaiveBayesModel" level="debug"></logger>
     <logger name="ca.jacob.cs6735.nb.NaiveBayes" level="debug"></logger>
-    <logger name="ca.jacob.cs6735.Model" level="info"></logger>
+
     <logger name="ca.jacob.cs6735.ensemble.RandomForestModel" level="info"></logger>
     <logger name="ca.jacob.cs6735.ensemble.RandomForest" level="info"></logger>
+
     <logger name="ca.jacob.cs6735.util.ML" level="info"></logger>
-    <logger name="ca.jacob.cs6735.test" level="info"></logger>
-    <logger name="ca.jacob.cs6735.test.DataUtil" level="debug"></logger>
     <logger name="ca.jacob.cs6735.util.File" level="debug"></logger>
     <logger name="ca.jacob.cs6735.util.Data" level="info"></logger>
+
+    <logger name="ca.jacob.cs6735.test.MathTest" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.test" level="info"></logger>
+    <logger name="ca.jacob.cs6735.test.DataUtil" level="debug"></logger>
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

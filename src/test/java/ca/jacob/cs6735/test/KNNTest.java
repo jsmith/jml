@@ -27,7 +27,7 @@ public class KNNTest {
         Data data = new Data(m, DISCRETE);
         LOG.info("data samples: {}, attributes: {}", data.sampleCount(), data.attributeCount());
 
-        int k = 2;
+        int k = 3;
         Algorithm knn = new KNN(k, false, new Hamming());
 
         KFold kFold = new KFold(5);

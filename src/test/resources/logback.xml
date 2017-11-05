@@ -5,25 +5,27 @@
         </encoder>
     </appender>
 
-    <logger name="ca.jacob.cs6735.Model" level="info"></logger>
+    <logger name="ca.jacob.cs6735.Model" level="warn"></logger>
+    <logger name="ca.jacob.cs6735.KFold" level="info"></logger>
 
     <logger name="ca.jacob.cs6735.dt.Node" level="warn"></logger>
 
     <logger name="ca.jacob.cs6735.nb.NaiveBayesModel" level="info"></logger>
     <logger name="ca.jacob.cs6735.nb.NaiveBayes" level="info"></logger>
     <logger name="ca.jacob.cs6735.nb.ClassSummary" level="info"></logger>
-    <logger name="ca.jacob.cs6735.nb.DiscreteAttribute" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.nb.DiscreteAttribute" level="info"></logger>
 
     <logger name="ca.jacob.cs6735.ensemble.RandomForestModel" level="info"></logger>
     <logger name="ca.jacob.cs6735.ensemble.RandomForest" level="info"></logger>
 
-    <logger name="ca.jacob.cs6735.neighbors.KNNModel" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.neighbors.KNNModel" level="info"></logger>
 
     <logger name="ca.jacob.cs6735.util.ML" level="info"></logger>
     <logger name="ca.jacob.cs6735.util.File" level="info"></logger>
     <logger name="ca.jacob.cs6735.util.Data" level="info"></logger>
 
     <logger name="ca.jacob.cs6735.test.MathTest" level="info"></logger>
+    <logger name="ca.jacob.cs6735.test.AdaboostTest" level="debug"></logger>
     <logger name="ca.jacob.cs6735.test" level="info"></logger>
     <logger name="ca.jacob.cs6735.test.DataUtil" level="info"></logger>
 

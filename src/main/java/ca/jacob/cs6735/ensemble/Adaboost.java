@@ -45,7 +45,7 @@ public class Adaboost implements Algorithm {
             LOG.debug("first row: {} -> {}", weightedData.sample(0));
 
             Model m = algorithm.fit(weightedData);
-            LOG.debug("accuracy of model: {}", m.accuracy(weightedData));
+            //LOG.debug("accuracy of model: {}", m.accuracy(weightedData));
 
             Vector h = m.predict(data.getX());
 

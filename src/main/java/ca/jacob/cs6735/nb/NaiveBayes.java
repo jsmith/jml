@@ -41,7 +41,6 @@ public class NaiveBayes implements Algorithm {
             double classProbability = ((double)d.sampleCount()) / data.sampleCount();
 
             LOG.debug("dataset: {}", d);
-
             for(int j = 0; j < d.attributeCount(); j++) {
                 Vector attributeValues = d.attribute(j);
                 if(d.attributeType(j) == CONTINUOUS) {

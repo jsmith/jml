@@ -32,9 +32,11 @@ public class KFold {
     }
 
     public Report generateReport(Algorithm a, Data data) {
+        LOG.debug("generate report starting");
         Vector accuracies = new Vector();
         Map<Vector, Vector> indices = this.generateIndices(data);
         for(Map.Entry<Vector, Vector> entry : indices.entrySet()) {
+            LOG.debug("starting kfold iteration {}", accuracies.length());
             Vector trainIndices = entry.getKey();
             Vector testIndices = entry.getValue();
 
@@ -43,7 +45,8 @@ public class KFold {
 
             Data testData = data.samples(testIndices);
 
-            accuracies.add(m.accuracy(testData));
+            double accuracy = m.accuracy(testData);
+            accuracies.add(accuracy);
         }
         return new Report(accuracies);
     }

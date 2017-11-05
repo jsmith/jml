@@ -290,4 +290,12 @@ public class Vector implements Iterable<Double> {
         double variance = this.sub(mean).pow(2).sum() / (this.length() - 1);
         return sqrt(variance);
     }
+
+    public Vector sub(Vector other) {
+        Vector v = new Vector(new double[other.length()]);
+        for(int i = 0; i < other.length(); i++) {
+            v.set(i, this.at(i)-other.at(i));
+        }
+        return v;
+    }
 }

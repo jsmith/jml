@@ -17,9 +17,10 @@ public class ContinuousAttribute implements Attribute {
     public ContinuousAttribute(int attribute, Vector values, Distribution distribution) {
         this.values = values;
         this.distribution = distribution;
-        this.mean = values.mean();
-        this.stdev = values.stdev();
-        LOG.debug("attribute {}: mean -> {}; stdev -> {}", mean, stdev);
+        this.mean = this.values.mean();
+        this.stdev = this.values.stdev();
+        this.attribute = attribute;
+        LOG.debug("attribute {}: mean -> {}; stdev -> {}", this.attribute, mean, stdev);
     }
 
     @Override

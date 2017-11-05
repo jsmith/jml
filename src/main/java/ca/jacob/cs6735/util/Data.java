@@ -150,4 +150,8 @@ public class Data {
         }
         return toReturn;
     }
+
+    public int classValue(int i) {
+        return y.intAt(i);
+    }
 }

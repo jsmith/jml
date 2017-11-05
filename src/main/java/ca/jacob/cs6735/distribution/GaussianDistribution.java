@@ -14,7 +14,7 @@ public class GaussianDistribution implements Distribution {
 
     public double probability(double x, double mean, double stdev) {
         double exponent = java.lang.Math.exp(-pow(x-mean, 2)/(2*pow(stdev, 2)));
-        return (1/ (sqrt(2*PI) *stdev)) * exponent;
+        return (1 / (sqrt(2*PI) * stdev)) * exponent;
     }
 
     public Vector probability(Vector x, Vector means, Vector stdevs) {

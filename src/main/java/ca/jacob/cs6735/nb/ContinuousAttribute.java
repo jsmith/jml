@@ -2,18 +2,24 @@ package ca.jacob.cs6735.nb;
 
 import ca.jacob.cs6735.distribution.Distribution;
 import ca.jacob.cs6735.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ContinuousAttribute implements Attribute {
+    private static final Logger LOG = LoggerFactory.getLogger(ContinuousAttribute.class);
+
     private Vector values;
+    private int attribute;
     private Distribution distribution;
     private double mean;
     private double stdev;
 
-    public ContinuousAttribute(Vector values, Distribution distribution, double mean, double stdev) {
+    public ContinuousAttribute(int attribute, Vector values, Distribution distribution) {
         this.values = values;
         this.distribution = distribution;
-        this.mean = mean;
-        this.stdev = stdev;
+        this.mean = values.mean();
+        this.stdev = values.stdev();
+        LOG.debug("attribute {}: mean -> {}; stdev -> {}", mean, stdev);
     }
 
     @Override

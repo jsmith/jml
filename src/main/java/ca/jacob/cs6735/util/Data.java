@@ -141,4 +141,13 @@ public class Data {
     public Vector getAttributeTypes() {
         return attributeTypes.clone();
     }
+
+    @Override
+    public String toString() {
+        String toReturn = "\n";
+        for(int i = 0; i < x.rowCount(); i++) {
+            toReturn += x.row(i) + " -> " + y.at(i) + "\n";
+        }
+        return toReturn;
+    }
 }

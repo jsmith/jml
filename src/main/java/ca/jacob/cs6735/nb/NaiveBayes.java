@@ -48,9 +48,11 @@ public class NaiveBayes implements Algorithm {
                     if(distribution == null) {
                         throw new BayesException("a distribution must be supplied");
                     }
+
                     double mean = attributeValues.mean();
                     double stdev = attributeValues.stdev();
-                    LOG.trace("{}: att {} mean: {}", classValue, j, mean);
+                    LOG.debug("attribute {}: mean -> {}; stdev -> {}", j, mean, stdev);
+
                     attributes.add(new ContinuousAttribute(attributeValues, distribution, mean, stdev));
                 } else if(d.attributeType(j) == DISCRETE) {
                     attributes.add(new DiscreteAttribute(attributeValues));

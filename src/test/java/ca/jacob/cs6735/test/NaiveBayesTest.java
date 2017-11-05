@@ -34,7 +34,7 @@ public class NaiveBayesTest {
         Matrix data = new Matrix(new int[][]{{1,20,1}, {2,21,0}, {3,22,1}, {4,22,0}});
         Data d = new Data(data, CONTINUOUS);
 
-        NaiveBayes gnb = new NaiveBayes();
+        NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
         NaiveBayesModel m = (NaiveBayesModel) gnb.fit(d);
         List<ClassSummary> summaries = m.getSummaries();
         int i = 0;

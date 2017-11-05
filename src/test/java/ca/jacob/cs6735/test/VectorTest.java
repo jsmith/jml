@@ -91,4 +91,9 @@ public class VectorTest {
         Vector result = v.pow(3);
         assertEquals(new Vector(new int[]{1, 8, 27, 64, 64}), result);
     }
+
+    @Test
+    public void testCount() {
+        assertEquals(2, v.count(4.0));
+    }
 }

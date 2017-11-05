@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static ca.jacob.cs6735.test.DataUtil.loadBreastCancerData;
 import static ca.jacob.cs6735.test.DataUtil.loadEcoliData;
 import static ca.jacob.cs6735.util.Data.CONTINUOUS;
 import static ca.jacob.cs6735.util.Data.DISCRETE;
@@ -63,7 +64,7 @@ public class NaiveBayesTest {
     @Test
     public void testGaussianNaiveBayesPredictWithData() throws Throwable {
         Matrix data = loadEcoliData(RandomForestTest.class);
-        Vector attributeTypes = new Vector(new int[]{CONTINUOUS, CONTINUOUS, DISCRETE, DISCRETE, CONTINUOUS, CONTINUOUS, CONTINUOUS,});
+        Vector attributeTypes = new Vector(new int[]{CONTINUOUS, CONTINUOUS, CONTINUOUS, CONTINUOUS, CONTINUOUS,});
         Data dataSet = new Data(data, attributeTypes);
 
         NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
@@ -82,7 +83,7 @@ public class NaiveBayesTest {
     @Test
     public void testNaiveBayes() throws Throwable {
         Matrix data = loadEcoliData(RandomForestTest.class);
-        Vector attributeTypes = new Vector(new int[]{CONTINUOUS, CONTINUOUS, DISCRETE, DISCRETE, CONTINUOUS, CONTINUOUS, CONTINUOUS,});
+        Vector attributeTypes = new Vector(new int[]{CONTINUOUS, CONTINUOUS, CONTINUOUS, CONTINUOUS, CONTINUOUS,});
         Data dataSet = new Data(data, attributeTypes);
 
         Algorithm naiveBayes = new NaiveBayes(new GaussianDistribution());
@@ -92,5 +93,21 @@ public class NaiveBayesTest {
         Vector accuracies = r.getAccuracies();
 
         LOG.info("NaiveBayes accuracy: {}%", accuracies.mean());
+    }
+
+    @Test
+    public void testNaiveBayesWithBreastCancer() throws Throwable {
+        Matrix data = loadBreastCancerData(RandomForestTest.class);
+        Vector attributeTypes = new Vector(new int[data.colCount()-1]);
+        attributeTypes.fill(DISCRETE);
+        Data dataSet = new Data(data, attributeTypes);
+
+        Algorithm naiveBayes = new NaiveBayes(new GaussianDistribution());
+
+        KFold kFold = new KFold(5);
+        Report r = kFold.generateReport(naiveBayes, dataSet);
+        Vector accuracies = r.getAccuracies();
+
+        LOG.info("NaiveBayes Accuracy: {}%", accuracies.mean());
     }
 }

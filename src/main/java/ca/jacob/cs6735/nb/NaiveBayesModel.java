@@ -26,7 +26,7 @@ public class NaiveBayesModel extends Model {
         for(ClassSummary c : summaries) {
             double probability = c.probability(e);
             if(maxSummary == null || probability > maxProbability) {
-                LOG.debug("max probability is now: {}", probability);
+                LOG.debug("max probability is now class {}: {}", c.getClassValue(), probability);
                 maxSummary = c;
                 maxProbability = probability;
             }

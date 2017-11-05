@@ -33,7 +33,7 @@ public class NaiveBayes implements Algorithm {
 
         List<ClassSummary> summaries = new ArrayList<ClassSummary>();
         for(Map.Entry<Integer, Data> entry : separated.entrySet()) {
-            LOG.debug("starting summary for attribute {}", entry.getKey());
+            LOG.debug("starting summary for class {}", entry.getKey());
             List<Attribute> attributes = new ArrayList<Attribute>();
 
             int classValue = entry.getKey();

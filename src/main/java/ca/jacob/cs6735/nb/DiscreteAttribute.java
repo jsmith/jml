@@ -17,6 +17,6 @@ public class DiscreteAttribute implements Attribute {
     @Override
     public double probability(double value) {
         LOG.debug("{} occurred {} times in {}", value, values.count(value), values);
-        return values.count(value) / values.length();
+        return ((double)values.count(value)) / values.length();
     }
 }

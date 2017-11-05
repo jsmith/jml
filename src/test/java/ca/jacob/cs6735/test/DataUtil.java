@@ -32,11 +32,15 @@ public class DataUtil {
             row[row.length-1] = row[row.length-1].replace("pp", "5");
             row[row.length-1] = row[row.length-1].replace("im", "6");
             row[row.length-1] = row[row.length-1].replace("cp", "7");
+
             LOG.trace("with {}", row[row.length-1]);
             row[0] = "0"; //replacing sequence id
         }
         Matrix mat = new Matrix(data);
-        mat.dropCol(0); //removing 0's
+        mat.dropCol(3); //removing 0.50's
+        mat.dropCol(4); //removing 0.48s
+        mat.dropCol(0); // removing sequence ids
+
         LOG.debug("mat dimensions: {} x {}", mat.rowCount(), mat.colCount());
         return mat;
     }

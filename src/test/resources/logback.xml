@@ -5,12 +5,14 @@
         </encoder>
     </appender>
 
-    <logger name="ca.jacob.cs6735.Model" level="warn"></logger>
+    <logger name="ca.jacob.cs6735.Model" level="info"></logger>
 
     <logger name="ca.jacob.cs6735.dt.Node" level="warn"></logger>
 
     <logger name="ca.jacob.cs6735.nb.NaiveBayesModel" level="debug"></logger>
-    <logger name="ca.jacob.cs6735.nb.NaiveBayes" level="info"></logger>
+    <logger name="ca.jacob.cs6735.nb.NaiveBayes" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.nb.ClassSummary" level="debug"></logger>
+    <logger name="ca.jacob.cs6735.nb.DiscreteAttribute" level="debug"></logger>
 
     <logger name="ca.jacob.cs6735.ensemble.RandomForestModel" level="info"></logger>
     <logger name="ca.jacob.cs6735.ensemble.RandomForest" level="info"></logger>

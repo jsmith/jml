@@ -43,21 +43,23 @@ public class KNNModel extends Model {
                 break;
             }
 
-            double index = entry.getValue();
-            int classValue = dataset.classValue(i);
+            int index = entry.getValue();
+            int classValue = dataset.classValue(index);
 
             double distance = entry.getKey();
             if(weighted) {
                 //TODO
             }
-            LOG.debug("{}: index: {}; distance: {}", i, index, distance);
+            LOG.debug("{}: index: {}; distance: {}, vote: {}", new Object[]{i, index, distance, classValue});
 
             votes.add(classValue);
 
             i++;
         }
 
-        return (int)votes.valueOfMaxOccurrence();
+        int prediction = (int)votes.valueOfMaxOccurrence();
+        LOG.debug("predicting: {}", prediction);
+        return prediction;
     }
 
     @Override

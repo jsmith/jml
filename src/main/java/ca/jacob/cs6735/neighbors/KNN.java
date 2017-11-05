@@ -18,8 +18,8 @@ public class KNN implements Algorithm {
 
     @Override
     public Model fit(Data d) {
-        if(k < d.sampleCount()) {
-            throw new KNNException("k must be larger or equal to data set sample count");
+        if(k > d.sampleCount()) {
+            throw new KNNException("k must be smaller or equal to data set sample count");
         }
         return new KNNModel(d, k, weighted, df);
     }

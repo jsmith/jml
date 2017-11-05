@@ -17,6 +17,8 @@
     <logger name="ca.jacob.cs6735.ensemble.RandomForestModel" level="info"></logger>
     <logger name="ca.jacob.cs6735.ensemble.RandomForest" level="info"></logger>
 
+    <logger name="ca.jacob.cs6735.neighbors.KNNModel" level="debug"></logger>
+
     <logger name="ca.jacob.cs6735.util.ML" level="info"></logger>
     <logger name="ca.jacob.cs6735.util.File" level="info"></logger>
     <logger name="ca.jacob.cs6735.util.Data" level="info"></logger>

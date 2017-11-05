@@ -32,4 +32,8 @@ public class ClassSummary {
     public List<Attribute> getAttributes() {
         return attributes;
     }
+
+    public double getClassProbability() {
+        return classProbability;
+    }
 }

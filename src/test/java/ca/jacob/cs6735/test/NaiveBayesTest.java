@@ -3,6 +3,7 @@ package ca.jacob.cs6735.test;
 import ca.jacob.cs6735.Algorithm;
 import ca.jacob.cs6735.KFold;
 import ca.jacob.cs6735.Model;
+import ca.jacob.cs6735.distribution.GaussianDistribution;
 import ca.jacob.cs6735.nb.ContinuousAttribute;
 import ca.jacob.cs6735.nb.NaiveBayes;
 import ca.jacob.cs6735.nb.NaiveBayesModel;
@@ -39,8 +40,8 @@ public class NaiveBayesTest {
         for(ClassSummary s : summaries) {
             if(i == 0) {
                 ContinuousAttribute a = (ContinuousAttribute) s.getAttributes().get(0);
-                assertEquals(a.getMean(), 3, DELTA);
-                assertEquals(a.getStdev(), 1.4142135623730951, DELTA);
+                assertEquals(3, a.getMean(), DELTA);
+                assertEquals(1.4142135623730951, a.getStdev(), DELTA);
             }
             LOG.info("summary: {}", s);
             i++;
@@ -53,7 +54,7 @@ public class NaiveBayesTest {
         Vector y = new Vector(new double[]{1, 1, 2});
         Data d = new Data(x, y, CONTINUOUS);
 
-        NaiveBayes gnb = new NaiveBayes();
+        NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
         Model m = gnb.fit(d);
         int prediction = m.predict(new Vector(new double[]{1.1, 1}));
         assertEquals(1, prediction);
@@ -65,10 +66,17 @@ public class NaiveBayesTest {
         Vector attributeTypes = new Vector(new int[]{CONTINUOUS, CONTINUOUS, DISCRETE, DISCRETE, CONTINUOUS, CONTINUOUS, CONTINUOUS,});
         Data dataSet = new Data(data, attributeTypes);
 
-        NaiveBayes gnb = new NaiveBayes();
+        NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
         NaiveBayesModel m = (NaiveBayesModel)gnb.fit(dataSet);
 
-        LOG.info("NaiveBayes accuracy: {}%", m.accuracy(dataSet));
+        List<ClassSummary> summaries = m.getSummaries();
+        Vector classProbabilities = new Vector();
+        for(ClassSummary c : summaries) {
+            classProbabilities.add(c.getClassProbability());
+        }
+        assertEquals(1, classProbabilities.sum(), DELTA);
+
+        LOG.info("NaiveBayes Accuracy: {}%", m.accuracy(dataSet));
     }
 
     @Test
@@ -77,7 +85,7 @@ public class NaiveBayesTest {
         Vector attributeTypes = new Vector(new int[]{CONTINUOUS, CONTINUOUS, DISCRETE, DISCRETE, CONTINUOUS, CONTINUOUS, CONTINUOUS,});
         Data dataSet = new Data(data, attributeTypes);
 
-        Algorithm naiveBayes = new NaiveBayes();
+        Algorithm naiveBayes = new NaiveBayes(new GaussianDistribution());
 
         KFold kFold = new KFold(5);
         Report r = kFold.generateReport(naiveBayes, dataSet);

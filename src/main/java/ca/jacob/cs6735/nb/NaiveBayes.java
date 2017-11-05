@@ -33,24 +33,31 @@ public class NaiveBayes implements Algorithm {
 
         List<ClassSummary> summaries = new ArrayList<ClassSummary>();
         for(Map.Entry<Integer, Data> entry : separated.entrySet()) {
+            LOG.debug("starting summary for attribute {}", entry.getKey());
             List<Attribute> attributes = new ArrayList<Attribute>();
 
             int classValue = entry.getKey();
             Data d = entry.getValue();
             double classProbability = ((double)d.sampleCount()) / data.sampleCount();
 
+            LOG.debug("dataset: {}", d);
+
             for(int j = 0; j < d.attributeCount(); j++) {
                 Vector attributeValues = d.attribute(j);
                 if(d.attributeType(j) == CONTINUOUS) {
+                    if(distribution == null) {
+                        throw new BayesException("a distribution must be supplied");
+                    }
                     double mean = attributeValues.mean();
                     double stdev = attributeValues.stdev();
+                    LOG.trace("{}: att {} mean: {}", classValue, j, mean);
                     attributes.add(new ContinuousAttribute(attributeValues, distribution, mean, stdev));
                 } else if(d.attributeType(j) == DISCRETE) {
                     attributes.add(new DiscreteAttribute(attributeValues));
                 }
 
             }
-            LOG.debug("for class {}: attribute count -> {}", classValue, attributes.size());
+            LOG.debug("{}: probability: {}; attribute count -> {}", classValue, classProbability, attributes.size());
 
             summaries.add(new ClassSummary(classValue, classProbability, attributes));
         }

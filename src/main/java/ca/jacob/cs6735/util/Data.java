@@ -74,12 +74,9 @@ public class Data {
     public Map<Integer, Data> splitByClass() {
         Map<Integer, Data> separated = new HashMap<Integer, Data>();
 
-        int j = x.colCount()-1;
-        LOG.debug("splitting by col: {}", j);
-
         for (int i = 0; i < x.rowCount(); i++) {
             LOG.trace("checking row {}", i);
-            int value = x.intAt(i, j);
+            int value = y.intAt(i);
 
             Data d = separated.get(value);
             if (d == null) {

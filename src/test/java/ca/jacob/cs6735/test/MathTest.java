@@ -1,7 +1,6 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.distribution.Gaussian;
-import ca.jacob.cs6735.util.Math;
+import ca.jacob.cs6735.distribution.GaussianDistribution;
 import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.junit.Test;
@@ -38,7 +37,7 @@ public class MathTest {
 
     @Test
     public void testProbability() {
-        double probability = new Gaussian().probability(71.5, 73, 6.2);
+        double probability = new GaussianDistribution().probability(71.5, 73, 6.2);
         assertEquals(0.0624896575937, probability, DELTA);
     }
 }

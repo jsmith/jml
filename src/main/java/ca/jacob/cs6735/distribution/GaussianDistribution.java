@@ -1,21 +1,16 @@
 package ca.jacob.cs6735.distribution;
 
-import ca.jacob.cs6735.nb.ClassSummary;
 import ca.jacob.cs6735.util.MathException;
-import ca.jacob.cs6735.util.Matrix;
 import ca.jacob.cs6735.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.Map;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
-public class Gaussian implements Distribution {
-    private static final Logger LOG = LoggerFactory.getLogger(Gaussian.class);
+public class GaussianDistribution implements Distribution {
+    private static final Logger LOG = LoggerFactory.getLogger(GaussianDistribution.class);
 
     public double probability(double x, double mean, double stdev) {
         double exponent = java.lang.Math.exp(-pow(x-mean, 2)/(2*pow(stdev, 2)));

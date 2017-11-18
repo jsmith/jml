@@ -47,6 +47,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <version>3.7.0</version>
                     <archive>
                         <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
                     </archive>

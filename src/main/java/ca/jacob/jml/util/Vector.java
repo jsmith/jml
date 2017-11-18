@@ -311,4 +311,22 @@ public class Vector implements Iterable<Double> {
         }
         return v;
     }
+
+    public double median() {
+        if(this.length() == 0) {
+            throw new DataException("cannot compute median of empty vector");
+        }
+
+        Vector v = this.clone();
+        v.sort();
+        if(v.length()%2 == 1) {
+            return v.at(v.length()/2);
+        } else {
+            return v.at(v.length()/2) + v.at(v.length()/2 + 1);
+        }
+    }
+
+    public void sort() {
+        Collections.sort(data);
+    }
 }

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static ca.jacob.jml.util.DataSet.DISCRETE;
 import static ca.jacob.jml.util.Math.calculateOccurrences;
 import static ca.jacob.jml.util.Math.log2;
 
@@ -76,7 +77,10 @@ public class Node {
 
         double minEntropy = -1;
         for(int j = 0; j < numOfAttributes; j++) {
-            LOG.trace("checking attribute {}", j);
+            LOG.trace("checking attribute {} of type {}", j, dataSet.attributeType(j));
+            if(dataSet.attributeType(j) == DISCRETE) {
+                Map<Integer, DataSet> split = dataSet.splitByAttribute(j);
+            }
             Map<Integer, DataSet> split = new HashMap<Integer, DataSet>();
             for (int i = 0; i < dataSet.sampleCount(); i++) {
                 LOG.trace("checking row {}", i);

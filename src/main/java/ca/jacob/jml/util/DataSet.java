@@ -93,6 +93,38 @@ public class DataSet {
         return separated;
     }
 
+    public Map<Integer, DataSet> splitByAttribute(int j) {
+        Map<Integer, DataSet> separated = new HashMap<Integer, DataSet>();
+
+        if(this.attributeType(j) == DISCRETE) {
+            for (int i = 0; i < x.rowCount(); i++) {
+                LOG.trace("checking row {}", i);
+                int value = x.intAt(i, j);
+
+                DataSet d = separated.get(value);
+                if (d == null) {
+                    LOG.trace("adding new split based on value {}", value);
+                    d = new DataSet(this.attributeTypes);
+                    separated.put(value, d);
+                }
+
+                Vector v = this.sample(i);
+                d.add(v);
+            }
+        } else if(this.attributeType(j) == CONTINUOUS) {
+            for (int i = 0; i < x.rowCount(); i++) {
+                LOG.trace("checking row {}", i);
+                Vector col = x.col(j);
+                double median = col.median();
+            }
+        } else {
+            throw new DataException("unsupported data type");
+        }
+
+
+        return separated;
+    }
+
     public void add(Vector sample) {
         LOG.debug("adding sample: {} to y: {} and x: {}", sample, y, x);
         y.add(sample.at(sample.length()-1));

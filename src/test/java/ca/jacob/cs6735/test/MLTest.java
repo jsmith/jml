@@ -1,16 +1,16 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.util.Vector;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static ca.jacob.cs6735.util.ML.generateIndices;
-import static ca.jacob.cs6735.util.ML.generateIndicesWithoutReplacement;
-import static ca.jacob.cs6735.util.Math.calculateOccurrences;
-import static ca.jacob.cs6735.util.Math.ln;
+import static ca.jacob.jml.util.ML.generateIndices;
+import static ca.jacob.jml.util.ML.generateIndicesWithoutReplacement;
+import static ca.jacob.jml.util.Math.calculateOccurrences;
+import static ca.jacob.jml.util.Math.ln;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 

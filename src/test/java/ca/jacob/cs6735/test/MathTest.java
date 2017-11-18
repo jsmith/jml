@@ -1,13 +1,14 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.distribution.GaussianDistribution;
-import ca.jacob.cs6735.util.Matrix;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.distribution.GaussianDistribution;
+import ca.jacob.jml.util.DataSet;
+import ca.jacob.jml.util.Matrix;
+import ca.jacob.jml.util.Vector;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.cs6735.test.DataUtil.loadEcoliData;
+import static ca.jacob.cs6735.DataUtil.loadEcoliData;
 import static org.junit.Assert.assertEquals;
 
 public class MathTest {
@@ -26,8 +27,8 @@ public class MathTest {
 
     @Test
     public void testStdDevAndMeanWithData() throws Throwable {
-        Matrix data = loadEcoliData(RandomForestTest.class);
-        Vector v = data.col(0);
+        DataSet data = loadEcoliData(RandomForestTest.class);
+        Vector v = data.getX().col(0);
         LOG.debug("v -> {}", v.subVector(0, 5));
         double stdev = v.stdev();
         double mean = v.mean();

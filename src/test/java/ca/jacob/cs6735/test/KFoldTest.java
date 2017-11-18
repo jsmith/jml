@@ -1,13 +1,12 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.Algorithm;
-import ca.jacob.cs6735.KFold;
-import ca.jacob.cs6735.dt.ID3;
-import ca.jacob.cs6735.dt.ID3Model;
-import ca.jacob.cs6735.util.Data;
-import ca.jacob.cs6735.util.Matrix;
-import ca.jacob.cs6735.util.Report;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.Algorithm;
+import ca.jacob.jml.KFold;
+import ca.jacob.jml.dt.ID3;
+import ca.jacob.jml.util.DataSet;
+import ca.jacob.jml.util.Matrix;
+import ca.jacob.jml.util.Report;
+import ca.jacob.jml.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,16 +14,16 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static ca.jacob.cs6735.util.File.readCSV;
-import static ca.jacob.cs6735.util.ML.removeSamplesWith;
-import static ca.jacob.cs6735.util.ML.shuffle;
+import static ca.jacob.cs6735.DataUtil.readCSV;
+import static ca.jacob.jml.util.ML.removeSamplesWith;
+import static ca.jacob.jml.util.ML.shuffle;
 import static junit.framework.Assert.assertEquals;
 
 public class KFoldTest {
     private static final Logger LOG = LoggerFactory.getLogger(KFoldTest.class);
 
     private KFold kFold;
-    private Data dataset;
+    private DataSet dataset;
     private Matrix x;
     private Vector y;
 
@@ -33,7 +32,7 @@ public class KFoldTest {
         kFold = new KFold(5, 23l);
         x = new Matrix(new int[][]{{1}, {0}, {1}, {0}, {1}, {1}});
         y = new Vector(new int[]{1, 0, 1, 0, 1, 1});
-        dataset = new Data(x, y, Data.DISCRETE);
+        dataset = new DataSet(x, y, DataSet.DISCRETE);
     }
 
     @Test
@@ -54,7 +53,7 @@ public class KFoldTest {
         Matrix mat = new Matrix(data);
         mat.dropCol(0); // removing id
 
-        Data dataset = new Data(mat, Data.DISCRETE);
+        DataSet dataset = new DataSet(mat, DataSet.DISCRETE);
 
         Algorithm a = new ID3(5, 200);
 

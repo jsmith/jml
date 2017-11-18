@@ -1,26 +1,24 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.KFold;
-import ca.jacob.cs6735.Model;
-import ca.jacob.cs6735.dt.ID3;
-import ca.jacob.cs6735.ensemble.Adaboost;
-import ca.jacob.cs6735.nb.NaiveBayes;
-import ca.jacob.cs6735.util.Data;
-import ca.jacob.cs6735.util.Matrix;
-import ca.jacob.cs6735.util.Report;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.KFold;
+import ca.jacob.jml.dt.ID3;
+import ca.jacob.jml.ensemble.Adaboost;
+import ca.jacob.jml.nb.NaiveBayes;
+import ca.jacob.jml.util.DataSet;
+import ca.jacob.jml.util.Matrix;
+import ca.jacob.jml.util.Report;
+import ca.jacob.jml.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
-import static ca.jacob.cs6735.test.DataUtil.loadBreastCancerData;
-import static ca.jacob.cs6735.util.Data.DISCRETE;
-import static ca.jacob.cs6735.util.File.readCSV;
-import static ca.jacob.cs6735.util.ML.removeSamplesWith;
+import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
+import static ca.jacob.jml.util.DataSet.DISCRETE;
+import static ca.jacob.cs6735.DataUtil.readCSV;
+import static ca.jacob.jml.util.ML.removeSamplesWith;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 public class AdaboostTest {
     private static final Logger LOG = LoggerFactory.getLogger(AdaboostTest.class);
@@ -49,9 +47,10 @@ public class AdaboostTest {
         Vector attributeTypes = new Vector(new int[mat.colCount()-1]);
         attributeTypes.fill(DISCRETE);
 
-        Report r = kFold.generateReport(adaboost, new Data(mat, attributeTypes));
+        Report r = kFold.generateReport(adaboost, new DataSet(mat, attributeTypes));
 
         Vector accuracies = r.getAccuracies();
+        assertTrue(accuracies.mean() > 90);
         LOG.info("ID3 KFold test accuracy: {}", accuracies.sum()/accuracies.length());
     }
 
@@ -59,16 +58,16 @@ public class AdaboostTest {
     public void testNaiveBayesWithData() throws Throwable {
         NaiveBayes nb = new NaiveBayes();
         Adaboost adaboost = new Adaboost(nb, 50, 0.3);
-        Matrix data = loadBreastCancerData(AdaboostTest.class);
-        Vector y = data.col(data.colCount()-1);
-        y.replace(2, -1);
-        y.replace(4, 1);
-        data.dropCol(data.colCount()-1);
-        data.pushCol(y);
+        DataSet dataset = loadBreastCancerData(AdaboostTest.class);
+        Vector y = dataset.getY();
+        y = y.replace(2, -1);
+        y = y.replace(4, 1);
+        dataset.setY(y);
 
-        Report r = kFold.generateReport(adaboost, new Data(data, DISCRETE));
+        Report r = kFold.generateReport(adaboost, dataset);
 
         Vector accuracies = r.getAccuracies();
+        assertTrue(accuracies.mean() > 90);
         LOG.info("NB KFold Test accuracy: {}", accuracies.mean());
     }
 }

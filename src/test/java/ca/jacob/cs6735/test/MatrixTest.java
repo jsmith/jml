@@ -1,19 +1,19 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.util.Matrix;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.util.Matrix;
+import ca.jacob.jml.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static ca.jacob.cs6735.util.Math.calculateOccurrences;
+import static ca.jacob.jml.util.Math.calculateOccurrences;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 
 public class MatrixTest {
-    private ca.jacob.cs6735.util.Matrix matrix;
+    private ca.jacob.jml.util.Matrix matrix;
 
     @Before
     public void setup() {

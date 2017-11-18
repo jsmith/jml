@@ -1,27 +1,27 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.Model;
-import ca.jacob.cs6735.dt.ID3;
-import ca.jacob.cs6735.dt.ID3Model;
-import ca.jacob.cs6735.dt.Node;
-import ca.jacob.cs6735.util.Data;
-import ca.jacob.cs6735.util.Matrix;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.Model;
+import ca.jacob.jml.dt.ID3;
+import ca.jacob.jml.dt.ID3Model;
+import ca.jacob.jml.dt.Node;
+import ca.jacob.jml.util.DataSet;
+import ca.jacob.jml.util.Matrix;
+import ca.jacob.jml.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.cs6735.util.Data.DISCRETE;
-import static ca.jacob.cs6735.util.File.readCSV;
-import static ca.jacob.cs6735.util.ML.removeSamplesWith;
+import static ca.jacob.jml.util.DataSet.DISCRETE;
+import static ca.jacob.cs6735.DataUtil.readCSV;
+import static ca.jacob.jml.util.ML.removeSamplesWith;
 import static junit.framework.Assert.assertEquals;
 
 public class ID3Test {
     private static final Logger LOG = LoggerFactory.getLogger(ID3Test.class);
 
     private ID3 id3;
-    private Data dataset;
+    private DataSet dataset;
 
     @Before
     public void init() {
@@ -34,7 +34,7 @@ public class ID3Test {
                 1,
                 0,
                 0});
-        dataset = new Data(x, y, DISCRETE);
+        dataset = new DataSet(x, y, DISCRETE);
     }
 
     @Test
@@ -46,10 +46,10 @@ public class ID3Test {
         assertEquals(2, root.getChildren().size());
         assertEquals(false, root.isLeaf());
 
-        Data nodeZeroData = root.getChildren().get(0).getData();
-        Data nodeOneData = root.getChildren().get(1).getData();
-        assertEquals((int)1, nodeOneData.sampleCount());
-        assertEquals((int)2, nodeZeroData.sampleCount());
+        DataSet nodeZeroDataSet = root.getChildren().get(0).getDataSet();
+        DataSet nodeOneDataSet = root.getChildren().get(1).getDataSet();
+        assertEquals((int)1, nodeOneDataSet.sampleCount());
+        assertEquals((int)2, nodeZeroDataSet.sampleCount());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ID3Test {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);
 
-        Data d = new Data(new Matrix(data), DISCRETE);
+        DataSet d = new DataSet(new Matrix(data), DISCRETE);
 
         ID3 id3 = new ID3(2);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -90,7 +90,7 @@ public class ID3Test {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);
 
-        Data d = new Data(new Matrix(data), DISCRETE);
+        DataSet d = new DataSet(new Matrix(data), DISCRETE);
 
         ID3 id3 = new ID3(ID3.MAX_LEVEL_NONE);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -105,7 +105,7 @@ public class ID3Test {
         data = removeSamplesWith("?", data);
 
         Matrix m = new Matrix(data);
-        Data d = new Data(m, DISCRETE);
+        DataSet d = new DataSet(m, DISCRETE);
 
         ID3 id3 = new ID3(1);
         ID3Model model = (ID3Model) id3.fit(d);

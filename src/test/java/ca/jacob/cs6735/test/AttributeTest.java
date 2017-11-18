@@ -1,9 +1,9 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.distribution.GaussianDistribution;
-import ca.jacob.cs6735.nb.ContinuousAttribute;
-import ca.jacob.cs6735.nb.DiscreteAttribute;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.distribution.GaussianDistribution;
+import ca.jacob.jml.nb.ContinuousAttribute;
+import ca.jacob.jml.nb.DiscreteAttribute;
+import ca.jacob.jml.util.Vector;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

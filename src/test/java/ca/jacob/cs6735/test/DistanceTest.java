@@ -1,13 +1,10 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.distance.DistanceFunction;
-import ca.jacob.cs6735.distance.Euclidean;
-import ca.jacob.cs6735.distance.Hamming;
-import ca.jacob.cs6735.neighbors.KNNModel;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.distance.DistanceFunction;
+import ca.jacob.jml.distance.Euclidean;
+import ca.jacob.jml.distance.Hamming;
+import ca.jacob.jml.util.Vector;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static java.lang.Math.sqrt;
 import static org.junit.Assert.assertEquals;

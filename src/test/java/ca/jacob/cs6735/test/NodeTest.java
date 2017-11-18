@@ -1,9 +1,9 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.cs6735.dt.ID3;
-import ca.jacob.cs6735.dt.Node;
-import ca.jacob.cs6735.util.Matrix;
-import ca.jacob.cs6735.util.Vector;
+import ca.jacob.jml.dt.ID3;
+import ca.jacob.jml.dt.Node;
+import ca.jacob.jml.util.Matrix;
+import ca.jacob.jml.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ca.jacob.cs6735.util.Data.DISCRETE;
+import static ca.jacob.jml.util.DataSet.DISCRETE;
 import static junit.framework.Assert.assertEquals;
 
 public class NodeTest {

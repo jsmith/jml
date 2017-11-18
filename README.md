@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jacsmith21/jml.png?branch=master)](https://travis-ci.org/jacsmith21/jml)
+
 # CS6735 Programming Project
 
 ## Instructions

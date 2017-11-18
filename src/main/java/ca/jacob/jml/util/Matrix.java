@@ -29,6 +29,7 @@ public class Matrix {
         this.data = new ArrayList<Vector>();
         for(String[] row : data) {
             this.data.add(new Vector(row));
+            LOG.debug("row from string: {}", this.row(this.rowCount()-1));
         }
     }
 
@@ -156,5 +157,11 @@ public class Matrix {
 
     public int intAt(int i, int j) {
         return (int) this.at(i, j);
+    }
+
+    public void swapCols(int i, int j) {
+        Vector temp = this.col(i);
+        this.setCol(i, this.col(j));
+        this.setCol(j, temp);
     }
 }

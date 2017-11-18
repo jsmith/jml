@@ -6,6 +6,7 @@
     </appender>
 
     <logger name="ca.jacob.jml.dt.Node" level="warn"></logger>
+    <logger name="ca.jacob.jml.util.Matrix" level="debug"></logger>
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

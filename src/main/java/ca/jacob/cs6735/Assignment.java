@@ -26,9 +26,9 @@ public class Assignment {
     public static void main(String[] args) throws Throwable {
         // Creating data
         List<DataSet> data = new ArrayList<>();
-        data.add(loadBreastCancerData(Assignment.class));
-        data.add(loadCarData(Assignment.class));
         data.add(loadLetterData(Assignment.class));
+        data.add(loadCarData(Assignment.class));
+        data.add(loadBreastCancerData(Assignment.class));
         data.add(loadEcoliData(Assignment.class));
         data.add(loadMushroomData(Assignment.class));
 

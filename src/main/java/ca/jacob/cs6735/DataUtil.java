@@ -19,6 +19,7 @@ import java.util.Map;
 
 import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
+import static ca.jacob.jml.util.ML.range;
 import static ca.jacob.jml.util.ML.removeSamplesWith;
 
 public class DataUtil {
@@ -52,9 +53,10 @@ public class DataUtil {
 
     public static DataSet loadLetterData(Class c) throws Throwable {
         String[][] data = readCSV(c.getResourceAsStream("/data/letter-recognition.data"));
-        toIntegers(data);
+        toIntegers(data, new Vector(new int[]{0}));
         Matrix letterMatrix = new Matrix(data);
-        DataSet dataset = new DataSet(letterMatrix, DISCRETE);
+        letterMatrix.swapCols(0, letterMatrix.colCount()-1);
+        DataSet dataset = new DataSet(letterMatrix, CONTINUOUS);
         dataset.setName("Letter Data");
         return dataset;
     }
@@ -63,6 +65,7 @@ public class DataUtil {
         String[][] data = readCSV(c.getResourceAsStream("/data/mushroom.data"));
         toIntegers(data);
         Matrix mushroomMatrix = new Matrix(data);
+        mushroomMatrix.swapCols(0, mushroomMatrix.colCount()-1);
         DataSet dataset = new DataSet(mushroomMatrix, DISCRETE);
         dataset.setName("Mushroom Data");
         return dataset;
@@ -104,7 +107,6 @@ public class DataUtil {
 
     public static String[][] readCSV(InputStream inputStream, String deliminator) throws Throwable {
         String line;
-        String cvsSplitBy = deliminator;
         String[][] data;
 
         try {
@@ -113,19 +115,19 @@ public class DataUtil {
 
             int rows = 0;
             while ((line = br.readLine()) != null) {
-                line.replace(" ", "");
+                line = line.replace(" ", "");
                 lines.add(line);
                 rows++;
             }
             LOG.debug("number of rows: {}", rows);
 
-            int cols = lines.get(0).split(cvsSplitBy).length;
+            int cols = lines.get(0).split(deliminator).length;
             LOG.debug("number of columns: {}", cols);
 
             data = new String[rows][cols];
 
             for(int i = 0; i < lines.size(); i++) {
-                data[i] = lines.get(i).split(cvsSplitBy);
+                data[i] = lines.get(i).split(deliminator);
             }
 
         } catch (IOException e) {
@@ -135,17 +137,21 @@ public class DataUtil {
     }
 
     public static void toIntegers(String[][] data) {
-        for(int j = 0; j < data[0].length; j++) {
+        toIntegers(data, range(0, data[0].length));
+    }
+
+    public static void toIntegers(String[][] data, Vector colIndices) {
+        for(int k = 0; k < colIndices.length(); k++) {
             int count = 0;
             Map<String, Integer> values = new HashMap<>();
             for(int i = 0; i < data.length; i++) {
-                Integer value = values.get(data[i][j]);
+                Integer value = values.get(data[i][colIndices.intAt(k)]);
                 if(value == null) {
                     value = count;
-                    values.put(data[i][j], value);
+                    values.put(data[i][colIndices.intAt(k)], value);
                     count++;
                 }
-                data[i][j] = String.valueOf(value);
+                data[i][colIndices.intAt(k)] = String.valueOf(value);
             }
         }
     }

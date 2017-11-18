@@ -51,7 +51,7 @@ public class Assignment {
         adaboost = new Adaboost(new NaiveBayes(), 50, 0.3);
         algorithms.add(adaboost);
 
-        RandomForest rf = new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 1000, 0.6);
+        RandomForest rf = new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6);
         algorithms.add(rf);
 
         Algorithm knn = new KNN(3, false, new Hamming());
@@ -65,9 +65,11 @@ public class Assignment {
                 for(Algorithm a : algorithms) {
                 Report report = new Report();
                 for(int i = 0; i < numberOfKFoldIterations; i++) {
+                    System.out.print(i);
                     Report r = kFold.generateReport(a, d);
                     report.combine(r);
                 }
+                System.out.println();
                 System.out.println(a);
                 System.out.println(report);
                 System.out.println();

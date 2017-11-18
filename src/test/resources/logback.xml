@@ -21,6 +21,7 @@
     <logger name="ca.jacob.jml.neighbors.KNNModel" level="info"></logger>
 
     <logger name="ca.jacob.jml.util.ML" level="info"></logger>
+    <logger name="ca.jacob.jml.util.Vector" level="info"></logger>
     <logger name="ca.jacob.cs6735.File" level="info"></logger>
     <logger name="ca.jacob.jml.util.DataSet" level="info"></logger>
 

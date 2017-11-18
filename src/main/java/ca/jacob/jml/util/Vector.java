@@ -93,12 +93,16 @@ public class Vector implements Iterable<Double> {
         return v;
     }
 
-    public double valueOfMaxOccurrence() {
-        Map<Double, Integer> occurrences = calculateOccurrences(this);
-        LOG.debug("occurances: {}", occurrences);
-        double valueOfMaxOccurrence = -1;
-        for (Map.Entry<Double, Integer> e : occurrences.entrySet()) {
-            if (valueOfMaxOccurrence < 0 || e.getValue().intValue() > occurrences.get(valueOfMaxOccurrence).intValue()) {
+    public int valueOfMaxOccurrence() {
+        Map<Integer, Integer> occurrences = calculateOccurrences(this);
+        LOG.debug("occurrences: {}", occurrences);
+        boolean first = true;
+        int valueOfMaxOccurrence = 0;
+        for (Map.Entry<Integer, Integer> e : occurrences.entrySet()) {
+            if(first) {
+                first = false;
+                valueOfMaxOccurrence = e.getKey();
+            } else if (e.getValue() > occurrences.get(valueOfMaxOccurrence)) {
                 valueOfMaxOccurrence = e.getKey();
             }
         }

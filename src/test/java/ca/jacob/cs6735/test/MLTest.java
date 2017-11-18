@@ -47,14 +47,14 @@ public class MLTest {
         Vector v = new Vector(new double[10]);
         v.fill(1./10);
         Vector indices = generateIndices(v, 1000);
-        Map<Double, Integer> occurrences = calculateOccurrences(indices);
+        Map<Integer, Integer> occurrences = calculateOccurrences(indices);
         LOG.info("occurrences: {}", occurrences);
     }
 
     @Test
     public void testIndicesDistributionFromTo() {
         Vector indices = generateIndices(0, 10, 1000);
-        Map<Double, Integer> occurrences = calculateOccurrences(indices);
+        Map<Integer, Integer> occurrences = calculateOccurrences(indices);
         LOG.info("occurrences: {}", occurrences);
     }
 

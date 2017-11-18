@@ -11,35 +11,26 @@ import static java.lang.Math.*;
 public class Math {
     private static final Logger LOG = LoggerFactory.getLogger(Math.class);
 
-    public static Map<Double, Integer> calculateOccurrences(Vector v) {
-        Map<Double, Integer> map = new HashMap<Double, Integer>();
-        for (double value : v) {
-            LOG.debug("adding {} to map", value);
-            Integer count = map.get(value);
-            updateMap(map, value, count);
+    public static Map<Integer, Integer> calculateOccurrences(Vector v) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        for (int i = 0; i < v.length(); i++) {
+            LOG.debug("adding {} to map", v.intAt(i));
+            Integer count = map.get(v.intAt(i));
+            if (count == null) {
+                count = 1;
+                map.put(v.intAt(i), count);
+            } else {
+                count++;
+                map.replace(v.intAt(i), count);
+            }
         }
         return map;
     }
 
     public static Map<Integer, Integer> calculateOccurrences(int[] values) {
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for (int value : values) {
-            LOG.debug("adding {} to map", value);
-            Integer count = map.get(value);
-            updateMap(map, value, count);
-        }
-        return map;
+        return calculateOccurrences(new Vector(values));
     }
 
-    private static void updateMap(Map map, Object value, Integer count) {
-        if (count == null) {
-            count = 1;
-            map.put(value, count);
-        } else {
-            count++;
-            map.replace(value, count);
-        }
-    }
 
     public static double log2(double value) {
         return log(value) / log(2);

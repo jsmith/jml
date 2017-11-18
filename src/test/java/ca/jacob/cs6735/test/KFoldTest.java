@@ -59,6 +59,6 @@ public class KFoldTest {
 
         Report r = kFold.generateReport(a, dataset);
         Vector accuracies = r.getAccuracies();
-        LOG.info("kfold test accuracy: {}", accuracies.sum()/accuracies.length());
+        LOG.info("kfold test accuracy: {}", accuracies.mean());
     }
 }

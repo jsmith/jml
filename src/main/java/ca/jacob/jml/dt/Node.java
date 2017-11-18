@@ -45,7 +45,7 @@ public class Node {
     public double entropy() {
         if (this.entropy >= 0) return entropy;
 
-        Map<Double, Integer> classes = calculateOccurrences(dataSet.classes());
+        Map<Integer, Integer> classes = calculateOccurrences(dataSet.classes());
         LOG.trace("there are {} potential values", classes.size());
 
         double sum = 0.;

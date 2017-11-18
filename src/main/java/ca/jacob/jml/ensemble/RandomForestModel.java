@@ -20,9 +20,10 @@ public class RandomForestModel extends Model {
         for(int i = 0; i < trees.size(); i++) {
             predictions.set(i, trees.get(i).predict(e));
         }
-        double prediction = predictions.sum() / predictions.length();
+        LOG.debug("predictions: {}", predictions);
         LOG.debug("prediction {}", predictions.valueOfMaxOccurrence());
-        return (int) predictions.valueOfMaxOccurrence();
+
+        return predictions.valueOfMaxOccurrence();
     }
 
     @Override

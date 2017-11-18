@@ -26,11 +26,18 @@ public class DataUtil {
 
     public static DataSet loadBreastCancerData(Class c) throws Throwable {
         String[][] data = readCSV(c.getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        removeSamplesWith("?", data);
+        data = removeSamplesWith("?", data);
         Matrix breastCancerMatrix = new Matrix(data);
+        Vector v = breastCancerMatrix.col(breastCancerMatrix.colCount()-1);
+        v = v.replace(2, -1);
+        v = v.replace(4, 1);
+        breastCancerMatrix.setCol(breastCancerMatrix.colCount()-1, v);
+        breastCancerMatrix.dropCol(0);
+
         breastCancerMatrix.dropCol(0); // removing id
         DataSet dataset = new DataSet(breastCancerMatrix, DISCRETE);
         dataset.setName("Breast Cancer Data");
+
         return dataset;
     }
 
@@ -43,24 +50,9 @@ public class DataUtil {
         return dataset;
     }
 
-    public static void toIntegers(String[][] data) {
-        for(int j = 0; j < data[0].length; j++) {
-            int count = 0;
-            Map<String, Integer> values = new HashMap<>();
-            for(int i = 0; i < data.length; i++) {
-                Integer value = values.get(data[i][j]);
-                if(value == null) {
-                    value = count;
-                    values.put(data[i][j], value);
-                    count++;
-                }
-                data[i][j] = String.valueOf(value);
-            }
-        }
-    }
-
     public static DataSet loadLetterData(Class c) throws Throwable {
         String[][] data = readCSV(c.getResourceAsStream("/data/letter-recognition.data"));
+        toIntegers(data);
         Matrix letterMatrix = new Matrix(data);
         DataSet dataset = new DataSet(letterMatrix, DISCRETE);
         dataset.setName("Letter Data");
@@ -69,6 +61,7 @@ public class DataUtil {
 
     public static DataSet loadMushroomData(Class c) throws Throwable {
         String[][] data = readCSV(c.getResourceAsStream("/data/mushroom.data"));
+        toIntegers(data);
         Matrix mushroomMatrix = new Matrix(data);
         DataSet dataset = new DataSet(mushroomMatrix, DISCRETE);
         dataset.setName("Mushroom Data");
@@ -139,5 +132,21 @@ public class DataUtil {
             throw new FileException("error reading csv file").initCause(e);
         }
         return data;
+    }
+
+    public static void toIntegers(String[][] data) {
+        for(int j = 0; j < data[0].length; j++) {
+            int count = 0;
+            Map<String, Integer> values = new HashMap<>();
+            for(int i = 0; i < data.length; i++) {
+                Integer value = values.get(data[i][j]);
+                if(value == null) {
+                    value = count;
+                    values.put(data[i][j], value);
+                    count++;
+                }
+                data[i][j] = String.valueOf(value);
+            }
+        }
     }
 }

@@ -39,8 +39,8 @@ public class AdaboostTest {
         data = removeSamplesWith("?", data); //ignore these for now
         Matrix mat = new Matrix(data);
         Vector v = mat.col(mat.colCount()-1);
-        v.replace(2, -1);
-        v.replace(4, 1);
+        v = v.replace(2, -1);
+        v = v.replace(4, 1);
         mat.setCol(mat.colCount()-1, v);
         mat.dropCol(0); // removing id
 
@@ -50,8 +50,8 @@ public class AdaboostTest {
         Report r = kFold.generateReport(adaboost, new DataSet(mat, attributeTypes));
 
         Vector accuracies = r.getAccuracies();
-        assertTrue(accuracies.mean() > 90);
-        LOG.info("ID3 KFold test accuracy: {}", accuracies.sum()/accuracies.length());
+        assertTrue(accuracies.mean() > 90.);
+        LOG.info("ID3 KFold test accuracy: {}", accuracies.mean());
     }
 
     @Test

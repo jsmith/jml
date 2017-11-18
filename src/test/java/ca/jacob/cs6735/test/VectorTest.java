@@ -70,7 +70,7 @@ public class VectorTest {
 
     @Test
     public void testReplace() {
-        v.replace(4, 1);
+        v = v.replace(4, 1);
         assertEquals(new Vector(new int[]{1, 2, 3, 1, 1}), v);
     }
 

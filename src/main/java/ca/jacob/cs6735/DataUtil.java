@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
@@ -33,18 +36,27 @@ public class DataUtil {
 
     public static DataSet loadCarData(Class c) throws Throwable {
         String[][] data = readCSV(c.getResourceAsStream("/data/car.data"));
-        for(int i = 0; i < data.length; i++) {
-            String[] row = data[i];
-            LOG.trace("replacing {}", row[row.length-1]);
-            row[row.length-1] = row[row.length-1].replace("vhigh", "0");
-            row[row.length-1] = row[row.length-1].replace("high", "1");
-            row[row.length-1] = row[row.length-1].replace("med", "2");
-            row[row.length-1] = row[row.length-1].replace("low", "3");
-        }
+        toIntegers(data);
         Matrix carMatrix = new Matrix(data);
         DataSet dataset = new DataSet(carMatrix, DISCRETE);
         dataset.setName("Car Data");
         return dataset;
+    }
+
+    public static void toIntegers(String[][] data) {
+        for(int j = 0; j < data[0].length; j++) {
+            int count = 0;
+            Map<String, Integer> values = new HashMap<>();
+            for(int i = 0; i < data.length; i++) {
+                Integer value = values.get(data[i][j]);
+                if(value == null) {
+                    value = count;
+                    values.put(data[i][j], value);
+                    count++;
+                }
+                data[i][j] = String.valueOf(value);
+            }
+        }
     }
 
     public static DataSet loadLetterData(Class c) throws Throwable {

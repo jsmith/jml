@@ -1,11 +1,7 @@
-<<<<<<< Updated upstream
 [![Build Status](https://travis-ci.org/jacsmith21/jml.png?branch=master)](https://travis-ci.org/jacsmith21/jml)
 
-# CS6735 Programming Project
-=======
 # JML
 A machine library built in pure Java. This library was built for the CS6735 assignment.
->>>>>>> Stashed changes
 
 ## Instructions
 Conduct an experimental study on the following machine learning ca.jacob.cs6735.assignment.utils.algorithms: (1) ID3; (2) Adaboost on ID3; (3) Random Forest; (4) Naïve Bayes; (5) Adaboost on naïve Bayes; (6) K-nearest neighbors (kNN).
@@ -81,10 +77,7 @@ Hand in your report to C114 and submit your source code no later than midnight, 
     imL (inner membrane lipoprotein)                     2  
     imS (inner membrane, cleavable signal sequence)      2 
     
-### References
 <<<<<<< Updated upstream
 1. [Naive Bayes](https://stats.stackexchange.com/questions/136577/how-to-deal-with-mixture-of-continuous-and-discrete-features-when-using-naive-ba)
 1. Other
-=======
-1. [Naive Bayes](https://stats.stackexchange.com/questions/136577/how-to-deal-with-mixture-of-continuous-and-discrete-features-when-using-naive-ba)
->>>>>>> Stashed changes
+

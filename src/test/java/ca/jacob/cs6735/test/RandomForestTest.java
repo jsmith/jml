@@ -24,7 +24,7 @@ public class RandomForestTest {
         LOG.info("dataSet samples: {}, attributes: {}", dataSet.sampleCount(), dataSet.attributeCount());
 
         Algorithm id3 = new ID3(ID3.MAX_LEVEL_NONE);
-        RandomForest rf = new RandomForest(id3, 1000, 0.6);
+        RandomForest rf = new RandomForest(id3, 500, 0.6);
 
         KFold kFold = new KFold(5);
         Report r = kFold.generateReport(rf, dataSet);

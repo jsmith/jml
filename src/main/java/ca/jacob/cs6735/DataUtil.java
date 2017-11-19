@@ -33,7 +33,6 @@ public class DataUtil {
         v = v.replace(2, -1);
         v = v.replace(4, 1);
         breastCancerMatrix.setCol(breastCancerMatrix.colCount()-1, v);
-        breastCancerMatrix.dropCol(0);
 
         breastCancerMatrix.dropCol(0); // removing id
         DataSet dataset = new DataSet(breastCancerMatrix, DISCRETE);

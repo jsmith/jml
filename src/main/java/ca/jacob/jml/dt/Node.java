@@ -58,6 +58,7 @@ public class Node {
         LOG.info("split - starting for level {}", level);
 
         if(level == maxLevel || this.entropy() == 0 || this.sampleCount() <= 1 || this.sampleCount() < minNumberOfSamples || (parent != null && parent.entropy() <= this.entropy())) {
+            LOG.debug("parent col: {}", parent.dataSet.getX().col(parent.getAttribute()));
             LOG.info("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.sampleCount());
             this.leaf = true;
             return;

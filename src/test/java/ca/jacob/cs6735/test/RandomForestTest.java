@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
+import static org.junit.Assert.assertTrue;
 
 public class RandomForestTest {
     private static final Logger LOG = LoggerFactory.getLogger(RandomForestTest.class);
@@ -30,6 +31,7 @@ public class RandomForestTest {
         Report r = kFold.generateReport(rf, dataSet);
         Vector accuracies = r.getAccuracies();
 
+        assertTrue(accuracies.mean() > 95);
         LOG.info("RandomForest accuracy: {}", accuracies.sum()/accuracies.length());
     }
 }

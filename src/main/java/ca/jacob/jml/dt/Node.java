@@ -1,16 +1,15 @@
 package ca.jacob.jml.dt;
 
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Matrix;
+import ca.jacob.jml.util.*;
 import ca.jacob.jml.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
-import static ca.jacob.jml.util.Math.calculateOccurrences;
-import static ca.jacob.jml.util.Math.log2;
+import static ca.jacob.jml.util.ML.calculateEntropy;
 
 public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
@@ -35,7 +34,6 @@ public class Node {
     }
 
     public void init(int level, int maxLevel, int minNumberOfSamples) {
-        children = new HashMap<Integer, Node>();
         leaf = false;
         this.level = level;
         this.maxLevel = maxLevel;
@@ -44,22 +42,9 @@ public class Node {
     }
 
     public double entropy() {
-        if (this.entropy >= 0) return entropy;
-
-        Map<Integer, Integer> classes = calculateOccurrences(dataSet.classes());
-        LOG.trace("there are {} potential values", classes.size());
-
-        double sum = 0.;
-        for (int count : classes.values()) {
-            sum += count;
+        if(this.entropy < 0) {
+            this.entropy = calculateEntropy(dataSet);
         }
-        LOG.trace("sum is " + sum);
-
-        entropy = 0.;
-        for (int count : classes.values()) {
-            entropy -= count / sum * log2(count / sum);
-        }
-        LOG.trace("the entropy for a node on leve {} is {}", level, entropy);
 
         return entropy;
     }
@@ -76,54 +61,49 @@ public class Node {
         int numOfAttributes = dataSet.attributeCount();
 
         double minEntropy = -1;
+        int bestAttribute = -1;
         for(int j = 0; j < numOfAttributes; j++) {
             LOG.trace("checking attribute {} of type {}", j, dataSet.attributeType(j));
+
+            double entropy;
             if(dataSet.attributeType(j) == DISCRETE) {
-                Map<Integer, DataSet> split = dataSet.splitByAttribute(j);
-            }
-            Map<Integer, DataSet> split = new HashMap<Integer, DataSet>();
-            for (int i = 0; i < dataSet.sampleCount(); i++) {
-                LOG.trace("checking row {}", i);
-                int value = (int) dataSet.at(i, j);
+                Map<Integer, DataSet> subsets = dataSet.splitByDiscreteAttribute(j);
+                entropy = calculateEntropy(subsets.values());
 
-                DataSet subset = split.get(value);
-                if (subset == null) {
-                    LOG.trace("adding test node for value {}", value);
-                    Vector attributeTypes = dataSet.getAttributeTypes();
-                    attributeTypes.remove(j);
-                    subset = new DataSet(attributeTypes);
-                    split.put(value, subset);
-                }
+            } else if(dataSet.attributeType(j) == CONTINUOUS) {
+                Tuple<Double, List<DataSet>> subsets = dataSet.splitByContinuousAttribute(j);
+                entropy = calculateEntropy(subsets.last());
 
-                Vector v = dataSet.sample(i);
-                v.remove(j);
-                subset.add(v);
-            }
-
-            double entropy = 0.;
-            for (Map.Entry<Integer, DataSet> entry : split.entrySet()) {
-                entropy += new Node(entry.getValue(), 0, 0, 0).entropy();
+            } else {
+                throw new DataException("unknown data type");
             }
             LOG.debug("the total entropy of the children when splitting on attribute {} is {}", j, entropy);
 
-            if (minEntropy < 0 || entropy < minEntropy) {
+            if(bestAttribute < 0 || entropy < minEntropy) {
                 LOG.trace("attribute {} is now the best attribute", j);
-
                 minEntropy = entropy;
-                attribute = j;
-                children = new HashMap<Integer, Node>();
-                for (Map.Entry<Integer, DataSet> entry : split.entrySet()) {
-                    children.put(entry.getKey(), new Node(entry.getValue(), level + 1, maxLevel, minNumberOfSamples));
-                }
+                bestAttribute = j;
             }
         }
+
+        /*
+        if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
+            discreteChildren = new HashMap<Integer, Node>();
+            for (Map.Entry<Integer, DataSet> subset : subsets.entrySet()) {
+                //children.put(subset.getKey(), new Node(subset.getValue(), level + 1, maxLevel, minNumberOfSamples));
+            }
+        } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
+            continuousChildren = new Tuple<>()
+        }
+
+
         LOG.debug("the best attribute is {} for level {}", attribute, level);
         LOG.debug("there will be {} children", children.size());
 
         for (Map.Entry<Integer, Node> entry : children.entrySet()) {
             Node node = entry.getValue();
             node.split();
-        }
+        }*/
     }
 
     public Map<Integer, Node> getChildren() {

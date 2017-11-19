@@ -3,8 +3,12 @@ package ca.jacob.jml.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static ca.jacob.jml.util.ML.calculateEntropy;
 
 public class DataSet {
     private static final Logger LOG = LoggerFactory.getLogger(DataSet.class);
@@ -79,50 +83,87 @@ public class DataSet {
             LOG.trace("checking row {}", i);
             int value = y.intAt(i);
 
-            DataSet d = separated.get(value);
-            if (d == null) {
+            DataSet subset = separated.get(value);
+            if (subset == null) {
                 LOG.trace("adding new split based on value {}", value);
-                d = new DataSet(this.attributeTypes);
-                separated.put(value, d);
+                subset = new DataSet(this.attributeTypes);
+                separated.put(value, subset);
             }
 
             Vector v = this.sample(i);
-            d.add(v);
+            subset.add(v);
         }
 
         return separated;
     }
 
-    public Map<Integer, DataSet> splitByAttribute(int j) {
-        Map<Integer, DataSet> separated = new HashMap<Integer, DataSet>();
-
-        if(this.attributeType(j) == DISCRETE) {
-            for (int i = 0; i < x.rowCount(); i++) {
-                LOG.trace("checking row {}", i);
-                int value = x.intAt(i, j);
-
-                DataSet d = separated.get(value);
-                if (d == null) {
-                    LOG.trace("adding new split based on value {}", value);
-                    d = new DataSet(this.attributeTypes);
-                    separated.put(value, d);
-                }
-
-                Vector v = this.sample(i);
-                d.add(v);
-            }
-        } else if(this.attributeType(j) == CONTINUOUS) {
-            for (int i = 0; i < x.rowCount(); i++) {
-                LOG.trace("checking row {}", i);
-                Vector col = x.col(j);
-                double median = col.median();
-            }
-        } else {
-            throw new DataException("unsupported data type");
+    public Map<Integer, DataSet> splitByDiscreteAttribute(int attribute) {
+        if(this.attributeType(attribute) == DISCRETE) {
+            throw new DataException("must be discrete attribute");
         }
 
+        Map<Integer, DataSet> subsets = new HashMap<Integer, DataSet>();
+        for (int i = 0; i < x.rowCount(); i++) {
+            LOG.trace("checking row {}", i);
+            int value = x.intAt(i, attribute);
 
-        return separated;
+            DataSet subset = subsets.get(value);
+            if (subset == null) {
+                LOG.trace("adding new split based on value {}", value);
+                subset = new DataSet(this.attributeTypes);
+                subsets.put(value, subset);
+            }
+
+            Vector v = this.sample(i);
+            subset.add(v);
+        }
+        return subsets;
+    }
+
+    public Tuple<Double, List<DataSet>> splitByContinuousAttribute(int attribute) {
+        if(this.attributeType(attribute) != CONTINUOUS) {
+            throw new DataException("must be continuous attribute");
+        }
+
+        Vector c = x.col(attribute);
+        c.sort();
+
+        Tuple<Double, List<DataSet>> bestSubsets = null;
+        double minimumEntropy = 0;
+        for (int i = 0; i < c.length()-1; i++) {
+            double pivot = (c.at(i) + c.at(i+1)) / 2;
+            List<DataSet> subsets = splitAt(attribute, pivot);
+
+            double entropy = calculateEntropy(subsets);
+            if(bestSubsets == null || entropy < minimumEntropy) {
+                bestSubsets = new Tuple<>(pivot, subsets);
+                minimumEntropy = entropy;
+            }
+        }
+        return bestSubsets;
+    }
+
+    public List<DataSet> splitAt(int attribute, double pivot) {
+        if(this.attributeType(attribute) != CONTINUOUS) {
+            throw new DataException("splitAt must use a continuous attribute");
+        }
+
+        DataSet under = new DataSet(attributeTypes.clone());
+        DataSet over = new DataSet(attributeTypes.clone());
+        for (int i = 0; i < x.rowCount(); i++) {
+            double value = x.at(i, attribute);
+
+            if(value < pivot) {
+                under.add(this.sample(i));
+            } else if(value > pivot) {
+                over.add(this.sample(i));
+            } else {
+                throw new DataException("given value must not match value from attribute");
+            }
+        }
+
+        List<DataSet> subsets = new ArrayList<>();
+        return subsets;
     }
 
     public void add(Vector sample) {
@@ -202,5 +243,10 @@ public class DataSet {
 
     public void setY(Vector y) {
         this.y = y;
+    }
+
+    public void dropAttribute(int attribute) {
+        x.dropCol(attribute);
+        attributeTypes.remove(attribute);
     }
 }

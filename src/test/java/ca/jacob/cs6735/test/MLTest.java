@@ -1,12 +1,17 @@
 package ca.jacob.cs6735.test;
 
+import ca.jacob.jml.dt.ID3;
+import ca.jacob.jml.dt.Node;
+import ca.jacob.jml.util.Matrix;
 import ca.jacob.jml.util.Vector;
+import junit.framework.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+import static ca.jacob.jml.util.DataSet.DISCRETE;
 import static ca.jacob.jml.util.ML.generateIndices;
 import static ca.jacob.jml.util.ML.generateIndicesWithoutReplacement;
 import static ca.jacob.jml.util.Math.calculateOccurrences;
@@ -62,5 +67,13 @@ public class MLTest {
     public void testLn() {
         assertEquals((double) 0, ln(1), DELTA);
         assertEquals((double)1.609437912, ln(5), DELTA);
+    }
+
+    @Test
+    public void testEntropy() {
+        Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
+        Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
+        Node node = new Node(data, attributeTypes,1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        Assert.assertEquals(1, node.entropy(), DELTA);
     }
 }

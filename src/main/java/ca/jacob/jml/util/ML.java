@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static ca.jacob.jml.util.Math.calculateOccurrences;
+import static ca.jacob.jml.util.Math.log2;
 import static java.lang.Math.random;
 
 public class ML {
@@ -170,5 +172,37 @@ public class ML {
             result.add(array[i]);
         }
         return result;
+    }
+
+    public static double calculateEntropy(List<DataSet> subsets) {
+        double entropy = 0;
+        for(DataSet subset : subsets) {
+            entropy += calculateEntropy(subset);
+        }
+
+        LOG.trace("the total entropy is {}", entropy);
+        return entropy;
+    }
+
+    public static double calculateEntropy(Collection<DataSet> subsets) {
+        return calculateEntropy(new ArrayList<DataSet>(subsets));
+    }
+
+    public static double calculateEntropy(DataSet dataset) {
+        Map<Integer, Integer> classes = calculateOccurrences(dataset.classes());
+        LOG.trace("there are {} different class", classes.size());
+
+        double sum = 0.;
+        for (int count : classes.values()) {
+            sum += count;
+        }
+        LOG.trace("sum is " + sum);
+
+        double entropy = 0.;
+        for (int count : classes.values()) {
+            entropy -= count / sum * log2(count / sum);
+        }
+
+        return entropy;
     }
 }

@@ -88,7 +88,10 @@ public class DataUtil {
             LOG.trace("with {}", row[row.length-1]);
             row[0] = "0"; //replacing sequence id
         }
+        LOG.warn("initial string data[][] dimensions: {} x {}", data.length, data[0].length);
         Matrix mat = new Matrix(data);
+        LOG.warn("initial matrix dimensions: {} x {}", mat.rowCount(), mat.colCount());
+
         mat.dropCol(3); //removing 0.50's
         mat.dropCol(4); //removing 0.48s
         mat.dropCol(0); // removing sequence ids
@@ -115,7 +118,7 @@ public class DataUtil {
 
             int rows = 0;
             while ((line = br.readLine()) != null) {
-                line = line.replace(" ", "");
+                //line = line.replace(" ", "");
                 lines.add(line);
                 rows++;
             }

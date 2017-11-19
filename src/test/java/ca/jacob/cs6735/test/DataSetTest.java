@@ -7,42 +7,42 @@ import ca.jacob.jml.util.Vector;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DataSetTest {
     private static final double DELTA = 1e-5;
 
-    private DataSet d;
-
-    @Before
-    public void init() {
-        Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
-        d = new DataSet(data, DISCRETE);
-    }
-
     @Test
     public void testSplitByDiscrete() {
+        Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
+        DataSet d = new DataSet(data, DISCRETE);
         Map<Integer, DataSet> subsets = d.splitByDiscreteAttribute(1);
         assertEquals(2, subsets.size());
     }
 
     @Test
     public void testSplitAt() {
-        List<DataSet> subsets = d.splitAt(1, 0.5);
-        assertEquals(2, subsets.size());
+        Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
+        DataSet d = new DataSet(data, CONTINUOUS);
+        Tuple<DataSet, DataSet> subsets = d.splitAt(1, 0.5);
+        assertEquals(1, subsets.first().sampleCount());
+        assertEquals(1, subsets.last().sampleCount());
     }
 
     @Test
     public void testSplitByContinuous() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}, {0, -1, 0, 0}});
         DataSet d = new DataSet(data, CONTINUOUS);
-        Tuple<Double, List<DataSet>> subsets = d.splitByContinuousAttribute(1);
-        assertEquals(2, subsets.last().size());
+        Tuple<Double, Tuple<DataSet, DataSet>> subsets = d.splitByContinuousAttribute(1);
+        assertEquals(2, subsets.last().first().sampleCount());
+        assertEquals(1, subsets.last().last().sampleCount());
         assertEquals(0.5, subsets.first(), DELTA);
     }
 }

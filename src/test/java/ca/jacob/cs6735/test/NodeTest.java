@@ -1,5 +1,6 @@
 package ca.jacob.cs6735.test;
 
+import ca.jacob.jml.dt.Children;
 import ca.jacob.jml.dt.ID3;
 import ca.jacob.jml.dt.Node;
 import ca.jacob.jml.util.Matrix;
@@ -45,12 +46,12 @@ public class NodeTest {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
         Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
 
-        Map<Integer, Node> children = new HashMap<Integer, Node>();
+        Children children = new Children(node);
         children.put(1, new Node(data, attributeTypes, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE));
         node.setChildren(children);
 
         data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
-        children = new HashMap<Integer, Node>();
+        children = new Children(node.getChildren().get(1));
         children.put(1, new Node(data, attributeTypes, 1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE));
         node.getChildren().get(1).setChildren(children);
 

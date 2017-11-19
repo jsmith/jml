@@ -1,18 +1,19 @@
 package ca.jacob.jml.dt;
 
 import ca.jacob.jml.PredictionError;
+import ca.jacob.jml.nb.Attribute;
 import ca.jacob.jml.util.AttributeException;
 import ca.jacob.jml.util.DataSet;
 import ca.jacob.jml.util.Tuple;
 import ca.jacob.jml.util.Vector;
-import org.w3c.dom.Attr;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
-import static ca.jacob.jml.util.ML.calculateEntropy;
 
 public class Children {
     private Node node;
@@ -22,6 +23,10 @@ public class Children {
     private Node over;
 
     private Map<Integer, Node> discrete;
+
+    public Children(Node node) {
+        this.node = node;
+    }
 
     public Children(Node node, Tuple<Double, Tuple<DataSet, DataSet>> subsets) {
         pivot = subsets.first();
@@ -68,7 +73,11 @@ public class Children {
                 }
             }
         } else if(node.getAttributeType() == CONTINUOUS) {
-
+            if (e.intAt(node.getAttribute()) < pivot) {
+                return under.classify(e);
+            } else {
+                return over.classify(e);
+            }
         } else {
             throw new AttributeException("unknown attribute type");
         }
@@ -93,5 +102,33 @@ public class Children {
         } else {
             throw new AttributeException("unknown attribute type");
         }
+    }
+
+    public Node get(int i) {
+        if(node.getAttributeType() == DISCRETE) {
+            return new ArrayList<>(discrete.values()).get(i);
+        } else if(node.getAttributeType() == CONTINUOUS) {
+            if(i == 0) {
+                return under;
+            } else if(i == 1) {
+                return over;
+            } else {
+                throw new ArrayIndexOutOfBoundsException();
+            }
+        } else {
+            throw new AttributeException("unknown attribute type");
+        }
+    }
+
+    public void put(int value, Node n) {
+        if(node.getAttributeType() != DISCRETE) {
+            throw new AttributeException("attribute type must be discrete");
+        }
+
+        if(discrete == null) {
+            discrete = new HashMap<>();
+        }
+
+        discrete.put(value, n);
     }
 }

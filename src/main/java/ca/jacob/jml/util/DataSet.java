@@ -1,5 +1,6 @@
 package ca.jacob.jml.util;
 
+import ca.jacob.jml.nb.Attribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
@@ -101,8 +102,8 @@ public class DataSet {
     }
 
     public Map<Integer, DataSet> splitByDiscreteAttribute(int attribute) {
-        if(this.attributeType(attribute) == DISCRETE) {
-            throw new DataException("must be discrete attribute");
+        if(this.attributeType(attribute) != DISCRETE) {
+            throw new AttributeException("must be discrete attribute");
         }
 
         Map<Integer, DataSet> subsets = new HashMap<Integer, DataSet>();

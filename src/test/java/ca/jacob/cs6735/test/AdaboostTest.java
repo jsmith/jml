@@ -50,7 +50,7 @@ public class AdaboostTest {
         Report r = kFold.generateReport(adaboost, new DataSet(mat, attributeTypes));
 
         Vector accuracies = r.getAccuracies();
-        assertTrue(accuracies.mean() > 90.);
+        assertTrue(accuracies.mean() > 90);
         LOG.info("ID3 KFold test accuracy: {}", accuracies.mean());
     }
 

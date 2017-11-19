@@ -32,7 +32,7 @@ public class ID3 implements Algorithm {
     }
 
     public Model fit(DataSet dataSet) {
-        Node root = new Node(dataSet, 1, maxLevel, minNumberOfSamples);
+        Node root = new Node(dataSet, maxLevel, minNumberOfSamples);
         root.split();
         return new ID3Model(root);
     }

@@ -5,6 +5,8 @@ import ca.jacob.jml.util.AttributeException;
 import ca.jacob.jml.util.DataSet;
 import ca.jacob.jml.util.Tuple;
 import ca.jacob.jml.util.Vector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +16,8 @@ import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
 
 public class Children {
+    private static final Logger LOG = LoggerFactory.getLogger(Children.class);
+
     private Node parent;
 
     private double pivot;
@@ -23,7 +27,7 @@ public class Children {
     private Map<Integer, Node> discrete;
 
     public Children(Node parent) {
-        if(parent.getAttributeType() != DISCRETE && parent.getAttributeType() != CONTINUOUS) {
+        if(!parent.isRoot() && parent.getAttributeType() != DISCRETE && parent.getAttributeType() != CONTINUOUS) {
             throw new AttributeException("attribute type cannot be " + parent.getAttributeType());
         }
 
@@ -67,6 +71,7 @@ public class Children {
     public void split() {
         if(parent.getAttributeType() == DISCRETE) {
             for(Node child : discrete.values()) {
+                LOG.debug("child: {} x {}", child.sampleCount(), child.attributeCount());
                 child.split();
             }
         } else if(parent.getAttributeType() == CONTINUOUS) {

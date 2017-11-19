@@ -73,7 +73,7 @@ public class MLTest {
     public void testEntropy() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
         Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
-        Node node = new Node(data, attributeTypes,1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        Node node = new Node(data, attributeTypes, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
         Assert.assertEquals(1, node.entropy(), DELTA);
     }
 }

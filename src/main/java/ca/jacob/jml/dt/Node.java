@@ -15,6 +15,7 @@ import static ca.jacob.jml.util.ML.calculateEntropy;
 public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
 
+    private Node parent;
     private int attribute;
     private boolean leaf;
     private DataSet dataSet;
@@ -23,19 +24,22 @@ public class Node {
     private int maxLevel;
     private int minNumberOfSamples;
 
-    public Node(DataSet dataSet, int level, int maxLevel, int minNumberOfSamples) {
+    public Node(DataSet dataSet, int maxLevel, int minNumberOfSamples) {
         this.dataSet = dataSet;
-        this.init(level, maxLevel, minNumberOfSamples);
+        this.parent = null;
+        this.init(0, maxLevel, minNumberOfSamples);
     }
 
     public Node(DataSet dataSet, Node parent) {
         this.dataSet = dataSet;
+        this.parent = parent;
         this.init(parent.level+1, parent.maxLevel, parent.minNumberOfSamples);
     }
 
-    public Node(Matrix data, Vector attributeTypes, int level, int maxLevel, int minNumberOfSamples) {
+    public Node(Matrix data, Vector attributeTypes, int maxLevel, int minNumberOfSamples) {
         this.dataSet = new DataSet(data, attributeTypes);
-        this.init(level, maxLevel, minNumberOfSamples);
+        this.parent = null;
+        this.init(0, maxLevel, minNumberOfSamples);
     }
 
     public void init(int level, int maxLevel, int minNumberOfSamples) {
@@ -53,7 +57,7 @@ public class Node {
     public void split() {
         LOG.info("split - starting for level {}", level);
 
-        if(level == (maxLevel+1) || this.entropy() == 0 || this.sampleCount() <= 1 || this.sampleCount() < minNumberOfSamples) {
+        if(level == maxLevel || this.entropy() == 0 || this.sampleCount() <= 1 || this.sampleCount() < minNumberOfSamples || (parent != null && parent.entropy() <= this.entropy())) {
             LOG.info("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.sampleCount());
             this.leaf = true;
             return;
@@ -87,13 +91,14 @@ public class Node {
             }
         }
 
+        attribute = bestAttribute;
+        LOG.debug("the best attribute is {} for level {}", bestAttribute, level);
+
         if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
             children = new Children(this, dataSet.splitByContinuousAttribute(bestAttribute));
         } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
             children = new Children(this, dataSet.splitByDiscreteAttribute(bestAttribute));
         }
-        attribute = bestAttribute;
-        LOG.debug("the best attribute is {} for level {}", bestAttribute, level);
         LOG.debug("there will be {} children", children.size());
 
         children.split();
@@ -116,7 +121,7 @@ public class Node {
             try {
                 return children.predict(e);
             } catch (PredictionError ex) {
-                LOG.debug("children unable to predict sample");
+                LOG.trace("children unable to predict sample");
                 return this.predict(e);
             }
         }
@@ -150,7 +155,7 @@ public class Node {
 
     public int depth() {
         if(children == null || this.isLeaf()) {
-            return 1;
+            return 0;
         } else {
             int max = children.maxDepth();
             return 1 + max;
@@ -163,5 +168,13 @@ public class Node {
 
     public void setAttribute(int attribute) {
         this.attribute = attribute;
+    }
+
+    public boolean isRoot() {
+        return parent == null;
+    }
+
+    public int attributeCount() {
+        return dataSet.attributeCount();
     }
 }

@@ -27,7 +27,7 @@ public class NodeTest {
     public void setup() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
         Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
-        node = new Node(data, attributeTypes,1, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        node = new Node(data, attributeTypes, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
         node.setAttribute(0);
     }
 
@@ -49,18 +49,18 @@ public class NodeTest {
         DataSet data = new DataSet(new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}}), DISCRETE);
 
         Children children = new Children(node);
+        node.setChildren(children);
         Node n = new Node(data, node);
         n.setAttribute(0);
         children.put(1, n);
-        node.setChildren(children);
 
         children = new Children(node.getChildren().get(0));
+        node.getChildren().get(0).setChildren(children);
         n = new Node(data, node);
         n.setAttribute(0);
         children.put(1, n);
-        node.getChildren().get(0).setChildren(children);
 
-        assertEquals(3, node.depth());
+        assertEquals(2, node.depth());
     }
 
 }

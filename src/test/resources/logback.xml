@@ -10,7 +10,7 @@
     <logger name="ca.jacob.jml.Model" level="warn"></logger>
     <logger name="ca.jacob.jml.KFold" level="info"></logger>
 
-    <logger name="ca.jacob.jml.dt.Node" level="warn"></logger>
+    <logger name="ca.jacob.jml.dt.Node" level="debug"></logger>
 
     <logger name="ca.jacob.jml.nb.NaiveBayesModel" level="info"></logger>
     <logger name="ca.jacob.jml.nb.NaiveBayes" level="info"></logger>

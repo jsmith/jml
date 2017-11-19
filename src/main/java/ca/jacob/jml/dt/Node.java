@@ -15,7 +15,6 @@ import static ca.jacob.jml.util.ML.calculateEntropy;
 public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
 
-    private double entropy;
     private int attribute;
     private boolean leaf;
     private DataSet dataSet;
@@ -44,7 +43,6 @@ public class Node {
         this.level = level;
         this.maxLevel = maxLevel;
         this.minNumberOfSamples = minNumberOfSamples;
-        this.entropy = -1;
         this.attribute = -1;
     }
 
@@ -89,14 +87,14 @@ public class Node {
             }
         }
 
-
-        LOG.debug("the best attribute is {} for level {}", attribute, level);
-        LOG.debug("there will be {} children", children.size());
         if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
             children = new Children(this, dataSet.splitByContinuousAttribute(bestAttribute));
         } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
             children = new Children(this, dataSet.splitByDiscreteAttribute(bestAttribute));
         }
+        attribute = bestAttribute;
+        LOG.debug("the best attribute is {} for level {}", bestAttribute, level);
+        LOG.debug("there will be {} children", children.size());
 
         children.split();
     }
@@ -152,7 +150,7 @@ public class Node {
 
     public int depth() {
         if(children == null || this.isLeaf()) {
-            return 0;
+            return 1;
         } else {
             int max = children.maxDepth();
             return 1 + max;
@@ -161,5 +159,9 @@ public class Node {
 
     public void setChildren(Children children) {
         this.children = children;
+    }
+
+    public void setAttribute(int attribute) {
+        this.attribute = attribute;
     }
 }

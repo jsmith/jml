@@ -1,8 +1,8 @@
 package ca.jacob.jml.util;
 
 public class Tuple<T, V> {
-    private T t;
-    private V v;
+    private final T t;
+    private final V v;
 
     public Tuple(T t, V v) {
         this.t = t;

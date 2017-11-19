@@ -1,5 +1,6 @@
 package ca.jacob.jml.util;
 
+import ca.jacob.jml.dt.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -177,7 +178,7 @@ public class ML {
     public static double calculateEntropy(List<DataSet> subsets) {
         double entropy = 0;
         for(DataSet subset : subsets) {
-            entropy += calculateEntropy(subset);
+            entropy += subset.entropy();
         }
 
         LOG.trace("the total entropy is {}", entropy);
@@ -188,21 +189,10 @@ public class ML {
         return calculateEntropy(new ArrayList<DataSet>(subsets));
     }
 
-    public static double calculateEntropy(DataSet dataset) {
-        Map<Integer, Integer> classes = calculateOccurrences(dataset.classes());
-        LOG.trace("there are {} different class", classes.size());
-
-        double sum = 0.;
-        for (int count : classes.values()) {
-            sum += count;
-        }
-        LOG.trace("sum is " + sum);
-
-        double entropy = 0.;
-        for (int count : classes.values()) {
-            entropy -= count / sum * log2(count / sum);
-        }
-
+    public static double calculateEntropy(Tuple<DataSet, DataSet> subsets) {
+        double entropy = 0;
+        entropy += subsets.first().entropy();
+        entropy += subsets.last().entropy();
         return entropy;
     }
 }

@@ -1,5 +1,6 @@
 package ca.jacob.jml.dt;
 
+import ca.jacob.jml.PredictionError;
 import ca.jacob.jml.util.*;
 import ca.jacob.jml.util.Vector;
 import org.slf4j.Logger;
@@ -18,7 +19,7 @@ public class Node {
     private int attribute;
     private boolean leaf;
     private DataSet dataSet;
-    private Map<Integer, Node> children;
+    private Children children;
     private int level;
     private int maxLevel;
     private int minNumberOfSamples;
@@ -26,6 +27,11 @@ public class Node {
     public Node(DataSet dataSet, int level, int maxLevel, int minNumberOfSamples) {
         this.dataSet = dataSet;
         this.init(level, maxLevel, minNumberOfSamples);
+    }
+
+    public Node(DataSet dataSet, Node parent) {
+        this.dataSet = dataSet;
+        this.init(parent.level+1, parent.maxLevel, parent.minNumberOfSamples);
     }
 
     public Node(Matrix data, Vector attributeTypes, int level, int maxLevel, int minNumberOfSamples) {
@@ -39,14 +45,11 @@ public class Node {
         this.maxLevel = maxLevel;
         this.minNumberOfSamples = minNumberOfSamples;
         this.entropy = -1;
+        this.attribute = -1;
     }
 
     public double entropy() {
-        if(this.entropy < 0) {
-            this.entropy = calculateEntropy(dataSet);
-        }
-
-        return entropy;
+        return dataSet.entropy();
     }
 
     public void split() {
@@ -71,11 +74,11 @@ public class Node {
                 entropy = calculateEntropy(subsets.values());
 
             } else if(dataSet.attributeType(j) == CONTINUOUS) {
-                Tuple<Double, List<DataSet>> subsets = dataSet.splitByContinuousAttribute(j);
+                Tuple<Double, Tuple<DataSet, DataSet>> subsets = dataSet.splitByContinuousAttribute(j);
                 entropy = calculateEntropy(subsets.last());
 
             } else {
-                throw new DataException("unknown data type");
+                throw new AttributeException("unknown data type");
             }
             LOG.debug("the total entropy of the children when splitting on attribute {} is {}", j, entropy);
 
@@ -86,27 +89,19 @@ public class Node {
             }
         }
 
-        /*
-        if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
-            discreteChildren = new HashMap<Integer, Node>();
-            for (Map.Entry<Integer, DataSet> subset : subsets.entrySet()) {
-                //children.put(subset.getKey(), new Node(subset.getValue(), level + 1, maxLevel, minNumberOfSamples));
-            }
-        } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
-            continuousChildren = new Tuple<>()
-        }
-
 
         LOG.debug("the best attribute is {} for level {}", attribute, level);
         LOG.debug("there will be {} children", children.size());
+        if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
+            children = new Children(this, dataSet.splitByContinuousAttribute(bestAttribute));
+        } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
+            children = new Children(this, dataSet.splitByDiscreteAttribute(bestAttribute));
+        }
 
-        for (Map.Entry<Integer, Node> entry : children.entrySet()) {
-            Node node = entry.getValue();
-            node.split();
-        }*/
+        children.split();
     }
 
-    public Map<Integer, Node> getChildren() {
+    public Children getChildren() {
         return children;
     }
 
@@ -120,13 +115,12 @@ public class Node {
             LOG.trace("a leaf was found, now classifying!");
             return this.predict(e);
         } else {
-            for (Map.Entry<Integer, Node> entry : children.entrySet()) {
-                if (e.intAt(attribute)== entry.getKey()) {
-                    return entry.getValue().classify(e);
-                }
+            try {
+                return children.predict(e);
+            } catch (PredictionError ex) {
+                LOG.debug("children unable to predict sample");
+                return this.predict(e);
             }
-            LOG.debug("no suitable child node found");
-            return this.predict(e);
         }
     }
 
@@ -152,22 +146,20 @@ public class Node {
         this.leaf = leaf;
     }
 
+    public int getAttributeType() {
+        return dataSet.attributeType(attribute);
+    }
+
     public int depth() {
         if(children == null || this.isLeaf()) {
             return 0;
         } else {
-            int max = 0;
-            for(Map.Entry<Integer, Node> entry : children.entrySet()) {
-                int depth = entry.getValue().depth();
-                if(depth > max) {
-                    max = depth;
-                }
-            }
+            int max = children.maxDepth();
             return 1 + max;
         }
     }
 
-    public void setChildren(Map<Integer, Node> children) {
+    public void setChildren(Children children) {
         this.children = children;
     }
 }

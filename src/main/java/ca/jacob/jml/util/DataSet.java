@@ -2,6 +2,7 @@ package ca.jacob.jml.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Attr;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import static ca.jacob.jml.util.ML.calculateEntropy;
+import static ca.jacob.jml.util.Math.calculateOccurrences;
+import static ca.jacob.jml.util.Math.log2;
 
 public class DataSet {
     private static final Logger LOG = LoggerFactory.getLogger(DataSet.class);
@@ -120,7 +123,7 @@ public class DataSet {
         return subsets;
     }
 
-    public Tuple<Double, List<DataSet>> splitByContinuousAttribute(int attribute) {
+    public Tuple<Double, Tuple<DataSet, DataSet>> splitByContinuousAttribute(int attribute) {
         if(this.attributeType(attribute) != CONTINUOUS) {
             throw new DataException("must be continuous attribute");
         }
@@ -128,11 +131,11 @@ public class DataSet {
         Vector c = x.col(attribute);
         c.sort();
 
-        Tuple<Double, List<DataSet>> bestSubsets = null;
+        Tuple<Double, Tuple<DataSet, DataSet>> bestSubsets = null;
         double minimumEntropy = 0;
         for (int i = 0; i < c.length()-1; i++) {
             double pivot = (c.at(i) + c.at(i+1)) / 2;
-            List<DataSet> subsets = splitAt(attribute, pivot);
+            Tuple<DataSet, DataSet> subsets = splitAt(attribute, pivot);
 
             double entropy = calculateEntropy(subsets);
             if(bestSubsets == null || entropy < minimumEntropy) {
@@ -143,7 +146,7 @@ public class DataSet {
         return bestSubsets;
     }
 
-    public List<DataSet> splitAt(int attribute, double pivot) {
+    public Tuple<DataSet, DataSet> splitAt(int attribute, double pivot) {
         if(this.attributeType(attribute) != CONTINUOUS) {
             throw new DataException("splitAt must use a continuous attribute");
         }
@@ -162,8 +165,7 @@ public class DataSet {
             }
         }
 
-        List<DataSet> subsets = new ArrayList<>();
-        return subsets;
+        return new Tuple<>(under, over);
     }
 
     public void add(Vector sample) {
@@ -248,5 +250,23 @@ public class DataSet {
     public void dropAttribute(int attribute) {
         x.dropCol(attribute);
         attributeTypes.remove(attribute);
+    }
+
+    public double entropy() {
+        Map<Integer, Integer> classes = calculateOccurrences(this.classes());
+        LOG.trace("there are {} different class", classes.size());
+
+        double sum = 0.;
+        for (int count : classes.values()) {
+            sum += count;
+        }
+        LOG.trace("sum is " + sum);
+
+        double entropy = 0.;
+        for (int count : classes.values()) {
+            entropy -= count / sum * log2(count / sum);
+        }
+
+        return entropy;
     }
 }

@@ -55,7 +55,9 @@ public class DataUtil {
         String[][] data = readCSV(c.getResourceAsStream("/data/letter-recognition.data"));
         toIntegers(data, new Vector(new int[]{0}));
         Matrix letterMatrix = new Matrix(data);
-        letterMatrix.swapCols(0, letterMatrix.colCount()-1);
+        Vector classes = letterMatrix.col(0);
+        letterMatrix.dropCol(0);
+        letterMatrix.pushCol(classes);
         DataSet dataset = new DataSet(letterMatrix, CONTINUOUS);
         LOG.debug("car data first three samples -> {}", dataset.samples(new Vector(new int[]{0, 1, 2})).dataToString());
         dataset.setName("Letter Data");

@@ -20,6 +20,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class ID3Test {
     private static final Logger LOG = LoggerFactory.getLogger(ID3Test.class);
+    private static final double DELTA = 1e-5;
 
     private ID3 id3;
     private DataSet dataset;
@@ -120,7 +121,25 @@ public class ID3Test {
         Algorithm id3 = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
         Model model = id3.fit(letterData);
 
-        double accuracy = model.accuracy(letterData);
-        assertEquals((double) 100, accuracy);
+        assertAllPure(((ID3Model)model).getRoot());
+
+        int prediction = model.predict(letterData.getX().row(38));
+        assertEquals(letterData.getClassification(38), prediction);
+
+        //double accuracy = model.accuracy(letterData);
+        //assertEquals((double) 100, accuracy);
+    }
+
+    private void assertAllPure(Node node) {
+        if(node.isLeaf() && node.entropy() != 0) {
+            LOG.warn("node {} not pure", node);
+        }
+        if(node.isLeaf()) {
+            assertEquals(0, node.entropy(), DELTA);
+            return;
+        }
+        for(int i = 0; i < node.getChildren().size(); i++) {
+            assertAllPure(node.getChildren().get(i));
+        }
     }
 }

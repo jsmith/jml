@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ca.jacob.jml.util.ML.calculateEntropy;
+import static ca.jacob.jml.util.ML.calculateWeightedEntropy;
 import static ca.jacob.jml.util.Math.calculateOccurrences;
 import static ca.jacob.jml.util.Math.log2;
 
@@ -144,7 +144,7 @@ public class DataSet {
             double pivot = (c.at(i) + c.at(i+1)) / 2;
             Tuple<DataSet, DataSet> subsets = splitAt(attribute, pivot);
 
-            double entropy = calculateEntropy(subsets);
+            double entropy = calculateWeightedEntropy(subsets);
             if(bestSubsets == null || entropy < minimumEntropy) {
                 bestSubsets = new Tuple<>(pivot, subsets);
                 minimumEntropy = entropy;
@@ -276,5 +276,9 @@ public class DataSet {
         }
 
         return entropy;
+    }
+
+    public int getClassification(int i) {
+        return y.intAt(i);
     }
 }

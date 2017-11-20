@@ -18,8 +18,9 @@ public abstract class Model {
         Matrix x = dataSet.getX();
         Vector y = dataSet.getY();
         Vector yHat = predict(x);
-        LOG.info("yHat {}", yHat.subVector(0, 5));
+        LOG.trace("yHat {}", yHat.subVector(0, 5));
         Vector err = error(y, yHat);
+        LOG.debug("err -> {}", err);
         return (1 - err.sum() / err.length()) * 100;
     }
 }

@@ -110,5 +110,4 @@ public class NodeTest {
 
         assertEquals(2, node.depth());
     }
-
 }

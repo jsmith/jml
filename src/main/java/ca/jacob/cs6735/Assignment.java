@@ -24,7 +24,7 @@ public class Assignment {
     private static final Logger LOG = LoggerFactory.getLogger(Assignment.class);
 
     public static void main(String[] args) throws Throwable {
-        // Creating data
+        // Loading data
         List<DataSet> data = new ArrayList<>();
         data.add(loadLetterData(Assignment.class));
         data.add(loadCarData(Assignment.class));

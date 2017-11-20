@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ca.jacob.cs6735.DataUtil.loadLetterData;
 import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
 import static org.junit.Assert.assertEquals;
@@ -58,5 +59,29 @@ public class DataSetTest {
         subsets = d.splitByContinuousAttribute(2);
         assertEquals(1, subsets.last().first().sampleCount());
         assertEquals(3, subsets.last().last().sampleCount());
+    }
+
+    @Test
+    public void testSplitByContinuousWithRealData() throws Throwable {
+        DataSet d = loadLetterData(DataSetTest.class);
+        Tuple<DataSet, DataSet> subset = d.splitAt(15, 2.5);
+        Vector under = subset.first().attribute(15);
+        Vector over = subset.last().attribute(15);
+
+        for(double v : under) {
+            assertTrue(v < 2.5);
+        }
+
+        for(double v : over) {
+            assertTrue(v > 2.5);
+        }
+
+        assertEquals(d.sampleCount(), under.length() + over.length());
+    }
+
+    @Test
+    public void testEntropy() throws Throwable {
+        DataSet d = loadLetterData(DataSetTest.class);
+        assertEquals(4.699811, d.entropy(), DELTA);
     }
 }

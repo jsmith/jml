@@ -10,7 +10,6 @@ import java.util.*;
 
 import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
-import static ca.jacob.jml.util.ML.calculateEntropy;
 import static ca.jacob.jml.util.ML.calculateWeightedEntropy;
 
 public class Node {
@@ -62,6 +61,7 @@ public class Node {
 
     public void split() {
         LOG.info("split - starting for level {}", level);
+        LOG.debug("the total entropy of the current node is " + this.entropy());
 
         if(level == maxLevel || this.entropy() == 0 || this.sampleCount() <= 1 || this.sampleCount() < minNumberOfSamples) {
             LOG.debug("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.sampleCount());
@@ -102,6 +102,7 @@ public class Node {
         LOG.debug("the best attribute is {} for level {}", bestAttribute, level);
 
         if(bestAttribute < 0) {
+            LOG.warn("no possible subsets found -> {}", dataSet.dataToString());
             LOG.debug("no possible subsets found");
             this.leaf = true;
             return;
@@ -117,12 +118,16 @@ public class Node {
 
         if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
             Tuple<Double, Tuple<DataSet, DataSet>> subsets = dataSet.splitByContinuousAttribute(bestAttribute);
+            subsets.last().first().dropAttribute(attribute);
+            subsets.last().last().dropAttribute(attribute);
             LOG.debug("pivot is {}", subsets.first());
-            LOG.debug("under size: {}", subsets.last().first().sampleCount());
-            LOG.debug("over size: {}", subsets.last().last().sampleCount());
             children = new Children(this, subsets);
         } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
-            children = new Children(this, dataSet.splitByDiscreteAttribute(bestAttribute));
+            Map<Integer, DataSet> subsets = dataSet.splitByDiscreteAttribute(bestAttribute);
+            for(Map.Entry<Integer, DataSet> subset : subsets.entrySet()) {
+                subset.getValue().dropAttribute(attribute);
+            }
+            children = new Children(this, subsets);
         }
         LOG.debug("there will be {} children", children.size());
 
@@ -203,5 +208,14 @@ public class Node {
 
     public int attributeCount() {
         return dataSet.attributeCount();
+    }
+
+    @Override
+    public String toString() {
+        if(parent == null) {
+            return "\nRoot Node: attribute - >" + attribute;
+        } else {
+            return parent.toString() + "\nNode Level {}: attribute -> " + attribute;
+        }
     }
 }

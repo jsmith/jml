@@ -35,7 +35,7 @@ public class KFold {
         Vector accuracies = new Vector();
         Map<Vector, Vector> indices = this.generateIndices(dataSet);
         for(Map.Entry<Vector, Vector> entry : indices.entrySet()) {
-            LOG.debug("starting kfold iteration {}", accuracies.length());
+            LOG.info("starting kfold iteration {}", accuracies.length());
             Vector trainIndices = entry.getKey();
             Vector testIndices = entry.getValue();
 

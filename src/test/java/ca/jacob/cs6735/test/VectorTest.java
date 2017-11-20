@@ -27,6 +27,12 @@ public class VectorTest {
     }
 
     @Test
+    public void testLength() {
+        Vector v = new Vector(new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0});
+        assertEquals(39, v.length());
+    }
+
+    @Test
     public void testAdd() {
         Vector v1 = new Vector(new int[]{1, 2, 3, 4});
         v1.add(4);

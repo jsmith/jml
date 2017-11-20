@@ -175,15 +175,6 @@ public class ML {
         return result;
     }
 
-    public static double calculateEntropy(List<DataSet> subsets) {
-        double entropy = 0;
-        for(DataSet subset : subsets) {
-            entropy += subset.entropy();
-        }
-
-        LOG.trace("the total entropy is {}", entropy);
-        return entropy;
-    }
 
     public static double calculateWeightedEntropy(List<DataSet> subsets) {
         double entropy = 0;
@@ -199,25 +190,14 @@ public class ML {
         return entropy;
     }
 
-    public static double calculateEntropy(Collection<DataSet> subsets) {
-        return calculateEntropy(new ArrayList<DataSet>(subsets));
-    }
-
     public static double calculateWeightedEntropy(Collection<DataSet> subsets) {
         return calculateWeightedEntropy(new ArrayList<DataSet>(subsets));
     }
 
-    public static double calculateEntropy(Tuple<DataSet, DataSet> subsets) {
-        double entropy = 0;
-        entropy += subsets.first().entropy();
-        entropy += subsets.last().entropy();
-        return entropy;
-    }
-
     public static double calculateWeightedEntropy(Tuple<DataSet, DataSet> subsets) {
         double entropy = 0;
-        entropy += subsets.first().entropy();
-        entropy += subsets.last().entropy();
+        entropy += subsets.first().entropy() * subsets.first().sampleCount();
+        entropy += subsets.last().entropy() * subsets.last().sampleCount();
 
         entropy /= ((subsets.first().sampleCount() + subsets.last().sampleCount()) * 2);
 

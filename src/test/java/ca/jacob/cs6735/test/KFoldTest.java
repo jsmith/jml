@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+import static ca.jacob.cs6735.DataUtil.loadLetterData;
 import static ca.jacob.cs6735.DataUtil.readCSV;
 import static ca.jacob.jml.util.ML.removeSamplesWith;
 import static ca.jacob.jml.util.ML.shuffle;
@@ -59,6 +60,17 @@ public class KFoldTest {
 
         Report r = kFold.generateReport(a, dataset);
         Vector accuracies = r.getAccuracies();
-        LOG.info("kfold test accuracy: {}", accuracies.mean());
+        LOG.info("KFold test accuracy: {}", accuracies.mean());
+    }
+
+    @Test
+    public void testKFoldProcessContinuous() throws Throwable {
+        DataSet dataset = loadLetterData(KFoldTest.class);
+
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 20);
+
+        Report r = kFold.generateReport(a, dataset);
+        Vector accuracies = r.getAccuracies();
+        LOG.info("KFold test accuracy for letter data: {}", accuracies.mean());
     }
 }

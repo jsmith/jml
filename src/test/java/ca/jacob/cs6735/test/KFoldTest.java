@@ -3,15 +3,13 @@ package ca.jacob.cs6735.test;
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
 import ca.jacob.jml.dt.ID3;
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Report;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.util.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
 import static ca.jacob.cs6735.DataUtil.loadLetterData;
@@ -38,11 +36,11 @@ public class KFoldTest {
 
     @Test
     public void testSplit() {
-        Map<Vector, Vector> map = kFold.generateIndices(dataset);
-        assertEquals(map.size(), 5);
-        for(Map.Entry<Vector, Vector> entry : map.entrySet()) {
-            Vector trainIndices = entry.getKey();
-            Vector testIndices = entry.getValue();
+        List<Tuple<Vector, Vector>> indices = kFold.generateIndices(dataset);
+        assertEquals(indices.size(), 5);
+        for(Tuple<Vector, Vector> entry : indices) {
+            Vector trainIndices = entry.first();
+            Vector testIndices = entry.last();
             assertEquals(6, trainIndices.length() + testIndices.length());
         }
     }

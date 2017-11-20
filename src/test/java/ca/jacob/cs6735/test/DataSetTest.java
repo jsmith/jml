@@ -4,6 +4,7 @@ import ca.jacob.jml.util.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.xml.crypto.Data;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,41 @@ import static org.junit.Assert.assertTrue;
 
 public class DataSetTest {
     private static final double DELTA = 1e-5;
+
+    @Test
+    public void testInit() {
+        Matrix x = new Matrix(new int[][]{
+                {1, 1, 1},
+                {1,0, 1},
+                {1,0, 0}});
+        Vector y = new Vector(new int[]{
+                1,
+                0,
+                0});
+        DataSet d = new DataSet(x, y, DISCRETE);
+        assertEquals(d.attributeType(0), DISCRETE);
+        assertEquals(d.attributeType(1), DISCRETE);
+        assertEquals(d.attributeType(2), DISCRETE);
+    }
+
+    @Test
+    public void testIndices() {
+        Matrix x = new Matrix(new int[][]{
+                {1, 1, 1},
+                {1,0, 1},
+                {1,0, 0}});
+        Vector y = new Vector(new int[]{
+                1,
+                0,
+                0});
+        DataSet d = new DataSet(x, y, DISCRETE);
+        DataSet e = d.samples(new Vector(new int[]{0, 1, 2}));
+        d.getAttributeTypes().set(0, CONTINUOUS);
+        d.getAttributeTypes().remove(2);
+
+        assertEquals(3, e.getAttributeTypes().length());
+        assertEquals(DISCRETE, e.attributeType(0));
+    }
 
     @Test
     public void testSplitByDiscrete() {

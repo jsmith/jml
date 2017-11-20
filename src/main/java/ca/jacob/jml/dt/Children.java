@@ -89,6 +89,7 @@ public class Children {
                 int value = entry.getKey();
                 Node child = entry.getValue();
                 if (e.intAt(attribute) == value) {
+                    e = e.clone();
                     e.remove(attribute);
                     return child.classify(e);
                 }
@@ -96,9 +97,11 @@ public class Children {
         } else if(parent.getAttributeType() == CONTINUOUS) {
             LOG.debug("instance {} vs pivot {} for attribute {}", e.at(attribute), pivot, attribute);
             if (e.at(attribute) < pivot) {
+                e = e.clone();
                 e.remove(attribute);
                 return under.classify(e);
             } else {
+                e = e.clone();
                 e.remove(attribute);
                 return over.classify(e);
             }

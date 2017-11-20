@@ -7,7 +7,7 @@
 
     <logger name="ca.jacob.cs6735.DataUtil" level="debug"></logger>
 
-    <logger name="ca.jacob.jml.Model" level="debug"></logger>
+    <logger name="ca.jacob.jml.Model" level="info"></logger>
     <logger name="ca.jacob.jml.KFold" level="info"></logger>
 
     <logger name="ca.jacob.jml.dt.Node" level="info"></logger>
@@ -18,6 +18,7 @@
     <logger name="ca.jacob.jml.nb.ClassSummary" level="info"></logger>
     <logger name="ca.jacob.jml.nb.DiscreteAttribute" level="info"></logger>
 
+    <logger name="ca.jacob.jml.ensemble.AdaboostModel" level="debug"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForestModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForest" level="info"></logger>
 

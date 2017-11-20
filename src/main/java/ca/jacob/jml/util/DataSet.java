@@ -106,7 +106,7 @@ public class DataSet {
             throw new AttributeException("must be discrete attribute");
         }
 
-        Map<Integer, DataSet> subsets = new HashMap<Integer, DataSet>();
+        Map<Integer, DataSet> subsets = new HashMap<>();
         for (int i = 0; i < x.rowCount(); i++) {
             LOG.trace("checking row {}", i);
             int value = x.intAt(i, attribute);
@@ -114,7 +114,7 @@ public class DataSet {
             DataSet subset = subsets.get(value);
             if (subset == null) {
                 LOG.trace("adding new split based on value {}", value);
-                subset = new DataSet(this.attributeTypes);
+                subset = new DataSet(this.attributeTypes.clone());
                 subsets.put(value, subset);
             }
 
@@ -210,7 +210,7 @@ public class DataSet {
     }
 
     public DataSet samples(Vector indices) {
-        return new DataSet(x.rows(indices), y.at(indices), attributeTypes);
+        return new DataSet(x.rows(indices), y.at(indices), attributeTypes.clone());
     }
 
     public Matrix getX() {

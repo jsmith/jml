@@ -35,19 +35,9 @@ public class AdaboostTest {
         ID3 id3 = new ID3(1); // stumps
         Adaboost adaboost = new Adaboost(id3, 100, 0.3);
 
-        String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = removeSamplesWith("?", data); //ignore these for now
-        Matrix mat = new Matrix(data);
-        Vector v = mat.col(mat.colCount()-1);
-        v = v.replace(2, -1);
-        v = v.replace(4, 1);
-        mat.setCol(mat.colCount()-1, v);
-        mat.dropCol(0); // removing id
+        DataSet dataset = loadBreastCancerData(AdaboostTest.class);
 
-        Vector attributeTypes = new Vector(new int[mat.colCount()-1]);
-        attributeTypes.fill(DISCRETE);
-
-        Report r = kFold.generateReport(adaboost, new DataSet(mat, attributeTypes));
+        Report r = kFold.generateReport(adaboost, dataset);
 
         Vector accuracies = r.getAccuracies();
         assertTrue(accuracies.mean() > 90);

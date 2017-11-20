@@ -99,6 +99,17 @@ public class ID3Test {
     }
 
     @Test
+    public void testNoLimitCarData() throws Throwable {
+        DataSet d = loadCarData(ID3Test.class);
+
+        ID3 id3 = new ID3(ID3.MAX_LEVEL_NONE);
+        ID3Model model = (ID3Model) id3.fit(d);
+
+        double accuracy = model.accuracy(d);
+        assertEquals((double) 100, accuracy);
+    }
+
+    @Test
     public void testDepthOne() throws Throwable {
         String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);

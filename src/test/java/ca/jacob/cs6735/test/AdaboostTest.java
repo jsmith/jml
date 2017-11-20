@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
+import static ca.jacob.cs6735.DataUtil.loadCarData;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
 import static ca.jacob.cs6735.DataUtil.readCSV;
 import static ca.jacob.jml.util.ML.removeSamplesWith;

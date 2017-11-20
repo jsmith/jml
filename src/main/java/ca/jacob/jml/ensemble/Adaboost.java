@@ -17,16 +17,16 @@ public class Adaboost implements Algorithm {
 
     private Algorithm algorithm;
     private int numberOfEstimators;
-    private double percentageOfSamples;
+    private double proportionOfSamples;
 
-    public Adaboost(Algorithm algorithm, int numberOfEstimators, double percentageOfSamples) {
+    public Adaboost(Algorithm algorithm, int numberOfEstimators, double proportionOfSamples) {
         this.algorithm = algorithm;
         this.numberOfEstimators = numberOfEstimators;
-        this.percentageOfSamples = percentageOfSamples;
+        this.proportionOfSamples = proportionOfSamples;
     }
 
     public Model fit(DataSet dataSet) {
-        int numberOfSamples = (int)(dataSet.sampleCount() * percentageOfSamples);
+        int numberOfSamples = (int)(dataSet.sampleCount() * proportionOfSamples);
         LOG.debug("number of samples for each training iteration: {}", numberOfSamples);
 
         AdaboostModel model = new AdaboostModel();
@@ -69,6 +69,6 @@ public class Adaboost implements Algorithm {
 
     @Override
     public String toString() {
-        return NAME + "(estimators:"+numberOfEstimators+", percentage:"+percentageOfSamples+") with " + algorithm.toString();
+        return NAME + "(estimators:"+numberOfEstimators+", proportion:"+proportionOfSamples+") with " + algorithm.toString();
     }
 }

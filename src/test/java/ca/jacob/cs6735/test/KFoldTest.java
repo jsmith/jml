@@ -12,8 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 
-import static ca.jacob.cs6735.DataUtil.loadLetterData;
-import static ca.jacob.cs6735.DataUtil.readCSV;
+import static ca.jacob.cs6735.DataUtil.*;
 import static ca.jacob.jml.util.ML.removeSamplesWith;
 import static ca.jacob.jml.util.ML.shuffle;
 import static junit.framework.Assert.assertEquals;
@@ -70,5 +69,29 @@ public class KFoldTest {
         Report r = kFold.generateReport(a, dataset);
         Vector accuracies = r.getAccuracies();
         LOG.info("KFold test accuracy for letter data: {}", accuracies.mean());
+    }
+
+    @Test
+    public void testKFoldProcessWithMushroom() throws Throwable {
+        DataSet dataset = loadMushroomData(KFoldTest.class);
+
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 20);
+
+        Report r = kFold.generateReport(a, dataset);
+        Vector accuracies = r.getAccuracies();
+
+        LOG.info("KFold test accuracy for mushroom data: {}", accuracies.mean());
+    }
+
+    @Test
+    public void testKFoldProcessWithCar() throws Throwable {
+        DataSet dataset = loadCarData(KFoldTest.class);
+
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+
+        Report r = kFold.generateReport(a, dataset);
+        Vector accuracies = r.getAccuracies();
+
+        LOG.info("KFold test accuracy for car data: {}", accuracies.mean());
     }
 }

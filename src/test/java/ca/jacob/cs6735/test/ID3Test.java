@@ -1,5 +1,6 @@
 package ca.jacob.cs6735.test;
 
+import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.dt.ID3;
 import ca.jacob.jml.dt.ID3Model;
@@ -12,8 +13,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static ca.jacob.cs6735.DataUtil.*;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
-import static ca.jacob.cs6735.DataUtil.readCSV;
 import static ca.jacob.jml.util.ML.removeSamplesWith;
 import static junit.framework.Assert.assertEquals;
 
@@ -87,10 +88,7 @@ public class ID3Test {
 
     @Test
     public void testNoLimit() throws Throwable {
-        String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = removeSamplesWith("?", data);
-
-        DataSet d = new DataSet(new Matrix(data), DISCRETE);
+        DataSet d = loadBreastCancerData(ID3Test.class);
 
         ID3 id3 = new ID3(ID3.MAX_LEVEL_NONE);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -113,5 +111,16 @@ public class ID3Test {
         double accuracy = model.accuracy(d);
         assertEquals(1, model.depth());
         LOG.info("accuracy for max depth 1 is {}", accuracy);
+    }
+
+    @Test
+    public void testContinuousData() throws Throwable {
+        DataSet letterData = loadLetterData(ID3Test.class);
+
+        Algorithm id3 = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        Model model = id3.fit(letterData);
+
+        double accuracy = model.accuracy(letterData);
+        assertEquals((double) 100, accuracy);
     }
 }

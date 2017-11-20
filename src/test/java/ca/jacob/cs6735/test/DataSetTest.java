@@ -1,9 +1,6 @@
 package ca.jacob.cs6735.test;
 
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Tuple;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.util.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,6 +31,12 @@ public class DataSetTest {
         Tuple<DataSet, DataSet> subsets = d.splitAt(1, 0.5);
         assertEquals(1, subsets.first().sampleCount());
         assertEquals(1, subsets.last().sampleCount());
+
+        try {
+            subsets = d.splitAt(0, 0);
+        } catch (DataException e) {
+            // Do nothing!
+        }
     }
 
     @Test
@@ -44,5 +47,16 @@ public class DataSetTest {
         assertEquals(2, subsets.last().first().sampleCount());
         assertEquals(1, subsets.last().last().sampleCount());
         assertEquals(0.5, subsets.first(), DELTA);
+
+        data = new Matrix(new int[][]{
+                {0, 0, 1, 1},
+                {0, 0, 1, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1}
+        });
+        d = new DataSet(data, CONTINUOUS);
+        subsets = d.splitByContinuousAttribute(2);
+        assertEquals(1, subsets.last().first().sampleCount());
+        assertEquals(3, subsets.last().last().sampleCount());
     }
 }

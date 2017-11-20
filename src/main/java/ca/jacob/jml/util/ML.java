@@ -185,14 +185,43 @@ public class ML {
         return entropy;
     }
 
+    public static double calculateWeightedEntropy(List<DataSet> subsets) {
+        double entropy = 0;
+        int sum = 0;
+        for(DataSet subset : subsets) {
+            entropy += subset.entropy() * subset.sampleCount();
+            sum += subset.sampleCount();
+        }
+
+        entropy /= (sum * subsets.size());
+
+        LOG.trace("the total weighted entropy is {}", entropy);
+        return entropy;
+    }
+
     public static double calculateEntropy(Collection<DataSet> subsets) {
         return calculateEntropy(new ArrayList<DataSet>(subsets));
+    }
+
+    public static double calculateWeightedEntropy(Collection<DataSet> subsets) {
+        return calculateWeightedEntropy(new ArrayList<DataSet>(subsets));
     }
 
     public static double calculateEntropy(Tuple<DataSet, DataSet> subsets) {
         double entropy = 0;
         entropy += subsets.first().entropy();
         entropy += subsets.last().entropy();
+        return entropy;
+    }
+
+    public static double calculateWeightedEntropy(Tuple<DataSet, DataSet> subsets) {
+        double entropy = 0;
+        entropy += subsets.first().entropy();
+        entropy += subsets.last().entropy();
+
+        entropy /= ((subsets.first().sampleCount() + subsets.last().sampleCount()) * 2);
+
+        LOG.trace("the total weighted entropy is {}", entropy);
         return entropy;
     }
 }

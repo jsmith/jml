@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import static ca.jacob.jml.util.DataSet.CONTINUOUS;
 import static ca.jacob.jml.util.DataSet.DISCRETE;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -42,6 +43,53 @@ public class NodeTest {
         assertEquals(2, node.getChildren().size());
         assertNull(node.getChildren().get(0).getChildren());
         assertNull(node.getChildren().get(1).getChildren());
+    }
+
+    @Test
+    public void testContinuous() {
+        Matrix data = new Matrix(new int[][]{
+                {0, 0, 1, 1},
+                {0, 0, 0, 0}
+        });
+        DataSet dataset = new DataSet(data, CONTINUOUS);
+        node = new Node(dataset, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        node.split();
+        assertEquals(2, node.getChildren().size());
+
+        data = new Matrix(new int[][]{
+                {0, 0, 0, 0},
+                {0, 0, 0, 0}
+        });
+        dataset = new DataSet(data, CONTINUOUS);
+        node = new Node(dataset, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        node.split();
+        assertNull(node.getChildren());
+
+        data = new Matrix(new int[][]{
+                {0, 0, 3, 1},
+                {0, 0, 2, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1}
+        });
+        dataset = new DataSet(data, CONTINUOUS);
+        node = new Node(dataset, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        node.split();
+        assertEquals(2, node.getChildren().size());
+        assertEquals(0.5, node.getChildren().getPivot(), DELTA);
+
+        data = new Matrix(new int[][]{
+                {0, 0, 1, 1},
+                {0, 0, 1, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1}
+        });
+        dataset = new DataSet(data, CONTINUOUS);
+        node = new Node(dataset, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+        node.split();
+        assertEquals(2, node.getChildren().size());
+        assertEquals(0.5, node.getChildren().getPivot(), DELTA);
+        assertEquals(1, node.getChildren().get(0).sampleCount());
+        assertEquals(3, node.getChildren().get(1).sampleCount());
     }
 
     @Test

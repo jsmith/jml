@@ -10,7 +10,7 @@
     <logger name="ca.jacob.jml.Model" level="warn"></logger>
     <logger name="ca.jacob.jml.KFold" level="info"></logger>
 
-    <logger name="ca.jacob.jml.dt.Node" level="warn"></logger>
+    <logger name="ca.jacob.jml.dt.Node" level="debug"></logger>
     <logger name="ca.jacob.jml.dt.Children" level="warn"></logger>
 
     <logger name="ca.jacob.jml.nb.NaiveBayesModel" level="info"></logger>
@@ -26,12 +26,11 @@
     <logger name="ca.jacob.jml.util.ML" level="info"></logger>
     <logger name="ca.jacob.jml.util.Vector" level="info"></logger>
     <logger name="ca.jacob.cs6735.File" level="info"></logger>
-    <logger name="ca.jacob.jml.util.DataSet" level="info"></logger>
+    <logger name="ca.jacob.jml.util.DataSet" level="debug"></logger>
 
     <logger name="ca.jacob.cs6735.test.MathTest" level="info"></logger>
     <logger name="ca.jacob.cs6735.test.AdaboostTest" level="debug"></logger>
     <logger name="ca.jacob.cs6735.test" level="info"></logger>
-    <logger name="ca.jacob.cs6735.DataUtil" level="info"></logger>
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

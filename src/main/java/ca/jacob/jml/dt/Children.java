@@ -69,12 +69,12 @@ public class Children {
     }
 
     public void split() {
-        if(parent.getAttributeType() == DISCRETE) {
-            for(Node child : discrete.values()) {
+        if (parent.getAttributeType() == DISCRETE) {
+            for (Node child : discrete.values()) {
                 LOG.debug("child: {} x {}", child.sampleCount(), child.attributeCount());
                 child.split();
             }
-        } else if(parent.getAttributeType() == CONTINUOUS) {
+        } else if (parent.getAttributeType() == CONTINUOUS) {
             under.split();
             over.split();
         } else {
@@ -90,7 +90,7 @@ public class Children {
                 }
             }
         } else if(parent.getAttributeType() == CONTINUOUS) {
-            if (e.intAt(parent.getAttribute()) < pivot) {
+            if (e.at(parent.getAttribute()) < pivot) {
                 return under.classify(e);
             } else {
                 return over.classify(e);
@@ -147,5 +147,9 @@ public class Children {
         }
 
         discrete.put(value, n);
+    }
+
+    public double getPivot() {
+        return pivot;
     }
 }

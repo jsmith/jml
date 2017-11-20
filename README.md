@@ -77,7 +77,7 @@ Hand in your report to C114 and submit your source code no later than midnight, 
     imL (inner membrane lipoprotein)                     2  
     imS (inner membrane, cleavable signal sequence)      2 
     
-<<<<<<< Updated upstream
+### References
 1. [Naive Bayes](https://stats.stackexchange.com/questions/136577/how-to-deal-with-mixture-of-continuous-and-discrete-features-when-using-naive-ba)
 1. Other
 

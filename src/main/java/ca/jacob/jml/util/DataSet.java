@@ -132,9 +132,15 @@ public class DataSet {
         Vector c = x.col(attribute);
         c.sort();
 
+        LOG.debug("splitting with attribute -> {}", c);
+
         Tuple<Double, Tuple<DataSet, DataSet>> bestSubsets = null;
         double minimumEntropy = 0;
         for (int i = 0; i < c.length()-1; i++) {
+            if(c.at(i) == c.at(i+1)) {
+                continue;
+            }
+
             double pivot = (c.at(i) + c.at(i+1)) / 2;
             Tuple<DataSet, DataSet> subsets = splitAt(attribute, pivot);
 
@@ -170,7 +176,7 @@ public class DataSet {
     }
 
     public void add(Vector sample) {
-        LOG.debug("adding sample: {} to y: {} and x: {}", sample, y, x);
+        LOG.trace("adding sample: {} to y: {} and x: {}", sample, y, x);
         y.add(sample.at(sample.length()-1));
         sample.remove(sample.length()-1);
         x.pushRow(sample.clone());
@@ -179,7 +185,7 @@ public class DataSet {
     public Vector sample(int i) {
         Vector sample = x.row(i);
         sample.add(y.at(i));
-        LOG.debug("sample is: {}", sample);
+        LOG.trace("sample is: {}", sample);
         return sample;
     }
 
@@ -256,6 +262,7 @@ public class DataSet {
     public double entropy() {
         Map<Integer, Integer> classes = calculateOccurrences(this.classes());
         LOG.trace("there are {} different class", classes.size());
+        LOG.debug("classes: {}", classes);
 
         double sum = 0.;
         for (int count : classes.values()) {

@@ -35,6 +35,7 @@ public class DataUtil {
         breastCancerMatrix.setCol(breastCancerMatrix.colCount()-1, v);
 
         breastCancerMatrix.dropCol(0); // removing id
+        LOG.debug("breastCancerMatrix row 0 -> ", breastCancerMatrix.row(0));
         DataSet dataset = new DataSet(breastCancerMatrix, DISCRETE);
         dataset.setName("Breast Cancer Data");
 
@@ -56,6 +57,7 @@ public class DataUtil {
         Matrix letterMatrix = new Matrix(data);
         letterMatrix.swapCols(0, letterMatrix.colCount()-1);
         DataSet dataset = new DataSet(letterMatrix, CONTINUOUS);
+        LOG.debug("car data first three samples -> {}", dataset.samples(new Vector(new int[]{0, 1, 2})).dataToString());
         dataset.setName("Letter Data");
         return dataset;
     }

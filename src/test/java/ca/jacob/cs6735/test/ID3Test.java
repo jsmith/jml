@@ -122,6 +122,6 @@ public class ID3Test {
         Model model = id3.fit(letterData);
 
         double accuracy = model.accuracy(letterData);
-        assertEquals(91.35, accuracy, DELTA);
+        assertEquals(93.15, accuracy, DELTA);
     }
 }

@@ -281,4 +281,13 @@ public class DataSet {
     public int getClassification(int i) {
         return y.intAt(i);
     }
+
+    public Vector unique() {
+        Vector unique = new Vector();
+        for(double i : unique) {
+            if(!unique.contains(i)) {
+                unique.add(i);
+            }
+        }
+    }
 }

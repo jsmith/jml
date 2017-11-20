@@ -42,6 +42,7 @@ public class Adaboost implements Algorithm {
             DataSet weightedDataSet = dataSet.samples(indices);
             LOG.debug("first row: {} -> {}", weightedDataSet.sample(0));
 
+
             Model m = algorithm.fit(weightedDataSet);
             //LOG.debug("accuracy of model: {}", m.accuracy(weightedDataSet));
 

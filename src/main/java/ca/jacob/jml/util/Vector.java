@@ -253,7 +253,16 @@ public class Vector implements Iterable<Double> {
 
     public boolean contains(int num) {
         for(int i = 0; i < data.size(); i++) {
-            if(data.get(i) == num) {
+            if(this.intAt(i) == num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean contains(double num) {
+        for(int i = 0; i < data.size(); i++) {
+            if(this.at(i) == num) {
                 return true;
             }
         }

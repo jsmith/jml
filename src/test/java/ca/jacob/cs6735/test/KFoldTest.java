@@ -94,4 +94,16 @@ public class KFoldTest {
 
         LOG.info("KFold test accuracy for car data: {}", accuracies.mean());
     }
+
+    @Test
+    public void testKFoldProcessWithEcoli() throws Throwable {
+        DataSet dataset = loadEcoliData(KFoldTest.class);
+
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
+
+        Report r = kFold.generateReport(a, dataset);
+        Vector accuracies = r.getAccuracies();
+
+        LOG.info("KFold test accuracy for E. Coli Data: {}", accuracies.mean());
+    }
 }

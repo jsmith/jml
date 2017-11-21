@@ -95,14 +95,13 @@ public class DataUtil {
         Matrix mat = new Matrix(data);
         LOG.warn("initial matrix dimensions: {} x {}", mat.rowCount(), mat.colCount());
 
-        mat.dropCol(3); //removing 0.50's
         mat.dropCol(4); //removing 0.48s
+        mat.dropCol(3); //removing 0.50's
         mat.dropCol(0); // removing sequence ids
 
         LOG.debug("mat dimensions: {} x {}", mat.rowCount(), mat.colCount());
 
-        Vector attributeTypes = new Vector(new int[]{CONTINUOUS, CONTINUOUS, CONTINUOUS, CONTINUOUS, CONTINUOUS,});
-        DataSet dataset = new DataSet(mat, attributeTypes);
+        DataSet dataset = new DataSet(mat, CONTINUOUS);
         dataset.setName("E. Coli Data");
         return dataset;
     }

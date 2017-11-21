@@ -18,8 +18,8 @@
     <logger name="ca.jacob.jml.nb.ClassSummary" level="info"></logger>
     <logger name="ca.jacob.jml.nb.DiscreteAttribute" level="info"></logger>
 
-    <logger name="ca.jacob.jml.ensemble.AdaboostModel" level="debug"></logger>
-    <logger name="ca.jacob.jml.ensemble.MultiAdaboost" level="debug"></logger>
+    <logger name="ca.jacob.jml.ensemble.AdaboostModel" level="info"></logger>
+    <logger name="ca.jacob.jml.ensemble.MultiAdaboost" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForestModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForest" level="info"></logger>
 

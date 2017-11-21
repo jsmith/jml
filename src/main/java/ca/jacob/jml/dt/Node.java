@@ -102,8 +102,7 @@ public class Node {
         LOG.debug("the best attribute is {} for level {}", bestAttribute, level);
 
         if(bestAttribute < 0) {
-            LOG.warn("no possible subsets found -> {}", dataSet.dataToString());
-            LOG.debug("no possible subsets found");
+            LOG.info("no possible subsets found -> {}", dataSet.dataToString());
             this.leaf = true;
             return;
         }

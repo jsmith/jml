@@ -40,7 +40,7 @@ public class MultiAdaboostTest {
     @Test
     public void testMultiAdaboost() throws Throwable {
         ID3 id3 = new ID3(1);
-        MultiAdaboost multiAdaboost = new MultiAdaboost(id3, 200, 0.3);
+        MultiAdaboost multiAdaboost = new MultiAdaboost(id3, 300, 0.3);
 
         DataSet d = loadCarData(MultiAdaboostTest.class);
 

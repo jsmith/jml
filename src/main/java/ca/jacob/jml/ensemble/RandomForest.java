@@ -2,12 +2,12 @@ package ca.jacob.jml.ensemble;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.DataSet;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.jml.util.ML.generateIndices;
+import static ca.jacob.jml.Util.generateIndices;
 
 public class RandomForest implements Algorithm {
     private static final Logger LOG = LoggerFactory.getLogger(RandomForest.class);

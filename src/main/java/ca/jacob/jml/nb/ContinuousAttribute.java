@@ -1,7 +1,7 @@
 package ca.jacob.jml.nb;
 
 import ca.jacob.jml.distribution.Distribution;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

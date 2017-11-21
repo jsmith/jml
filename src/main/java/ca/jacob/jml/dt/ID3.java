@@ -2,7 +2,7 @@ package ca.jacob.jml.dt;
 
 import ca.jacob.jml.Model;
 import ca.jacob.jml.Algorithm;
-import ca.jacob.jml.util.DataSet;
+import ca.jacob.jml.DataSet;
 
 public class ID3 implements Algorithm {
     public static final int MAX_LEVEL_NONE = Integer.MAX_VALUE;

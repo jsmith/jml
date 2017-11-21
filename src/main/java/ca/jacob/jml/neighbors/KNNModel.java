@@ -1,10 +1,10 @@
 package ca.jacob.jml.neighbors;
 
 import ca.jacob.jml.Model;
-import ca.jacob.jml.distance.DistanceFunction;
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.distance.DistanceFunction;
+import ca.jacob.jml.DataSet;
+import ca.jacob.jml.math.Matrix;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

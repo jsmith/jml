@@ -1,26 +1,23 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.FileException;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.DataSet;
+import ca.jacob.jml.math.Matrix;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.crypto.Data;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static ca.jacob.jml.util.DataSet.CONTINUOUS;
-import static ca.jacob.jml.util.DataSet.DISCRETE;
-import static ca.jacob.jml.util.ML.range;
-import static ca.jacob.jml.util.ML.removeSamplesWith;
+import static ca.jacob.jml.DataSet.CONTINUOUS;
+import static ca.jacob.jml.DataSet.DISCRETE;
+import static ca.jacob.jml.Util.range;
+import static ca.jacob.jml.Util.removeSamplesWith;
 
 public class DataUtil {
     private static final Logger LOG = LoggerFactory.getLogger(DataUtil.class);

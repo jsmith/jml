@@ -1,13 +1,11 @@
 package ca.jacob.jml.ensemble;
 
 import ca.jacob.jml.Model;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Tuple;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.Tuple;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MultiAdaboostModel extends Model {

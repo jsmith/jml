@@ -2,15 +2,14 @@ package ca.jacob.cs6735;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
-import ca.jacob.jml.distance.Hamming;
+import ca.jacob.jml.math.distance.Hamming;
 import ca.jacob.jml.dt.ID3;
 import ca.jacob.jml.ensemble.Adaboost;
 import ca.jacob.jml.ensemble.RandomForest;
 import ca.jacob.jml.nb.NaiveBayes;
 import ca.jacob.jml.neighbors.KNN;
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Report;
+import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Report;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static ca.jacob.cs6735.DataUtil.*;
-import static ca.jacob.jml.util.DataSet.DISCRETE;
 
 public class Assignment {
     private static final Logger LOG = LoggerFactory.getLogger(Assignment.class);

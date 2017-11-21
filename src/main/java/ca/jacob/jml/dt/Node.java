@@ -1,16 +1,19 @@
 package ca.jacob.jml.dt;
 
-import ca.jacob.jml.PredictionError;
-import ca.jacob.jml.util.*;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.DataSet;
+import ca.jacob.jml.exceptions.AttributeException;
+import ca.jacob.jml.exceptions.PredictionException;
+import ca.jacob.jml.math.Matrix;
+import ca.jacob.jml.math.Tuple;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static ca.jacob.jml.util.DataSet.CONTINUOUS;
-import static ca.jacob.jml.util.DataSet.DISCRETE;
-import static ca.jacob.jml.util.ML.calculateWeightedEntropy;
+import static ca.jacob.jml.DataSet.CONTINUOUS;
+import static ca.jacob.jml.DataSet.DISCRETE;
+import static ca.jacob.jml.Util.calculateWeightedEntropy;
 
 public class Node {
     private static final Logger LOG = LoggerFactory.getLogger(Node.class);
@@ -151,7 +154,7 @@ public class Node {
         } else {
             try {
                 return children.predict(e);
-            } catch (PredictionError ex) {
+            } catch (PredictionException ex) {
                 LOG.trace("children unable to predict sample");
                 return this.predict(e);
             }

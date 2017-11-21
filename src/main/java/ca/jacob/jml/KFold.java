@@ -1,22 +1,18 @@
 package ca.jacob.jml;
 
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Report;
-import ca.jacob.jml.util.Tuple;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.Tuple;
+import ca.jacob.jml.math.Vector;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static ca.jacob.jml.util.ML.range;
-import static ca.jacob.jml.util.ML.shuffle;
+import static ca.jacob.jml.Util.range;
+import static ca.jacob.jml.Util.shuffle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.jml.util.ML.shuffle;
+import static ca.jacob.jml.Util.shuffle;
 
 public class KFold {
     private static final Logger LOG = LoggerFactory.getLogger(KFold.class);

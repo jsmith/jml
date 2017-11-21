@@ -2,8 +2,8 @@ package ca.jacob.jml.neighbors;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.distance.DistanceFunction;
-import ca.jacob.jml.util.DataSet;
+import ca.jacob.jml.math.distance.DistanceFunction;
+import ca.jacob.jml.DataSet;
 
 public class KNN implements Algorithm {
     private static final String NAME = "K-Nearest Neighbour";

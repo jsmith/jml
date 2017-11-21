@@ -1,12 +1,11 @@
 package ca.jacob.jml;
 
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.Matrix;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.jml.util.ML.error;
+import static ca.jacob.jml.Util.error;
 
 public abstract class Model {
     private static final Logger LOG = LoggerFactory.getLogger(Model.class);

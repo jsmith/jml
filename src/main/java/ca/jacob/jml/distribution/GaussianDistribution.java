@@ -1,7 +1,7 @@
 package ca.jacob.jml.distribution;
 
-import ca.jacob.jml.util.MathException;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.MathException;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

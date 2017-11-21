@@ -2,13 +2,13 @@ package ca.jacob.jml.ensemble;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.DataSet;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.jml.util.ML.*;
-import static ca.jacob.jml.util.Math.*;
+import static ca.jacob.jml.Util.*;
+import static ca.jacob.jml.math.Util.*;
 
 
 public class Adaboost implements Algorithm {

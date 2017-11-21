@@ -1,15 +1,14 @@
 package ca.jacob.jml.ensemble;
 
 import ca.jacob.jml.Model;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static ca.jacob.jml.util.ML.sign;
+import static ca.jacob.jml.Util.sign;
 
 public class AdaboostModel extends Model {
     private static final Logger LOG = LoggerFactory.getLogger(AdaboostModel.class);

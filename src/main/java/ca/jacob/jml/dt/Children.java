@@ -1,10 +1,10 @@
 package ca.jacob.jml.dt;
 
-import ca.jacob.jml.PredictionError;
-import ca.jacob.jml.util.AttributeException;
-import ca.jacob.jml.util.DataSet;
-import ca.jacob.jml.util.Tuple;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.exceptions.PredictionException;
+import ca.jacob.jml.exceptions.AttributeException;
+import ca.jacob.jml.DataSet;
+import ca.jacob.jml.math.Tuple;
+import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ca.jacob.jml.util.DataSet.CONTINUOUS;
-import static ca.jacob.jml.util.DataSet.DISCRETE;
+import static ca.jacob.jml.DataSet.CONTINUOUS;
+import static ca.jacob.jml.DataSet.DISCRETE;
 
 public class Children {
     private static final Logger LOG = LoggerFactory.getLogger(Children.class);
@@ -109,7 +109,7 @@ public class Children {
             throw new AttributeException("unknown attribute type");
         }
 
-        throw new PredictionError("unable to predict");
+        throw new PredictionException("unable to predict");
     }
 
     public int maxDepth() {

@@ -1,8 +1,7 @@
 package ca.jacob.jml.dt;
 
 import ca.jacob.jml.Model;
-import ca.jacob.jml.util.Matrix;
-import ca.jacob.jml.util.Vector;
+import ca.jacob.jml.math.Vector;
 
 public class ID3Model extends Model {
     private Node root;

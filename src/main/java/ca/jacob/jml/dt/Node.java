@@ -150,18 +150,18 @@ public class Node {
         LOG.trace("sample attributes: {} vs data attributes: {}", e.length(), dataSet.attributeCount());
         if (this.leaf) {
             LOG.trace("a leaf was found, now classifying!");
-            return this.predict(e);
+            return this.predict();
         } else {
             try {
                 return children.predict(e);
             } catch (PredictionException ex) {
                 LOG.trace("children unable to predict sample");
-                return this.predict(e);
+                return this.predict();
             }
         }
     }
 
-    public int predict(Vector e) {
+    public int predict() {
         LOG.trace("predicting starting on level {}", level);
         Vector classes = dataSet.classes();
         return (int)classes.valueOfMaxOccurrence();
@@ -177,10 +177,6 @@ public class Node {
 
     public boolean isLeaf() {
         return leaf;
-    }
-
-    public void isLeaf(boolean leaf) {
-        this.leaf = leaf;
     }
 
     public int getAttributeType() {

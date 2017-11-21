@@ -27,10 +27,6 @@ public class Util {
         return map;
     }
 
-    public static Map<Integer, Integer> calculateOccurrences(int[] values) {
-        return calculateOccurrences(new Vector(values));
-    }
-
 
     public static double log2(double value) {
         return log(value) / log(2);
@@ -46,13 +42,5 @@ public class Util {
             data[i] = java.lang.Math.exp(v.at(i));
         }
         return new Vector(data);
-    }
-
-    public static Vector abs(Vector vector) {
-        Vector v = new Vector(new double[vector.length()]);
-        for(int i = 0; i < vector.length(); i++) {
-            v.set(i, java.lang.Math.abs(vector.at(i)));
-        }
-        return v;
     }
 }

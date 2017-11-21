@@ -1,4 +1,4 @@
-package ca.jacob.cs6735;
+package ca.jacob.jml.exceptions;
 
 public class FileException extends RuntimeException {
     public FileException(String message) {

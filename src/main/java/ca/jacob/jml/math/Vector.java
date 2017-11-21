@@ -114,10 +114,6 @@ public class Vector implements Iterable<Double> {
         Collections.fill(data, value);
     }
 
-    public double dot(int[] other) {
-        return dot(new Vector(other));
-    }
-
     public double dot(Vector other) {
         if(this.length() != other.length()) {
             throw new MathException("vector lengths must match");
@@ -320,20 +316,6 @@ public class Vector implements Iterable<Double> {
             v.set(i, this.at(i)-other.at(i));
         }
         return v;
-    }
-
-    public double median() {
-        if(this.length() == 0) {
-            throw new DataException("cannot compute median of empty vector");
-        }
-
-        Vector v = this.clone();
-        v.sort();
-        if(v.length()%2 == 1) {
-            return v.at(v.length()/2);
-        } else {
-            return v.at(v.length()/2) + v.at(v.length()/2 + 1);
-        }
     }
 
     public void sort() {

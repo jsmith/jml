@@ -11,7 +11,6 @@ public class ID3 implements Algorithm {
 
     private int maxLevel;
     private int minNumberOfSamples;
-    private String[] labels;
 
     public ID3(int maxLevel, int minNumberOfSamples) {
         this.maxLevel = maxLevel;
@@ -25,10 +24,6 @@ public class ID3 implements Algorithm {
 
     public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
-    }
-
-    public void setMinNumberOfSamples(int minNumberOfSamples) {
-        this.minNumberOfSamples = minNumberOfSamples;
     }
 
     public Model fit(DataSet dataSet) {

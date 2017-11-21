@@ -8,10 +8,8 @@ public class DiscreteAttribute implements Attribute {
     private static final Logger LOG = LoggerFactory.getLogger(DiscreteAttribute.class);
 
     private Vector values;
-    private int attribute;
 
-    public DiscreteAttribute(int attribute, Vector values) {
-        this.attribute = attribute;
+    public DiscreteAttribute(Vector values) {
         this.values = values;
     }
 

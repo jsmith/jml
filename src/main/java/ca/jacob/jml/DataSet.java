@@ -190,10 +190,6 @@ public class DataSet {
         return sample;
     }
 
-    public double at(int i, int j) {
-        return x.at(i, j);
-    }
-
     public int attributeCount() {
         return x.colCount();
     }
@@ -243,10 +239,6 @@ public class DataSet {
         return y.intAt(i);
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -277,10 +269,6 @@ public class DataSet {
         }
 
         return entropy;
-    }
-
-    public int getClassification(int i) {
-        return y.intAt(i);
     }
 
     public void replaceClasses(Vector newClasses) {

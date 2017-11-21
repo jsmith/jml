@@ -11,8 +11,6 @@ import java.util.List;
 import static ca.jacob.jml.Util.sign;
 
 public class AdaboostModel extends Model {
-    private static final Logger LOG = LoggerFactory.getLogger(AdaboostModel.class);
-
     private Vector alphas;
     private List<Model> models;
 

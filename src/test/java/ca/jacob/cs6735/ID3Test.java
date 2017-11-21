@@ -82,8 +82,6 @@ public class ID3Test {
         ID3 id3 = new ID3(2);
         ID3Model model = (ID3Model) id3.fit(d);
 
-        double accuracy = model.accuracy(d);
-
         assertEquals((int) 2, model.depth());
     }
 

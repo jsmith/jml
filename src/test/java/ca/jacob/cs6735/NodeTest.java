@@ -17,7 +17,6 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
 
 public class NodeTest {
-    private static final Logger LOG = LoggerFactory.getLogger(NodeTest.class);
     private static final double DELTA =  1e-10;
     private Node node;
 

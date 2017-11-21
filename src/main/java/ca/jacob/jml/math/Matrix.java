@@ -53,22 +53,12 @@ public class Matrix {
         data.add(new Vector(row));
     }
 
-    public void pushRow(int[] row) {
-        data.add(new Vector(row));
-    }
-
     public void pushRow(Vector v) {
         this.pushRow(v.toArray());
     }
 
     public void setRow(int i, Vector v) {
         data.set(i, v);
-    }
-
-    public void pushCol(int[] col) {
-        for (int j = 0; j < this.rowCount(); j++) {
-            data.get(j).add(col[j]);
-        }
     }
 
     public void pushCol(Vector col) {
@@ -89,14 +79,6 @@ public class Matrix {
             v.add(data.get(i).at(j));
         }
         return v;
-    }
-
-    public int[][] toIntArray() {
-        int[][] arr = new int[this.rowCount()][this.colCount()];
-        for(int i = 0; i < this.rowCount(); i++) {
-            arr[i] = data.get(i).tointArray();
-        }
-        return arr;
     }
 
     public double at(int i, int j) {

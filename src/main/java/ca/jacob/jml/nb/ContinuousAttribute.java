@@ -9,18 +9,16 @@ public class ContinuousAttribute implements Attribute {
     private static final Logger LOG = LoggerFactory.getLogger(ContinuousAttribute.class);
 
     private Vector values;
-    private int attribute;
     private Distribution distribution;
     private double mean;
     private double stdev;
 
-    public ContinuousAttribute(int attribute, Vector values, Distribution distribution) {
+    public ContinuousAttribute(Vector values, Distribution distribution) {
         this.values = values;
         this.distribution = distribution;
         this.mean = this.values.mean();
         this.stdev = this.values.stdev();
-        this.attribute = attribute;
-        LOG.debug("attribute {}: mean -> {}; stdev -> {}", this.attribute, mean, stdev);
+        LOG.debug("mean -> {}; stdev -> {}", mean, stdev);
     }
 
     @Override

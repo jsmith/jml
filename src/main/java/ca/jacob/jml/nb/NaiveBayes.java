@@ -47,9 +47,9 @@ public class NaiveBayes implements Algorithm {
                     if(distribution == null) {
                         throw new BayesException("a distribution must be supplied");
                     }
-                    attributes.add(new ContinuousAttribute(j, attributeValues, distribution));
+                    attributes.add(new ContinuousAttribute(attributeValues, distribution));
                 } else if(d.attributeType(j) == DISCRETE) {
-                    attributes.add(new DiscreteAttribute(j, attributeValues));
+                    attributes.add(new DiscreteAttribute(attributeValues));
                 }
 
             }

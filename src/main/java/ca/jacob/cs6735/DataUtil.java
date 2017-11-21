@@ -1,6 +1,7 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.jml.DataSet;
+import ca.jacob.jml.exceptions.FileException;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;

@@ -19,7 +19,6 @@ import java.util.List;
 import static ca.jacob.cs6735.DataUtil.*;
 
 public class Assignment {
-    private static final Logger LOG = LoggerFactory.getLogger(Assignment.class);
 
     public static void main(String[] args) throws Throwable {
         // Loading data

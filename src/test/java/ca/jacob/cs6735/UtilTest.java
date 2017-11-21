@@ -14,8 +14,10 @@ import java.util.Map;
 import static ca.jacob.jml.DataSet.DISCRETE;
 import static ca.jacob.jml.Util.generateIndices;
 import static ca.jacob.jml.Util.generateIndicesWithoutReplacement;
+import static ca.jacob.jml.Util.toIntegers;
 import static ca.jacob.jml.math.Util.calculateOccurrences;
 import static ca.jacob.jml.math.Util.ln;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -75,5 +77,12 @@ public class UtilTest {
         Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
         Node node = new Node(data, attributeTypes, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
         Assert.assertEquals(1, node.entropy(), DELTA);
+    }
+
+    @Test
+    public void testToIntegers() {
+        String[][] strings = new String[][]{{"o", "t"},{"t","t"}};
+        toIntegers(strings);
+        assertArrayEquals(new String[][]{{"0", "0"},{"1", "0"}}, strings);
     }
 }

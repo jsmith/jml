@@ -2,6 +2,7 @@ package ca.jacob.cs6735;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
+import ca.jacob.jml.Util;
 import ca.jacob.jml.dt.ID3;
 import ca.jacob.jml.dt.ID3Model;
 import ca.jacob.jml.dt.Node;
@@ -74,7 +75,7 @@ public class ID3Test {
 
     @Test
     public void testWithData() throws Throwable {
-        String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
+        String[][] data = Util.readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);
 
         DataSet d = new DataSet(new Matrix(data), DISCRETE);
@@ -109,7 +110,7 @@ public class ID3Test {
 
     @Test
     public void testDepthOne() throws Throwable {
-        String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
+        String[][] data = Util.readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data);
 
         Matrix m = new Matrix(data);

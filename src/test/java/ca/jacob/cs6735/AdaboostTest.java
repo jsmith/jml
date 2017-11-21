@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
-import static ca.jacob.cs6735.DataUtil.readCSV;
+import static ca.jacob.jml.Util.readCSV;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 

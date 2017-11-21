@@ -1,9 +1,6 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.jml.Algorithm;
-import ca.jacob.jml.DataSet;
-import ca.jacob.jml.KFold;
-import ca.jacob.jml.Report;
+import ca.jacob.jml.*;
 import ca.jacob.jml.dt.ID3;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Tuple;
@@ -49,7 +46,7 @@ public class KFoldTest {
 
     @Test
     public void testKFoldProcess() throws Throwable {
-        String[][] data = readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
+        String[][] data = Util.readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
         data = removeSamplesWith("?", data); //ignore these for now
         Matrix mat = new Matrix(data);
         mat.dropCol(0); // removing id

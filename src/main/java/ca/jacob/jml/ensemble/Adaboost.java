@@ -33,7 +33,6 @@ public class Adaboost implements Algorithm {
 
         Vector weights = new Vector(new double[dataSet.sampleCount()]);
         weights.fill(1./ dataSet.sampleCount());
-        LOG.debug("weights 0 to 5 -> {}", weights.subVector(0, 5));
 
         for(int i = 0; i < numberOfEstimators; i++) {
             LOG.info("starting iteration {}", i+1);
@@ -49,7 +48,7 @@ public class Adaboost implements Algorithm {
             Vector h = m.predict(dataSet.getX());
 
             Vector err = error(h, dataSet.getY());
-            LOG.debug("error 0 to 5 -> {}", err.subVector(0, 5));
+            LOG.debug("error 0 to 5 -> {}", err.subVector(0, 3));
 
             double epsilon = weights.dot(err)/weights.length();
             LOG.debug("epsilon: {}", epsilon);
@@ -60,7 +59,7 @@ public class Adaboost implements Algorithm {
             // updating weights
             weights = weights.mul(exp(err.mul(alpha))); //updating weights
             weights = weights.div(weights.sum());
-            LOG.debug("weights 0 to 5 -> {}", weights.subVector(0, 5));
+            LOG.debug("weights 0 to 5 -> {}", weights.subVector(0, 3));
 
             model.add(m, alpha);
         }

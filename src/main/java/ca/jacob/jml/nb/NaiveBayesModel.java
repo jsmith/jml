@@ -35,15 +35,6 @@ public class NaiveBayesModel extends Model {
         return maxSummary.getClassValue();
     }
 
-    @Override
-    public Vector predict(Matrix x) {
-        Vector predictions = new Vector(new double[x.rowCount()]);
-        for(int i = 0; i < x.rowCount(); i++) {
-            predictions.set(i, this.predict(x.row(i)));
-        }
-        return predictions;
-    }
-
     public List<ClassSummary> getSummaries() {
         return summaries;
     }

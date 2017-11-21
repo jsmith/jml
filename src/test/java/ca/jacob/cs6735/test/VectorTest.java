@@ -108,4 +108,10 @@ public class VectorTest {
     public void testCount() {
         assertEquals(2, v.count(4.0));
     }
+
+    @Test
+    public void testUnique() {
+        Vector v = new Vector(new int[]{1, 2, 3});
+        assertEquals(3, v.unique().length());
+    }
 }

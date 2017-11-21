@@ -30,4 +30,8 @@ public class Report {
                 .append("Standard Devi: ").append(String.format("%.3f",accuracies.stdev())).append("\n")
                 .toString();
     }
+
+    public double mean() {
+        return accuracies.mean();
+    }
 }

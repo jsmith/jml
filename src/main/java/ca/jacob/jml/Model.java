@@ -12,7 +12,14 @@ public abstract class Model {
     private static final Logger LOG = LoggerFactory.getLogger(Model.class);
 
     public abstract int predict(Vector e);
-    public abstract Vector predict(Matrix x);
+
+    public Vector predict(Matrix x) {
+        Vector predictions = new Vector(new double[x.rowCount()]);
+        for(int i = 0; i < x.rowCount(); i++) {
+            predictions.set(i, predict(x.row(i)));
+        }
+        return predictions;
+    }
 
     public double accuracy(DataSet dataSet) {
         Matrix x = dataSet.getX();

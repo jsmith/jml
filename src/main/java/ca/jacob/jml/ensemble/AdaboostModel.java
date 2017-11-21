@@ -19,20 +19,15 @@ public class AdaboostModel extends Model {
 
     @Override
     public int predict(Vector e) {
+        return sign(this.prediction(e));
+    }
+
+    public double prediction(Vector e) {
         double sum = 0;
         for(int i = 0; i < models.size(); i++) {
             sum += alphas.at(i) * models.get(i).predict(e);
         }
-        return sign(sum);
-    }
-
-    @Override
-    public Vector predict(Matrix data) {
-        Vector predictions = new Vector(new double[data.rowCount()]);
-        for(int i = 0; i < data.rowCount(); i++) {
-            predictions.set(i, predict(data.row(i)));
-        }
-        return predictions;
+        return sum;
     }
 
     public void add(Model model, double alpha) {

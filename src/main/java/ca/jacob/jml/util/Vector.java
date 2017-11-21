@@ -338,4 +338,14 @@ public class Vector implements Iterable<Double> {
     public void sort() {
         Collections.sort(data);
     }
+
+    public Vector unique() {
+        Vector unique = new Vector();
+        for(double i : this) {
+            if(!unique.contains(i)) {
+                unique.add(i);
+            }
+        }
+        return unique;
+    }
 }

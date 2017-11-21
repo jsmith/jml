@@ -282,12 +282,7 @@ public class DataSet {
         return y.intAt(i);
     }
 
-    public Vector unique() {
-        Vector unique = new Vector();
-        for(double i : unique) {
-            if(!unique.contains(i)) {
-                unique.add(i);
-            }
-        }
+    public void replaceClasses(Vector newClasses) {
+        this.y = newClasses;
     }
 }

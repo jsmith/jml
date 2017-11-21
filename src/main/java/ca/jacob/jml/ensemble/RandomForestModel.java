@@ -26,15 +26,6 @@ public class RandomForestModel extends Model {
         return predictions.valueOfMaxOccurrence();
     }
 
-    @Override
-    public Vector predict(Matrix x) {
-        Vector predictions = new Vector(new double[x.rowCount()]);
-        for(int i = 0; i < x.rowCount(); i++) {
-            predictions.set(i, this.predict(x.row(i)));
-        }
-        return predictions;
-    }
-
     public void add(Model tree) {
         if(trees == null) {
             trees = new ArrayList<Model>();

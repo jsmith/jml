@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
-import static ca.jacob.cs6735.DataUtil.loadEcoliData;
+import static ca.jacob.cs6735.DataUtil.loadEColiData;
 import static ca.jacob.jml.DataSet.CONTINUOUS;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -62,7 +62,7 @@ public class NaiveBayesTest {
 
     @Test
     public void testGaussianNaiveBayesPredictWithData() throws Throwable {
-        DataSet dataSetSet = loadEcoliData(RandomForestTest.class);
+        DataSet dataSetSet = loadEColiData(RandomForestTest.class);
 
         NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
         NaiveBayesModel m = (NaiveBayesModel)gnb.fit(dataSetSet);
@@ -79,7 +79,7 @@ public class NaiveBayesTest {
 
     @Test
     public void testNaiveBayes() throws Throwable {
-        DataSet dataSetSet = loadEcoliData(RandomForestTest.class);
+        DataSet dataSetSet = loadEColiData(RandomForestTest.class);
 
         Algorithm naiveBayes = new NaiveBayes(new GaussianDistribution());
 

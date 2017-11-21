@@ -63,7 +63,7 @@ public class DataUtil {
         return dataset;
     }
 
-    public static DataSet loadEcoliData(Class c) throws Throwable {
+    public static DataSet loadEColiData(Class c) throws Throwable {
         String[][] data = Util.readCSV(c.getResourceAsStream("/data/ecoli.data"), "\\s+");
         for(int i = 0; i < data.length; i++) {
             String[] row = data[i];

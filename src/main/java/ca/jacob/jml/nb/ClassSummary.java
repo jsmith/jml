@@ -11,7 +11,7 @@ public class ClassSummary {
 
     private int classValue;
     private double classProbability;
-    List<Attribute> attributes;
+    private List<Attribute> attributes;
 
     public ClassSummary(int classValue, double classProbability, List<Attribute> attributes) {
         this.classValue = classValue;

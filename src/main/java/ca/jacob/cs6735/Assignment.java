@@ -10,8 +10,6 @@ import ca.jacob.jml.nb.NaiveBayes;
 import ca.jacob.jml.neighbors.KNN;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.Report;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ public class Assignment {
         data.add(loadLetterData(Assignment.class));
         data.add(loadCarData(Assignment.class));
         data.add(loadBreastCancerData(Assignment.class));
-        data.add(loadEcoliData(Assignment.class));
+        data.add(loadEColiData(Assignment.class));
         data.add(loadMushroomData(Assignment.class));
 
 

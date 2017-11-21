@@ -97,7 +97,7 @@ public class KFoldTest {
 
     @Test
     public void testKFoldProcessWithEcoli() throws Throwable {
-        DataSet dataset = loadEcoliData(KFoldTest.class);
+        DataSet dataset = loadEColiData(KFoldTest.class);
 
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
 

@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.cs6735.DataUtil.loadEcoliData;
+import static ca.jacob.cs6735.DataUtil.loadEColiData;
 import static org.junit.Assert.assertEquals;
 
 public class MathTest {
@@ -26,7 +26,7 @@ public class MathTest {
 
     @Test
     public void testStdDevAndMeanWithData() throws Throwable {
-        DataSet data = loadEcoliData(RandomForestTest.class);
+        DataSet data = loadEColiData(RandomForestTest.class);
         Vector v = data.getX().col(0);
         LOG.debug("v -> {}", v.subVector(0, 5));
         double stdev = v.stdev();

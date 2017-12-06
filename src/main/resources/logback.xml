@@ -5,7 +5,7 @@
         </encoder>
     </appender>
 
-    <logger name="ca.jacob.jml.dt.Node" level="warn"></logger>
+    <logger name="ca.jacob.jml.tree.Node" level="warn"></logger>
     <logger name="ca.jacob.jml.math.Matrix" level="debug"></logger>
 
     <root level="warn">

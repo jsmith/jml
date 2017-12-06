@@ -37,10 +37,7 @@ public class Vector implements Iterable<Double> {
                 try {
                     this.data.add(Double.parseDouble(data[i]));
                 } catch (NumberFormatException e) {
-                    if(!data[i].equals("?")) {
-                        throw new DataException("data must all be integers, doubles or ?, not " + data[i]);
-                    }
-                    this.data.add(Double.NaN);
+                    throw new DataException("data must all be integers or doubles, not " + data[i]);
                 }
             }
     }

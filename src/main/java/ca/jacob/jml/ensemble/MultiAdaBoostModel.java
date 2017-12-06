@@ -8,25 +8,25 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class MultiAdaboostModel extends Model {
-    private static final Logger LOG = LoggerFactory.getLogger(MultiAdaboostModel.class);
+public class MultiAdaBoostModel extends Model {
+    private static final Logger LOG = LoggerFactory.getLogger(MultiAdaBoostModel.class);
 
-    List<Tuple<Integer, AdaboostModel>> adaboostModels;
+    List<Tuple<Integer, AdaBoostModel>> adaboostModels;
 
-    public MultiAdaboostModel(List<Tuple<Integer, AdaboostModel>> adaboostModels) {
+    public MultiAdaBoostModel(List<Tuple<Integer, AdaBoostModel>> adaboostModels) {
         this.adaboostModels = adaboostModels;
     }
 
-    public List<Tuple<Integer, AdaboostModel>> getModels() {
+    public List<Tuple<Integer, AdaBoostModel>> getModels() {
         return adaboostModels;
     }
 
     @Override
     public int predict(Vector e) {
         Tuple<Double, Integer> prediction = null;
-        for(Tuple<Integer, AdaboostModel> adaboostModel : adaboostModels) {
+        for(Tuple<Integer, AdaBoostModel> adaboostModel : adaboostModels) {
             int c = adaboostModel.first();
-            AdaboostModel model = adaboostModel.last();
+            AdaBoostModel model = adaboostModel.last();
             double predictionValue = model.prediction(e);
             if(prediction == null || prediction.first() < predictionValue) {
                 LOG.debug("highest prediction value is now {} corresponding to class {}", predictionValue, c);

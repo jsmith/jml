@@ -75,35 +75,6 @@ public class Util {
         return generateIndices(weights, numberOfIndices);
     }
 
-    public static Vector generateIndicesWithoutReplacement(Vector weights, int numberOfIndices) {
-        Vector probabilities = new Vector(new double[weights.length()]);
-        double sum = weights.sum();
-        for(int i = 0; i < weights.length(); i++) {
-            probabilities.set(i, weights.at(i)/sum);
-        }
-        LOG.debug("probabilities sum is {}", probabilities.sum());
-
-        Vector indices = new Vector(new int[numberOfIndices]);
-        for(int i = 0; i < numberOfIndices; i++) {
-            double rand = random();
-            LOG.trace("rand for index {} is {}", i, rand);
-            double cumulativeProbability = 0.0;
-            for (int j = 0; j < probabilities.length(); j++) {
-                cumulativeProbability += probabilities.at(j);
-                if (rand <= cumulativeProbability) {
-                    if(indices.contains(j)) {
-                        i--;
-                    } else {
-                        LOG.trace("setting index {} to {}", i, j);
-                        indices.set(i, j);
-                    }
-                    break;
-                }
-            }
-        }
-        return indices;
-    }
-
     public static Vector range(int from, int to) {
         int[] range = new int[to-from];
         for(int i = 0; i < to-from; i++) {
@@ -250,6 +221,30 @@ public class Util {
                     count++;
                 }
                 data[i][colIndices.intAt(k)] = String.valueOf(value);
+            }
+        }
+    }
+
+    public static String[][] replaceWithMostCommonFromClass(String key, String[][] data, int classColumn) {
+        for(int i = 0; i < data.length; i++) {
+            for(int j = 0; j < data[0].length; j++) {
+                if(j == classColumn) {
+                    continue;
+                }
+
+                if(data[i][j].equals(key)) {
+                    String classValue = data[i][classColumn];
+
+                    String mostCommon = null;
+                    Map<String, Integer> counts = new HashMap<>();
+                    for(int k = 0; k < data.length; k++) {
+                        if(data[i][k].equals(key)) {
+                            continue;
+                        }
+
+                        if()
+                    }
+                }
             }
         }
     }

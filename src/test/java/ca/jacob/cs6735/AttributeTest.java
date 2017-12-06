@@ -1,8 +1,8 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.jml.distribution.GaussianDistribution;
-import ca.jacob.jml.nb.ContinuousAttribute;
-import ca.jacob.jml.nb.DiscreteAttribute;
+import ca.jacob.jml.math.distribution.GaussianDistribution;
+import ca.jacob.jml.bayes.ContinuousAttribute;
+import ca.jacob.jml.bayes.DiscreteAttribute;
 import ca.jacob.jml.math.Vector;
 import org.junit.Test;
 

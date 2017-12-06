@@ -10,7 +10,7 @@ import java.util.List;
 
 import static ca.jacob.jml.Util.sign;
 
-public class AdaboostModel extends Model {
+public class AdaBoostModel extends Model {
     private Vector alphas;
     private List<Model> models;
 

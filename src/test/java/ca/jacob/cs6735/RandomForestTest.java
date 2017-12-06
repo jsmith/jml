@@ -2,7 +2,7 @@ package ca.jacob.cs6735;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
-import ca.jacob.jml.dt.ID3;
+import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.RandomForest;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.Report;

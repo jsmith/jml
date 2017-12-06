@@ -3,10 +3,10 @@ package ca.jacob.cs6735;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.KFold;
 import ca.jacob.jml.Report;
-import ca.jacob.jml.dt.ID3;
-import ca.jacob.jml.ensemble.AdaboostModel;
-import ca.jacob.jml.ensemble.MultiAdaboost;
-import ca.jacob.jml.ensemble.MultiAdaboostModel;
+import ca.jacob.jml.tree.ID3;
+import ca.jacob.jml.ensemble.AdaBoostModel;
+import ca.jacob.jml.ensemble.MultiAdaBoost;
+import ca.jacob.jml.ensemble.MultiAdaBoostModel;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Tuple;
 import org.junit.Test;
@@ -19,13 +19,13 @@ import static ca.jacob.cs6735.DataUtil.loadCarData;
 import static ca.jacob.jml.DataSet.DISCRETE;
 import static org.junit.Assert.assertEquals;
 
-public class MultiAdaboostTest {
-    private static final Logger LOG = LoggerFactory.getLogger(MultiAdaboostTest.class);
+public class MultiAdaBoostTest {
+    private static final Logger LOG = LoggerFactory.getLogger(MultiAdaBoostTest.class);
 
     @Test
     public void testFit() {
         ID3 id3 = new ID3(1);
-        MultiAdaboost multiAdaboost = new MultiAdaboost(id3, 100, 0.5);
+        MultiAdaBoost multiAdaboost = new MultiAdaBoost(id3, 100, 0.5);
 
         Matrix data = new Matrix(new int[][]{
             {1, 1, 1, 1},
@@ -34,8 +34,8 @@ public class MultiAdaboostTest {
         });
         DataSet d = new DataSet(data, DISCRETE);
 
-        MultiAdaboostModel m = (MultiAdaboostModel) multiAdaboost.fit(d);
-        List<Tuple<Integer, AdaboostModel>> models = m.getModels();
+        MultiAdaBoostModel m = (MultiAdaBoostModel) multiAdaboost.fit(d);
+        List<Tuple<Integer, AdaBoostModel>> models = m.getModels();
 
         assertEquals(3, models.size());
     }
@@ -43,14 +43,14 @@ public class MultiAdaboostTest {
     @Test
     public void testMultiAdaboost() throws Throwable {
         ID3 id3 = new ID3(1);
-        MultiAdaboost multiAdaboost = new MultiAdaboost(id3, 300, 0.3);
+        MultiAdaBoost multiAdaboost = new MultiAdaBoost(id3, 300, 0.3);
 
-        DataSet d = loadCarData(MultiAdaboostTest.class);
+        DataSet d = loadCarData(MultiAdaBoostTest.class);
 
         KFold kFold = new KFold(5, 23l);
         Report r = kFold.generateReport(multiAdaboost, d);
 
         double mean = r.mean();
-        LOG.info("Multi Adaboost Mean for Car Data: {}", mean);
+        LOG.info("Multi AdaBoost Mean for Car Data: {}", mean);
     }
 }

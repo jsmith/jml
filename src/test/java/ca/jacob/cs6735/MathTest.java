@@ -1,6 +1,6 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.jml.distribution.GaussianDistribution;
+import ca.jacob.jml.math.distribution.GaussianDistribution;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.math.Vector;
 import org.junit.Test;

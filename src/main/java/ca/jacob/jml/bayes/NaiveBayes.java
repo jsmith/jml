@@ -1,8 +1,8 @@
-package ca.jacob.jml.nb;
+package ca.jacob.jml.bayes;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.distribution.Distribution;
+import ca.jacob.jml.math.distribution.Distribution;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.exceptions.AttributeException;
 import ca.jacob.jml.math.Vector;

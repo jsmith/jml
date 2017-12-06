@@ -1,9 +1,9 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.jml.KFold;
-import ca.jacob.jml.dt.ID3;
-import ca.jacob.jml.ensemble.Adaboost;
-import ca.jacob.jml.nb.NaiveBayes;
+import ca.jacob.jml.ensemble.AdaBoost;
+import ca.jacob.jml.tree.ID3;
+import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.Report;
 import ca.jacob.jml.math.Vector;
@@ -17,8 +17,8 @@ import static ca.jacob.jml.Util.readCSV;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class AdaboostTest {
-    private static final Logger LOG = LoggerFactory.getLogger(AdaboostTest.class);
+public class AdaBoostTest {
+    private static final Logger LOG = LoggerFactory.getLogger(AdaBoostTest.class);
 
     private KFold kFold;
 
@@ -30,11 +30,11 @@ public class AdaboostTest {
     @Test
     public void testID3WithData() throws Throwable {
         ID3 id3 = new ID3(1); // stumps
-        Adaboost adaboost = new Adaboost(id3, 100, 0.3);
+        AdaBoost adaBoost = new AdaBoost(id3, 100, 0.3);
 
-        DataSet dataset = loadBreastCancerData(AdaboostTest.class);
+        DataSet dataset = loadBreastCancerData(AdaBoostTest.class);
 
-        Report r = kFold.generateReport(adaboost, dataset);
+        Report r = kFold.generateReport(adaBoost, dataset);
 
         Vector accuracies = r.getAccuracies();
         assertTrue(accuracies.mean() > 90);
@@ -44,14 +44,14 @@ public class AdaboostTest {
     @Test
     public void testNaiveBayesWithData() throws Throwable {
         NaiveBayes nb = new NaiveBayes();
-        Adaboost adaboost = new Adaboost(nb, 50, 0.3);
-        DataSet dataset = loadBreastCancerData(AdaboostTest.class);
+        AdaBoost adaBoost = new AdaBoost(nb, 50, 0.3);
+        DataSet dataset = loadBreastCancerData(AdaBoostTest.class);
         Vector y = dataset.getY();
         y = y.replace(2, -1);
         y = y.replace(4, 1);
         dataset.setY(y);
 
-        Report r = kFold.generateReport(adaboost, dataset);
+        Report r = kFold.generateReport(adaBoost, dataset);
 
         Vector accuracies = r.getAccuracies();
         assertTrue(accuracies.mean() > 90);

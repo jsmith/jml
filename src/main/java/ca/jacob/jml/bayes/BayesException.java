@@ -1,4 +1,4 @@
-package ca.jacob.jml.nb;
+package ca.jacob.jml.bayes;
 
 public class BayesException extends RuntimeException {
     public BayesException(String s) {

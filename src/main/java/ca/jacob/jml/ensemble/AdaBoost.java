@@ -11,15 +11,15 @@ import static ca.jacob.jml.Util.*;
 import static ca.jacob.jml.math.Util.*;
 
 
-public class Adaboost implements Algorithm {
-    private static final Logger LOG = LoggerFactory.getLogger(Adaboost.class);
-    private static final String NAME = "Adaboost";
+public class AdaBoost implements Algorithm {
+    private static final Logger LOG = LoggerFactory.getLogger(AdaBoost.class);
+    private static final String NAME = "AdaBoost";
 
     private Algorithm algorithm;
     private int numberOfEstimators;
     private double proportionOfSamples;
 
-    public Adaboost(Algorithm algorithm, int numberOfEstimators, double proportionOfSamples) {
+    public AdaBoost(Algorithm algorithm, int numberOfEstimators, double proportionOfSamples) {
         this.algorithm = algorithm;
         this.numberOfEstimators = numberOfEstimators;
         this.proportionOfSamples = proportionOfSamples;
@@ -29,7 +29,7 @@ public class Adaboost implements Algorithm {
         int numberOfSamples = (int)(dataSet.sampleCount() * proportionOfSamples);
         LOG.debug("number of samples for each training iteration: {}", numberOfSamples);
 
-        AdaboostModel model = new AdaboostModel();
+        AdaBoostModel model = new AdaBoostModel();
 
         Vector weights = new Vector(new double[dataSet.sampleCount()]);
         weights.fill(1./ dataSet.sampleCount());

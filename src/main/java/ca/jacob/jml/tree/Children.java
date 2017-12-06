@@ -1,4 +1,4 @@
-package ca.jacob.jml.dt;
+package ca.jacob.jml.tree;
 
 import ca.jacob.jml.exceptions.PredictionException;
 import ca.jacob.jml.exceptions.AttributeException;

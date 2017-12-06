@@ -2,11 +2,12 @@ package ca.jacob.cs6735;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
+import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.distance.Hamming;
-import ca.jacob.jml.dt.ID3;
-import ca.jacob.jml.ensemble.Adaboost;
+import ca.jacob.jml.tree.ID3;
+import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.ensemble.RandomForest;
-import ca.jacob.jml.nb.NaiveBayes;
+import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.neighbors.KNN;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.Report;
@@ -19,48 +20,69 @@ import static ca.jacob.cs6735.DataUtil.*;
 public class Assignment {
 
     public static void main(String[] args) throws Throwable {
-        // Loading data
-        List<DataSet> data = new ArrayList<>();
-        data.add(loadLetterData(Assignment.class));
-        data.add(loadCarData(Assignment.class));
-        data.add(loadBreastCancerData(Assignment.class));
-        data.add(loadEColiData(Assignment.class));
-        data.add(loadMushroomData(Assignment.class));
+        List<Tuple<DataSet, List<Algorithm>>> datasetsAndAlgorithms  = new ArrayList<>();
 
+        // init
+        List<Algorithm> algorithms;
 
-        // Creating algorithms
-        List<Algorithm> algorithms = new ArrayList<>();
+        // Dataset 1
+        algorithms = new ArrayList<>();
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new NaiveBayes());
+        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
+        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
+        algorithms.add(new KNN(3, false, new Hamming()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadBreastCancerData(Assignment.class), algorithms));
 
-        Algorithm id3 = new ID3(ID3.MAX_LEVEL_NONE);
-        algorithms.add(id3);
+        /*// Dataset 2
+        algorithms = new ArrayList<>();
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new NaiveBayes());
+        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
+        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
+        algorithms.add(new KNN(3, false, new Hamming()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadCarData(Assignment.class), algorithms));*/
 
-        id3 = new ID3(3, 200);
-        algorithms.add(id3);
+        /*// Dataset 3
+        algorithms = new ArrayList<>();
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new NaiveBayes());
+        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
+        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
+        algorithms.add(new KNN(3, false, new Hamming()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadEColiData(Assignment.class), algorithms));*/
 
-        Algorithm nb = new NaiveBayes();
-        algorithms.add(nb);
+        /*// Dataset 4
+        algorithms = new ArrayList<>();
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new NaiveBayes());
+        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
+        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
+        algorithms.add(new KNN(3, false, new Hamming()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadLetterData(Assignment.class), algorithms));*/
 
-        Algorithm adaboost = new Adaboost(new ID3(1), 50, 0.3);
-        algorithms.add(adaboost);
+        /*// Dataset 5
+        algorithms = new ArrayList<>();
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new NaiveBayes());
+        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
+        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
+        algorithms.add(new KNN(3, false, new Hamming()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadMushroomData(Assignment.class), algorithms));*/
 
-        adaboost = new Adaboost(new NaiveBayes(), 50, 0.3);
-        algorithms.add(adaboost);
-
-        RandomForest rf = new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6);
-        algorithms.add(rf);
-
-        Algorithm knn = new KNN(3, false, new Hamming());
-        algorithms.add(knn);
 
         int numberOfKFoldIterations = 10;
         KFold kFold = new KFold(5);
-        for(DataSet d : data) {
+        for(Tuple<DataSet, List<Algorithm>> datasetAndAlgorithm : datasetsAndAlgorithms) {
+            DataSet d = datasetAndAlgorithm.first();
+            algorithms = datasetAndAlgorithm.last();
+
             System.out.println(d);
             System.out.println("=======================");
                 for(Algorithm a : algorithms) {
                 Report report = new Report();
                 for(int i = 0; i < numberOfKFoldIterations; i++) {
-                    System.out.print(i);
+                    System.out.print(i+1);
                     Report r = kFold.generateReport(a, d);
                     report.combine(r);
                 }

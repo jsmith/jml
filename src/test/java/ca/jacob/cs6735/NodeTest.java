@@ -1,15 +1,13 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.jml.dt.Children;
-import ca.jacob.jml.dt.ID3;
-import ca.jacob.jml.dt.Node;
+import ca.jacob.jml.tree.Children;
+import ca.jacob.jml.tree.ID3;
+import ca.jacob.jml.tree.Node;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Vector;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static ca.jacob.jml.DataSet.CONTINUOUS;
 import static ca.jacob.jml.DataSet.DISCRETE;

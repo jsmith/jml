@@ -1,4 +1,4 @@
-package ca.jacob.jml.dt;
+package ca.jacob.jml.tree;
 
 import ca.jacob.jml.Model;
 import ca.jacob.jml.Algorithm;

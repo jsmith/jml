@@ -1,4 +1,4 @@
-package ca.jacob.jml.nb;
+package ca.jacob.jml.bayes;
 
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;

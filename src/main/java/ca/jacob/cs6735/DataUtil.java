@@ -16,7 +16,7 @@ public class DataUtil {
 
     public static DataSet loadBreastCancerData(Class c) throws Throwable {
         String[][] data = Util.readCSV(c.getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = removeSamplesWith("?", data);
+        data = replaceWithMostCommon("?", data, data[0].length-1);
         Matrix breastCancerMatrix = new Matrix(data);
         Vector v = breastCancerMatrix.col(breastCancerMatrix.colCount()-1);
         v = v.replace(2, -1);

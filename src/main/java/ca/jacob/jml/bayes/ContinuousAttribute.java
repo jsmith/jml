@@ -1,6 +1,6 @@
-package ca.jacob.jml.nb;
+package ca.jacob.jml.bayes;
 
-import ca.jacob.jml.distribution.Distribution;
+import ca.jacob.jml.math.distribution.Distribution;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -11,19 +11,19 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiAdaboost implements Algorithm {
-    private static final Logger LOG = LoggerFactory.getLogger(MultiAdaboost.class);
+public class MultiAdaBoost implements Algorithm {
+    private static final Logger LOG = LoggerFactory.getLogger(MultiAdaBoost.class);
 
-    private Adaboost adaboost;
+    private AdaBoost adaBoost;
 
-    public MultiAdaboost(Algorithm algorithm, int numberOfEstimators, double proportionOfSamples) {
-        this.adaboost = new Adaboost(algorithm, numberOfEstimators, proportionOfSamples);
+    public MultiAdaBoost(Algorithm algorithm, int numberOfEstimators, double proportionOfSamples) {
+        this.adaBoost = new AdaBoost(algorithm, numberOfEstimators, proportionOfSamples);
     }
 
 
     @Override
     public Model fit(DataSet d) {
-        List<Tuple<Integer, AdaboostModel>> adaboostModels = new ArrayList<>();
+        List<Tuple<Integer, AdaBoostModel>> adaboostModels = new ArrayList<>();
 
         Vector classes = d.classes();
         Vector uniqueClasses = classes.unique();
@@ -42,8 +42,8 @@ public class MultiAdaboost implements Algorithm {
             }
 
             d.replaceClasses(newClasses);
-            adaboostModels.add(new Tuple<>(c, (AdaboostModel) adaboost.fit(d)));
+            adaboostModels.add(new Tuple<>(c, (AdaBoostModel) adaBoost.fit(d)));
         }
-        return new MultiAdaboostModel(adaboostModels);
+        return new MultiAdaBoostModel(adaboostModels);
     }
 }

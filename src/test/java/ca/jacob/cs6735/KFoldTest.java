@@ -1,7 +1,7 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.jml.*;
-import ca.jacob.jml.dt.ID3;
+import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.Vector;

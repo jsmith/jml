@@ -21,8 +21,8 @@ public class DataUtil {
         toIntegers(data);
         Matrix breastCancerMatrix = new Matrix(data);
         Vector v = breastCancerMatrix.col(breastCancerMatrix.colCount()-1);
-        v = v.replace(2, -1);
-        v = v.replace(4, 1);
+        v = v.replace(0, -1);
+        v = v.replace(1, 1);
         breastCancerMatrix.setCol(breastCancerMatrix.colCount()-1, v);
 
         breastCancerMatrix.dropCol(0); // removing id

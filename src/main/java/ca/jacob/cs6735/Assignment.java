@@ -2,8 +2,10 @@ package ca.jacob.cs6735;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
+import ca.jacob.jml.ensemble.MultiAdaBoost;
 import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.distance.Hamming;
+import ca.jacob.jml.math.distribution.GaussianDistribution;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.ensemble.RandomForest;
@@ -18,25 +20,52 @@ import java.util.List;
 import static ca.jacob.cs6735.DataUtil.*;
 
 public class Assignment {
+    private static final int NUMBER_OF_K_FOLD_ITERATIONS = 10;
+    private static final KFold K_FOLD = new KFold(5);
 
     public static void main(String[] args) throws Throwable {
         List<Tuple<DataSet, List<Algorithm>>> datasetsAndAlgorithms  = new ArrayList<>();
 
         // init
         List<Algorithm> algorithms;
+        List<DataSet> datasets = new ArrayList<>();
+        datasets.add(loadBreastCancerData(Assignment.class));
+        //datasets.add(loadCarData(Assignment.class));
+        //datasets.add(loadEColiData(Assignment.class));
+        //datasets.add(loadLetterData(Assignment.class));
+        //datasets.add(loadMushroomData(Assignment.class));
 
-        // Dataset 1
+        MultiAdaBoost multiAdaboost = new MultiAdaBoost(new NaiveBayes(), 300, 0.3);
+        DataSet dd = loadBreastCancerData(Assignment.class);
+        KFold kFold = new KFold(5, 23l);
+        Report r = kFold.generateReport(multiAdaboost, dd);
+        double mean = r.mean();
+        System.out.println(dd);
+        System.out.println(multiAdaboost);
+        System.out.println(r);
+
+        int[] minimumAmountOfSamples = new int[]{1,2,3,5};
+        int[] numberOfLearners = new int[]{300};
+        double[] proportions = new double[]{0.3};
+        for(DataSet dataset : datasets) {
+            //testID3(dataset, minimumAmountOfSamples);
+            testAdaboost(dataset, new NaiveBayes(), numberOfLearners, proportions);
+            //testAdaboost(dataset, new ID3(ID3.MAX_LEVEL_NONE, 1), numberOfLearners, proportions);
+        }
+
+        /*// Dataset 1
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         algorithms.add(new NaiveBayes());
-        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
+        algorithms.add(new AdaBoost(new ID3(1), 8, 0.7));
+        algorithms.add(new AdaBoost(new NaiveBayes(), 8, 0.7));
         algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
         algorithms.add(new KNN(3, false, new Hamming()));
-        datasetsAndAlgorithms.add(new Tuple<>(loadBreastCancerData(Assignment.class), algorithms));
+        datasetsAndAlgorithms.add(new Tuple<>(, algorithms));*/
 
         /*// Dataset 2
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         algorithms.add(new NaiveBayes());
         algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
         algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
@@ -45,7 +74,7 @@ public class Assignment {
 
         /*// Dataset 3
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 2));
         algorithms.add(new NaiveBayes());
         algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
         algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
@@ -54,7 +83,7 @@ public class Assignment {
 
         /*// Dataset 4
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         algorithms.add(new NaiveBayes());
         algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
         algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
@@ -63,7 +92,7 @@ public class Assignment {
 
         /*// Dataset 5
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 200));
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         algorithms.add(new NaiveBayes());
         algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
         algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
@@ -71,26 +100,59 @@ public class Assignment {
         datasetsAndAlgorithms.add(new Tuple<>(loadMushroomData(Assignment.class), algorithms));*/
 
 
-        int numberOfKFoldIterations = 10;
-        KFold kFold = new KFold(5);
         for(Tuple<DataSet, List<Algorithm>> datasetAndAlgorithm : datasetsAndAlgorithms) {
             DataSet d = datasetAndAlgorithm.first();
             algorithms = datasetAndAlgorithm.last();
 
             System.out.println(d);
             System.out.println("=======================");
-                for(Algorithm a : algorithms) {
-                Report report = new Report();
-                for(int i = 0; i < numberOfKFoldIterations; i++) {
-                    System.out.print(i+1);
-                    Report r = kFold.generateReport(a, d);
-                    report.combine(r);
-                }
-                System.out.println();
-                System.out.println(a);
-                System.out.println(report);
-                System.out.println();
+            for(Algorithm a : algorithms) {
+                test(d, a);
             }
         }
+    }
+
+    private static double test(DataSet d, Algorithm a) {
+        Report report = new Report();
+        //for(int i = 0; i < NUMBER_OF_K_FOLD_ITERATIONS; i++) {
+            //System.out.print(i+1);
+            Report r = K_FOLD.generateReport(a, d);
+            report.combine(r);
+        //}
+        System.out.println();
+        System.out.println(a);
+        System.out.println(report);
+        System.out.println();
+
+        return report.mean();
+    }
+
+    private static void testID3(DataSet dataset, int[] minimumNumberOfSamples) {
+        double bestAccuracy = -1;
+        double bestMinimumAmount = -1;
+        for(int i = 0; i < minimumNumberOfSamples.length; i++) {
+            double accuracy = test(dataset, new ID3(ID3.MAX_LEVEL_NONE, minimumNumberOfSamples[i]));
+            if(accuracy > bestAccuracy) {
+                bestAccuracy = accuracy;
+                bestMinimumAmount = minimumNumberOfSamples[i];
+            }
+        }
+        System.out.println("Best Minimum Amount of Samples for DataSet " + dataset + " is: " + bestMinimumAmount);
+    }
+
+    private static void testAdaboost(DataSet dataset, Algorithm base, int[] numberOfLearners, double[] proportions) {
+        double bestAccuracy = -1;
+        double bestAmount = -1;
+        for(int i = 0; i < numberOfLearners.length; i++) {
+            for(int j = 0; j < proportions.length; j++) {
+
+                double accuracy = test(dataset, new MultiAdaBoost(base, numberOfLearners[i], proportions[j]));
+                if(accuracy > bestAccuracy) {
+                    bestAccuracy = accuracy;
+                    bestAmount = numberOfLearners[i];
+                }
+            }
+        }
+        System.out.println("Best amount of learners for " + dataset + " is: " + bestAmount);
     }
 }

@@ -33,6 +33,7 @@ public class NaiveBayes implements Algorithm {
         Map<Integer, DataSet> separated = dataSet.splitByClass();
 
         List<ClassSummary> summaries = new ArrayList<ClassSummary>();
+        int classCount = separated.size();
         for(Map.Entry<Integer, DataSet> entry : separated.entrySet()) {
             LOG.debug("starting summary for class {}", entry.getKey());
             List<Attribute> attributes = new ArrayList<Attribute>();
@@ -50,7 +51,7 @@ public class NaiveBayes implements Algorithm {
                     }
                     attributes.add(new ContinuousAttribute(attributeValues, distribution));
                 } else if(d.attributeType(j) == DISCRETE) {
-                    attributes.add(new DiscreteAttribute(attributeValues));
+                    attributes.add(new DiscreteAttribute(attributeValues, classCount));
                 } else {
                     throw new AttributeException();
                 }

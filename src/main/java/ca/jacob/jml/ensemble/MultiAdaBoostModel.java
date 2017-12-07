@@ -1,6 +1,7 @@
 package ca.jacob.jml.ensemble;
 
 import ca.jacob.jml.Model;
+import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
@@ -28,6 +29,10 @@ public class MultiAdaBoostModel extends Model {
             int c = adaboostModel.first();
             AdaBoostModel model = adaboostModel.last();
             double predictionValue = model.prediction(e);
+            if(Double.isNaN(predictionValue)) {
+                throw new DataException("prediction value for class " + c + " is NaN");
+            }
+
             if(prediction == null || prediction.first() < predictionValue) {
                 LOG.debug("highest prediction value is now {} corresponding to class {}", predictionValue, c);
                 prediction = new Tuple<>(predictionValue, c);

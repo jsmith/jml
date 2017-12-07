@@ -3,6 +3,7 @@ package ca.jacob.jml.ensemble;
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.DataSet;
+import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,13 @@ public class AdaBoost implements Algorithm {
     }
 
     public Model fit(DataSet dataSet) {
+        Vector classes = dataSet.getY();
+        for(int i = 0; i < classes.length(); i++) {
+            if(classes.intAt(i) != -1 && classes.intAt(i) != 1) {
+                throw new DataException("all classes must be either 0 or 1");
+            }
+        }
+
         int numberOfSamples = (int)(dataSet.sampleCount() * proportionOfSamples);
         LOG.debug("number of samples for each training iteration: {}", numberOfSamples);
 

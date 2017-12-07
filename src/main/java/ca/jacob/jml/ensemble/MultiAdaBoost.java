@@ -11,13 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiAdaBoost implements Algorithm {
+public class MultiAdaBoost extends AdaBoost {
     private static final Logger LOG = LoggerFactory.getLogger(MultiAdaBoost.class);
 
-    private AdaBoost adaBoost;
-
     public MultiAdaBoost(Algorithm algorithm, int numberOfEstimators, double proportionOfSamples) {
-        this.adaBoost = new AdaBoost(algorithm, numberOfEstimators, proportionOfSamples);
+        super(algorithm, numberOfEstimators, proportionOfSamples);
     }
 
 
@@ -42,7 +40,7 @@ public class MultiAdaBoost implements Algorithm {
             }
 
             d.replaceClasses(newClasses);
-            adaboostModels.add(new Tuple<>(c, (AdaBoostModel) adaBoost.fit(d)));
+            adaboostModels.add(new Tuple<>(c, (AdaBoostModel) super.fit(d)));
         }
         return new MultiAdaBoostModel(adaboostModels);
     }

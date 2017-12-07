@@ -48,7 +48,7 @@ public class KFoldTest {
     public void testKFoldProcess() throws Throwable {
         DataSet dataset = loadBreastCancerData(KFoldTest.class);
 
-        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 200);
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 1);
 
         Report r = kFold.generateReport(a, dataset);
         Vector accuracies = r.getAccuracies();

@@ -20,12 +20,13 @@
 
     <logger name="ca.jacob.jml.ensemble.AdaBoostModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.MultiAdaBoost" level="info"></logger>
+    <logger name="ca.jacob.jml.ensemble.MultiAdaBoostModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForestModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForest" level="info"></logger>
 
     <logger name="ca.jacob.jml.neighbors.KNNModel" level="info"></logger>
 
-    <logger name="ca.jacob.jml.Util" level="debug"></logger>
+    <logger name="ca.jacob.jml.Util" level="info"></logger>
     <logger name="ca.jacob.jml.math.Vector" level="info"></logger>
     <logger name="ca.jacob.jml.DataSet" level="info"></logger>
 

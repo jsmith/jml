@@ -302,6 +302,10 @@ public class Vector implements Iterable<Double> {
     }
 
     public double stdev() {
+        if(this.length() == 1) {
+            return 0;
+        }
+
         double mean = this.mean();
         double variance = this.sub(mean).pow(2).sum() / (this.length() - 1);
         return sqrt(variance);

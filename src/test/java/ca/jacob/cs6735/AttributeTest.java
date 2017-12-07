@@ -13,7 +13,7 @@ public class AttributeTest {
 
     @Test
     public void testDiscreateAttribute() {
-        DiscreteAttribute attribute = new DiscreteAttribute(new Vector(new int[]{1, 1, 0, 0, 1, 0}));
+        DiscreteAttribute attribute = new DiscreteAttribute(new Vector(new int[]{1, 1, 0, 0, 1, 0}), 2);
         assertEquals(0.5, attribute.probability(1), DELTA);
     }
 

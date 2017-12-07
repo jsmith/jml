@@ -25,7 +25,7 @@ public class ClassSummary {
         for(int i = 0; i < attributes.size(); i++) {
             double attributeValue = e.at(i);
             double probability = attributes.get(i).probability(attributeValue);
-            LOG.debug("probability for attribte {} is {}", i, probability);
+            LOG.debug("probability for attribute {} is {}", i, probability);
             conditionalProbabilities.set(i, probability);
         }
         LOG.debug("conditional probabilities -> {}", conditionalProbabilities);

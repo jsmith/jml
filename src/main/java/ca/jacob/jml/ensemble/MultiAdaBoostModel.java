@@ -30,6 +30,7 @@ public class MultiAdaBoostModel extends Model {
             AdaBoostModel model = adaboostModel.last();
             double predictionValue = model.prediction(e);
             if(Double.isNaN(predictionValue)) {
+                model.prediction(e);
                 throw new DataException("prediction value for class " + c + " is NaN");
             }
 

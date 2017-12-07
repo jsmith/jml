@@ -4,6 +4,7 @@ import ca.jacob.jml.DataSet;
 import ca.jacob.jml.KFold;
 import ca.jacob.jml.Report;
 import ca.jacob.jml.bayes.NaiveBayes;
+import ca.jacob.jml.math.distribution.GaussianDistribution;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.AdaBoostModel;
 import ca.jacob.jml.ensemble.MultiAdaBoost;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
 import static ca.jacob.cs6735.DataUtil.loadCarData;
+import static ca.jacob.cs6735.DataUtil.loadEColiData;
 import static ca.jacob.jml.DataSet.DISCRETE;
 import static org.junit.Assert.assertEquals;
 
@@ -45,7 +47,7 @@ public class MultiAdaBoostTest {
     @Test
     public void testMultiAdaboost() throws Throwable {
         ID3 id3 = new ID3(1);
-        MultiAdaBoost multiAdaboost = new MultiAdaBoost(id3, 300, 0.3);
+        MultiAdaBoost multiAdaboost = new MultiAdaBoost(id3, 50, 0.3);
 
         DataSet d = loadCarData(MultiAdaBoostTest.class);
 
@@ -70,5 +72,18 @@ public class MultiAdaBoostTest {
         LOG.info("{}", multiAdaboost);
         LOG.info("{}", r);
         LOG.info("Multi AdaBoost with Naive Bayes Mean for Breast Cancer Data: {}", mean);
+    }
+
+    @Test
+    public void testMultiAdaboostEcoliContinuous() throws Throwable {
+        MultiAdaBoost multiAdaboost = new MultiAdaBoost(new NaiveBayes(new GaussianDistribution()), 89, 0.5);
+
+        DataSet d = loadEColiData(MultiAdaBoostTest.class);
+
+        KFold kFold = new KFold(5);
+        Report r = kFold.generateReport(multiAdaboost, d);
+
+        double mean = r.mean();
+        LOG.info("Multi AdaBoost with Naive Bayes Mean for E Coli. Data: {}", mean);
     }
 }

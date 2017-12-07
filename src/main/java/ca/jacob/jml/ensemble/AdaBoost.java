@@ -15,6 +15,7 @@ import static ca.jacob.jml.math.Util.*;
 public class AdaBoost implements Algorithm {
     private static final Logger LOG = LoggerFactory.getLogger(AdaBoost.class);
     private static final String NAME = "AdaBoost";
+    private static final double EPSILON = 0.0001;
 
     private Algorithm algorithm;
     private int numberOfEstimators;
@@ -42,6 +43,10 @@ public class AdaBoost implements Algorithm {
         Vector weights = new Vector(new double[dataSet.sampleCount()]);
         weights.fill(1./ dataSet.sampleCount());
 
+        if(weights.length() == 0) {
+            throw new DataException("length of weights cannot be 0");
+        }
+
         for(int i = 0; i < numberOfEstimators; i++) {
             LOG.info("starting iteration {}", i+1);
 
@@ -58,14 +63,22 @@ public class AdaBoost implements Algorithm {
             Vector err = error(h, dataSet.getY());
             LOG.debug("error 0 to 5 -> {}", err.subVector(0, 3));
 
-            double epsilon = weights.dot(err)/weights.length();
-            LOG.debug("epsilon: {}", epsilon);
+            double error = weights.dot(err)/weights.length();
+            LOG.debug("epsilon: {}", error);
 
-            double alpha = 0.5*ln((1-epsilon)/epsilon);
+            double alpha = 0.5*ln((1-error+EPSILON)/(error+EPSILON));
             LOG.debug("alpha: {}", alpha);
+
+            if(Double.isNaN(alpha)) {
+                throw new DataException("alpha cannot be NaN");
+            }
 
             // updating weights
             weights = weights.mul(exp(err.mul(alpha))); //updating weights
+            if(weights.sum() == 0) {
+                throw new DataException("weights cannot sum to 0");
+            }
+
             weights = weights.div(weights.sum());
             LOG.debug("weights 0 to 5 -> {}", weights.subVector(0, 3));
 

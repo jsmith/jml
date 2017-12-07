@@ -29,27 +29,18 @@ public class Assignment {
         // init
         List<Algorithm> algorithms;
         List<DataSet> datasets = new ArrayList<>();
-        datasets.add(loadBreastCancerData(Assignment.class));
+        //datasets.add(loadBreastCancerData(Assignment.class));
         //datasets.add(loadCarData(Assignment.class));
-        //datasets.add(loadEColiData(Assignment.class));
+        datasets.add(loadEColiData(Assignment.class));
         //datasets.add(loadLetterData(Assignment.class));
         //datasets.add(loadMushroomData(Assignment.class));
 
-        MultiAdaBoost multiAdaboost = new MultiAdaBoost(new NaiveBayes(), 300, 0.3);
-        DataSet dd = loadBreastCancerData(Assignment.class);
-        KFold kFold = new KFold(5, 23l);
-        Report r = kFold.generateReport(multiAdaboost, dd);
-        double mean = r.mean();
-        System.out.println(dd);
-        System.out.println(multiAdaboost);
-        System.out.println(r);
-
         int[] minimumAmountOfSamples = new int[]{1,2,3,5};
-        int[] numberOfLearners = new int[]{300};
-        double[] proportions = new double[]{0.3};
+        int[] numberOfLearners = new int[]{50, 89};
+        double[] proportions = new double[]{0.3, 0.5, 0.7};
         for(DataSet dataset : datasets) {
             //testID3(dataset, minimumAmountOfSamples);
-            testAdaboost(dataset, new NaiveBayes(), numberOfLearners, proportions);
+            testAdaboost(dataset, new NaiveBayes(new GaussianDistribution()), numberOfLearners, proportions);
             //testAdaboost(dataset, new ID3(ID3.MAX_LEVEL_NONE, 1), numberOfLearners, proportions);
         }
 

@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static ca.jacob.jml.DataSet.DISCRETE;
 import static ca.jacob.jml.Util.generateIndices;
+import static ca.jacob.jml.Util.replaceWithMostCommonFromClass;
 import static ca.jacob.jml.Util.toIntegers;
 import static ca.jacob.jml.math.Util.calculateOccurrences;
 import static ca.jacob.jml.math.Util.ln;
@@ -67,5 +68,36 @@ public class UtilTest {
         String[][] strings = new String[][]{{"o", "t"},{"t","t"}};
         toIntegers(strings);
         assertArrayEquals(new String[][]{{"0", "0"},{"1", "0"}}, strings);
+    }
+
+    @Test
+    public void testReplaceWithMostCommonFromClass() {
+        String[][] data = new String[][]{
+                {"0", "0"},
+                {"?", "0"},
+                {"1", "0"},
+                {"0", "0"},
+                {"3", "0"},
+                {"3", "0"},
+                {"3", "0"},
+                {"1", "1"},
+                {"1", "1"}
+        };
+
+        replaceWithMostCommonFromClass("?", data, 1);
+
+        String[][] expected = new String[][]{
+                {"0", "0"},
+                {"3", "0"},
+                {"1", "0"},
+                {"0", "0"},
+                {"3", "0"},
+                {"3", "0"},
+                {"3", "0"},
+                {"1", "1"},
+                {"1", "1"}
+        };
+
+        assertArrayEquals(data, expected);
     }
 }

@@ -25,13 +25,13 @@
 
     <logger name="ca.jacob.jml.neighbors.KNNModel" level="info"></logger>
 
-    <logger name="ca.jacob.jml.Util" level="info"></logger>
+    <logger name="ca.jacob.jml.Util" level="debug"></logger>
     <logger name="ca.jacob.jml.math.Vector" level="info"></logger>
     <logger name="ca.jacob.jml.DataSet" level="info"></logger>
 
     <logger name="ca.jacob.cs6735.MathTest" level="info"></logger>
     <logger name="ca.jacob.cs6735.AdaBoostTest" level="debug"></logger>
-    <logger name="ca.jacob.cs6735.test" level="info"></logger>
+    <logger name="ca.jacob.cs6735" level="info"></logger>
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

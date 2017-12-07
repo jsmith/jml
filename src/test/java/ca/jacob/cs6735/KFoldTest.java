@@ -46,14 +46,9 @@ public class KFoldTest {
 
     @Test
     public void testKFoldProcess() throws Throwable {
-        String[][] data = Util.readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = removeSamplesWith("?", data); //ignore these for now
-        Matrix mat = new Matrix(data);
-        mat.dropCol(0); // removing id
+        DataSet dataset = loadBreastCancerData(KFoldTest.class);
 
-        DataSet dataset = new DataSet(mat, DataSet.DISCRETE);
-
-        Algorithm a = new ID3(5, 200);
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 200);
 
         Report r = kFold.generateReport(a, dataset);
         Vector accuracies = r.getAccuracies();

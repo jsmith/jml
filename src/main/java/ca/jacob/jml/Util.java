@@ -1,6 +1,7 @@
 package ca.jacob.jml;
 
 import ca.jacob.cs6735.DataUtil;
+import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.exceptions.FileException;
 import ca.jacob.jml.math.MathException;
 import ca.jacob.jml.math.Tuple;
@@ -225,7 +226,7 @@ public class Util {
         }
     }
 
-    public static String[][] replaceWithMostCommonFromClass(String key, String[][] data, int classColumn) {
+    public static void replaceWithMostCommonFromClass(String key, String[][] data, int classColumn) {
         for(int i = 0; i < data.length; i++) {
             for(int j = 0; j < data[0].length; j++) {
                 if(j == classColumn) {
@@ -233,17 +234,52 @@ public class Util {
                 }
 
                 if(data[i][j].equals(key)) {
+                    LOG.debug("found {} on row {}, col {}", key, i, j);
                     String classValue = data[i][classColumn];
 
-                    String mostCommon = null;
                     Map<String, Integer> counts = new HashMap<>();
                     for(int k = 0; k < data.length; k++) {
-                        if(data[i][k].equals(key)) {
+                        if(i == k) {
+                            LOG.trace("skipping current row");
                             continue;
                         }
 
-                        if()
+                        if(data[k][j].equals(key)) {
+                            LOG.debug("skipping row {} as it contains {}", i, key);
+                            continue;
+                        }
+
+                        if(classValue.equals(data[k][classColumn])) {
+                            String attributeValue = data[k][j];
+                            Integer count = counts.get(attributeValue);
+                            if(count == null) {
+                                count = 0;
+                                counts.put(data[k][j], count);
+                            }
+
+                            count++;
+                            counts.replace(attributeValue, count);
+                        }
                     }
+
+                    int max = -1;
+                    String maxValue = null;
+                    for(Map.Entry<String, Integer> entry : counts.entrySet()) {
+                        String attributeValue = entry.getKey();
+                        int count = entry.getValue();
+                        if(count > max) {
+                            max = count;
+                            maxValue = attributeValue;
+                            LOG.debug("the max value is now {} with {} instances", maxValue, max);
+                        }
+                    }
+
+                    if(maxValue == null) {
+                        throw new DataException("No samples with the same class");
+                    }
+
+                    LOG.debug("replacing {} with {}", data[i][j], maxValue);
+                    data[i][j] = maxValue;
                 }
             }
         }

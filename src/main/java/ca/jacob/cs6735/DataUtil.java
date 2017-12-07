@@ -10,13 +10,15 @@ import org.slf4j.LoggerFactory;
 import static ca.jacob.jml.DataSet.CONTINUOUS;
 import static ca.jacob.jml.DataSet.DISCRETE;
 import static ca.jacob.jml.Util.removeSamplesWith;
+import static ca.jacob.jml.Util.replaceWithMostCommonFromClass;
+import static ca.jacob.jml.Util.toIntegers;
 
 public class DataUtil {
     private static final Logger LOG = LoggerFactory.getLogger(DataUtil.class);
 
     public static DataSet loadBreastCancerData(Class c) throws Throwable {
         String[][] data = Util.readCSV(c.getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = replaceWithMostCommon("?", data, data[0].length-1);
+        toIntegers(data);
         Matrix breastCancerMatrix = new Matrix(data);
         Vector v = breastCancerMatrix.col(breastCancerMatrix.colCount()-1);
         v = v.replace(2, -1);

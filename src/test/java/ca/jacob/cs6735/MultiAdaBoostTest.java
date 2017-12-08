@@ -1,5 +1,6 @@
 package ca.jacob.cs6735;
 
+import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.KFold;
 import ca.jacob.jml.Report;
@@ -17,9 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
-import static ca.jacob.cs6735.DataUtil.loadCarData;
-import static ca.jacob.cs6735.DataUtil.loadEColiData;
+import static ca.jacob.cs6735.DataUtil.*;
 import static ca.jacob.jml.DataSet.DISCRETE;
 import static org.junit.Assert.assertEquals;
 
@@ -47,7 +46,7 @@ public class MultiAdaBoostTest {
     @Test
     public void testMultiAdaboost() throws Throwable {
         ID3 id3 = new ID3(1);
-        MultiAdaBoost multiAdaboost = new MultiAdaBoost(id3, 50, 0.3);
+        MultiAdaBoost multiAdaboost = new MultiAdaBoost(id3, 10, 0.7);
 
         DataSet d = loadCarData(MultiAdaBoostTest.class);
 
@@ -85,5 +84,20 @@ public class MultiAdaBoostTest {
 
         double mean = r.mean();
         LOG.info("Multi AdaBoost with Naive Bayes Mean for E Coli. Data: {}", mean);
+    }
+
+    @Test
+    public void testNaiveBayes() throws Throwable {
+        DataSet dataSet = loadLetterData(MultiAdaBoostTest.class);
+
+        Algorithm adaBoost = new MultiAdaBoost(new NaiveBayes(new GaussianDistribution()), 15, 0.7);
+        Algorithm naiveBayes = new NaiveBayes(new GaussianDistribution());
+
+        KFold kFold = new KFold(5);
+        Report r1 = kFold.generateReport(adaBoost, dataSet);
+        //Report r2 = kFold.generateReport(naiveBayes, dataSet);
+
+        LOG.info("{}",r1);
+        //LOG.info("{}",r2);
     }
 }

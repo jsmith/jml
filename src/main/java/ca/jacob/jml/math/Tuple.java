@@ -16,4 +16,9 @@ public class Tuple<T, V> {
     public V last() {
         return v;
     }
+
+    @Override
+    public String toString() {
+        return "("+t+", "+v+")";
+    }
 }

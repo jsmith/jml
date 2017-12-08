@@ -36,7 +36,7 @@ public class KFold {
         Vector accuracies = new Vector();
         List<Tuple<Vector, Vector>> indices = this.generateIndices(dataSet);
         for(Tuple<Vector, Vector> tuple : indices) {
-            LOG.info("starting kfold iteration {}", accuracies.length());
+            LOG.info("starting kFold iteration {}", accuracies.length());
             Vector trainIndices = tuple.first();
             Vector testIndices = tuple.last();
 

@@ -28,12 +28,12 @@ public class AdaBoost implements Algorithm {
     }
 
     public Model fit(DataSet dataSet) {
-        Vector classes = dataSet.getY();
+        /*Vector classes = dataSet.getY();
         for(int i = 0; i < classes.length(); i++) {
             if(classes.intAt(i) != -1 && classes.intAt(i) != 1) {
                 throw new DataException("all classes must be either 0 or 1");
             }
-        }
+        }*/
 
         int numberOfSamples = (int)(dataSet.sampleCount() * proportionOfSamples);
         LOG.debug("number of samples for each training iteration: {}", numberOfSamples);
@@ -61,10 +61,9 @@ public class AdaBoost implements Algorithm {
             Vector h = m.predict(dataSet.getX());
 
             Vector err = error(h, dataSet.getY());
-            LOG.debug("error 0 to 5 -> {}", err.subVector(0, 3));
 
             double error = weights.dot(err)/weights.length();
-            LOG.debug("epsilon: {}", error);
+            LOG.debug("error: {}", error);
 
             double alpha = 0.5*ln((1-error+EPSILON)/(error+EPSILON));
             LOG.debug("alpha: {}", alpha);
@@ -73,20 +72,21 @@ public class AdaBoost implements Algorithm {
                 throw new DataException("alpha cannot be NaN");
             }
 
-            // updating weights
-            weights = weights.mul(exp(err.mul(alpha))); //updating weights
-            if(weights.sum() == 0) {
-                throw new DataException("weights cannot sum to 0");
+            if(alpha < 0.5) {
+                throw new DataException("alpha is less than 0.5 -> " + alpha);
             }
 
-            weights = weights.div(weights.sum());
-            LOG.debug("weights 0 to 5 -> {}", weights.subVector(0, 3));
+            weights = weights.mul(exp(err.mul(alpha))); //updating weights
+
+            weights = weights.div(weights.sum()); // normalize weights
 
             model.add(m, alpha);
         }
 
         return model;
     }
+
+
 
     @Override
     public String toString() {

@@ -35,10 +35,12 @@ public class MultiAdaBoostModel extends Model {
             }
 
             if(prediction == null || prediction.first() < predictionValue) {
-                LOG.debug("highest prediction value is now {} corresponding to class {}", predictionValue, c);
+                LOG.trace("highest prediction value is now {} corresponding to class {}", predictionValue, c);
                 prediction = new Tuple<>(predictionValue, c);
             }
         }
+
+        LOG.debug("highest prediction value is {} corresponding to class {}", prediction.first(), prediction.last());
         return prediction.last();
     }
 }

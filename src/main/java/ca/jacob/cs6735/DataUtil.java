@@ -50,7 +50,7 @@ public class DataUtil {
         letterMatrix.dropCol(0);
         letterMatrix.pushCol(classes);
         DataSet dataset = new DataSet(letterMatrix, CONTINUOUS);
-        LOG.debug("car data first three samples -> {}", dataset.samples(new Vector(new int[]{0, 1, 2})).dataToString());
+        LOG.debug("letter data first three samples -> {}", dataset.samples(new Vector(new int[]{0, 1, 2})).dataToString());
         dataset.setName("Letter Data");
         return dataset;
     }

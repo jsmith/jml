@@ -6,6 +6,7 @@ import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.distance.Euclidean;
 import ca.jacob.jml.math.distance.Hamming;
+import ca.jacob.jml.math.distribution.GaussianDistribution;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.RandomForest;
 import ca.jacob.jml.bayes.NaiveBayes;
@@ -49,55 +50,55 @@ public class Assignment {
             testKNN(dataset, ks);
         }*/
 
-        /*// Dataset 1
-        algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
-        algorithms.add(new NaiveBayes());
-        algorithms.add(new AdaBoost(new ID3(1), 100, 0.5));
-        algorithms.add(new AdaBoost(new NaiveBayes(), 100, 0.7));
-        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 120, 0.7));
-        algorithms.add(new KNN(1, false, new Hamming()));
-        datasetsAndAlgorithms.add(new Tuple<>(loadBreastCancerData(Assignment.class), algorithms));*/
-
-        // Dataset 2
+        // Breast Cancer Data
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         //algorithms.add(new NaiveBayes());
-        algorithms.add(new AdaBoost(new ID3(1), 100, 0.7));
-        algorithms.add(new AdaBoost(new NaiveBayes(), 100, 0.4));
-        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
-        algorithms.add(new KNN(1, false, new Hamming()));
+        //algorithms.add(new AdaBoost(new ID3(1), 100, 0.5));
+        //algorithms.add(new AdaBoost(new NaiveBayes(), 100, 0.7));
+        //algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 120, 0.7));
+        //algorithms.add(new KNN(1, false, new Hamming()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadBreastCancerData(Assignment.class), algorithms));
+
+        // Car Data
+        algorithms = new ArrayList<>();
+        //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
+        //algorithms.add(new NaiveBayes());
+        //algorithms.add(new AdaBoost(new ID3(2), 250, 0.3));
+        //algorithms.add(new AdaBoost(new NaiveBayes(), 100, 0.4));
+        //algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 200, 0.6));
+        //algorithms.add(new KNN(1, false, new Hamming()));
         datasetsAndAlgorithms.add(new Tuple<>(loadCarData(Assignment.class), algorithms));
 
-        /*// Dataset 3
+        // E Coli. Data
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 2));
-        algorithms.add(new NaiveBayes(new GaussianDistribution()));
-        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
-        algorithms.add(new AdaBoost(new NaiveBayes(new GaussianDistribution()), 8, 0.7));
-        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
-        algorithms.add(new KNN(1, false, new Euclidean()));
-        datasetsAndAlgorithms.add(new Tuple<>(loadEColiData(Assignment.class), algorithms));*/
+        //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 2));
+        //algorithms.add(new NaiveBayes(new GaussianDistribution()));
+        //algorithms.add(new AdaBoost(new ID3(2), 200, 0.2));
+        //algorithms.add(new AdaBoost(new NaiveBayes(new GaussianDistribution()), 250, 0.10));
+        //algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 250, 0.6));
+        //algorithms.add(new KNN(1, false, new Euclidean()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadEColiData(Assignment.class), algorithms));
 
-        /*// Dataset 4
+        // Letter Data
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
-        algorithms.add(new NaiveBayes(new GaussianDistribution()));
-        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
-        algorithms.add(new AdaBoost(new NaiveBayes(new GaussianDistribution()), 8, 0.7));
-        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
-        algorithms.add(new KNN(1, false, new Hamming()));
-        datasetsAndAlgorithms.add(new Tuple<>(loadLetterData(Assignment.class), algorithms));*/
+        //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
+        //algorithms.add(new NaiveBayes(new GaussianDistribution()));
+        //algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
+        //algorithms.add(new AdaBoost(new NaiveBayes(new GaussianDistribution()), 8, 0.7));
+        //algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
+        //algorithms.add(new KNN(1, false, new Hamming()));
+        datasetsAndAlgorithms.add(new Tuple<>(loadLetterData(Assignment.class), algorithms));
 
-        /*// Dataset 5
+        // Mushroom Data
         algorithms = new ArrayList<>();
-        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
-        algorithms.add(new NaiveBayes());
-        algorithms.add(new AdaBoost(new ID3(1), 50, 0.3));
-        algorithms.add(new AdaBoost(new NaiveBayes(), 8, 0.7));
-        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
+        //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
+        //algorithms.add(new NaiveBayes());
+        algorithms.add(new AdaBoost(new ID3(2), 10, 0.1));
+        algorithms.add(new AdaBoost(new NaiveBayes(), 10, 0.5));
+        algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 10, 0.5));
         algorithms.add(new KNN(1, false, new Hamming()));
-        datasetsAndAlgorithms.add(new Tuple<>(loadMushroomData(Assignment.class), algorithms));*/
+        datasetsAndAlgorithms.add(new Tuple<>(loadMushroomData(Assignment.class), algorithms));
 
 
         for(Tuple<DataSet, List<Algorithm>> datasetAndAlgorithm : datasetsAndAlgorithms) {
@@ -114,11 +115,11 @@ public class Assignment {
 
     private static double test(DataSet d, Algorithm a) {
         Report report = new Report();
-        //for(int i = 0; i < NUMBER_OF_K_FOLD_ITERATIONS; i++) {
-            //System.out.print(i + 1);
+        for(int i = 0; i < NUMBER_OF_K_FOLD_ITERATIONS; i++) {
+            System.out.print(i + 1);
             Report r = K_FOLD.generateReport(a, d);
             report.combine(r);
-        //}
+        }
         System.out.println();
         System.out.println(a);
         System.out.println(report);

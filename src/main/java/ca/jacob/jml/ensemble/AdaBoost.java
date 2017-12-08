@@ -16,7 +16,7 @@ import static java.lang.Math.log;
 public class AdaBoost implements Algorithm {
     private static final Logger LOG = LoggerFactory.getLogger(AdaBoost.class);
     private static final String NAME = "AdaBoost";
-    private static final double EPSILON = 0.1;
+    private static final double EPSILON = 0.001;
 
     private Algorithm algorithm;
     private int numberOfEstimators;
@@ -61,7 +61,8 @@ public class AdaBoost implements Algorithm {
             LOG.debug("alpha: {}", alpha);
 
             if(Double.isNaN(alpha)) {
-                throw new DataException("alpha cannot be NaN");
+                alpha = log((1-error+EPSILON)/(error+EPSILON)) + log(classCount-1);
+                LOG.warn("alpha is NaN");
             }
 
             if(alpha < 1/classCount) {

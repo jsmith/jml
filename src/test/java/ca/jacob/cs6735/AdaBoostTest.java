@@ -26,7 +26,7 @@ public class AdaBoostTest {
 
     @Before
     public void init() {
-        kFold = new KFold(5, 23l);
+        kFold = new KFold(5);
     }
 
     @Test

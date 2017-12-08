@@ -19,6 +19,7 @@
     <logger name="ca.jacob.jml.bayes.DiscreteAttribute" level="info"></logger>
 
     <logger name="ca.jacob.jml.ensemble.AdaBoostModel" level="info"></logger>
+    <logger name="ca.jacob.jml.ensemble.AdaBoost" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.MultiAdaBoost" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.MultiAdaBoostModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForestModel" level="info"></logger>

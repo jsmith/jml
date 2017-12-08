@@ -2,13 +2,11 @@ package ca.jacob.cs6735;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
-import ca.jacob.jml.ensemble.MultiAdaBoost;
+import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.distance.Euclidean;
 import ca.jacob.jml.math.distance.Hamming;
-import ca.jacob.jml.math.distribution.GaussianDistribution;
 import ca.jacob.jml.tree.ID3;
-import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.ensemble.RandomForest;
 import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.neighbors.KNN;
@@ -65,8 +63,8 @@ public class Assignment {
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         //algorithms.add(new NaiveBayes());
-        algorithms.add(new MultiAdaBoost(new ID3(1), 100, 0.7));
-        algorithms.add(new MultiAdaBoost(new NaiveBayes(), 100, 0.4));
+        algorithms.add(new AdaBoost(new ID3(1), 100, 0.7));
+        algorithms.add(new AdaBoost(new NaiveBayes(), 100, 0.4));
         algorithms.add(new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), 500, 0.6));
         algorithms.add(new KNN(1, false, new Hamming()));
         datasetsAndAlgorithms.add(new Tuple<>(loadCarData(Assignment.class), algorithms));
@@ -148,7 +146,7 @@ public class Assignment {
         for(int i = 0; i < numberOfLearners.length; i++) {
             for(int j = 0; j < proportions.length; j++) {
 
-                double accuracy = test(dataset, new MultiAdaBoost(base, numberOfLearners[i], proportions[j]));
+                double accuracy = test(dataset, new AdaBoost(base, numberOfLearners[i], proportions[j]));
                 if(accuracy > bestAccuracy) {
                     bestAccuracy = accuracy;
                     bestAmount = numberOfLearners[i];

@@ -114,9 +114,9 @@ public class Util {
         Vector error = new Vector(new double[one.length()]);
         for(int i = 0; i < one.length(); i++) {
             if(one.at(i) != two.at(i)) {
-                error.set(i, 1.);
+                error.set(i, 1);
             } else {
-                error.set(i, 0.);
+                error.set(i, 0);
             }
         }
         return error;

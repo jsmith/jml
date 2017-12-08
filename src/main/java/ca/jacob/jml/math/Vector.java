@@ -332,4 +332,12 @@ public class Vector implements Iterable<Double> {
         }
         return unique;
     }
+
+    public Vector add(Vector vector) {
+        Vector v = new Vector(new double[this.length()]);
+        for(int i = 0; i < length(); i++) {
+            v.set(i, this.at(i)+vector.at(i));
+        }
+        return v;
+    }
 }

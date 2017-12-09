@@ -66,8 +66,8 @@ public class Node {
 
             double entropy;
             if(dataSet.attributeType(j) == DISCRETE) {
-                Map<Integer, DataSet> subsets = dataSet.splitByDiscreteAttribute(j);
-                entropy = calculateWeightedEntropy(subsets.values());
+                Tuple<List<Integer>, List<DataSet>> subsets = dataSet.splitByDiscreteAttribute(j);
+                entropy = calculateWeightedEntropy(subsets.last());
 
             } else if(dataSet.attributeType(j) == CONTINUOUS) {
                 Tuple<Double, Tuple<DataSet, DataSet>> subsets = dataSet.splitByContinuousAttribute(j);
@@ -103,25 +103,27 @@ public class Node {
 
         attribute = bestAttribute;
 
+        List<DataSet> subsets = new ArrayList<>();
         if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
             Tuple<Double, Tuple<DataSet, DataSet>> split = dataSet.splitByContinuousAttribute(bestAttribute);
             LOG.debug("pivot is {}", split.first());
 
-            Tuple<DataSet, DataSet> subsets = split.last();
-            subsets.first().dropAttribute(attribute);
-            subsets.last().dropAttribute(attribute);
+            DataSet under = split.last().first();
+            DataSet over = split.last().last();
+            under.dropAttribute(attribute);
+            over.dropAttribute(attribute);
+            subsets.add(under);
+            subsets.add(over);
 
-            children = new Children(this, split);
+            children = new ContinuousChildren(this, split.first());
         } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
-            Map<Integer, DataSet> subsets = dataSet.splitByDiscreteAttribute(bestAttribute);
-            for(Map.Entry<Integer, DataSet> subset : subsets.entrySet()) {
-                subset.getValue().dropAttribute(attribute);
-            }
-            children = new Children(this, subsets);
+            Tuple<List<Integer>, List<DataSet>> split = dataSet.splitByDiscreteAttribute(bestAttribute);
+            subsets = split.last();
+            children = new DiscreteChildren(this, split.first());
         }
         LOG.debug("there will be {} children", children.size());
 
-        children.split();
+        children.split(subsets);
     }
 
     public Children getChildren() {
@@ -151,6 +153,10 @@ public class Node {
 
     public int getAttribute() {
         return attribute;
+    }
+
+    public int sampleCount() {
+        return classes.length();
     }
 
     public boolean isLeaf() {

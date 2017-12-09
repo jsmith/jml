@@ -48,8 +48,8 @@ public class ID3Test {
         assertEquals(2, root.getChildren().size());
         assertEquals(false, root.isLeaf());
 
-        DataSet nodeZeroDataSet = root.getChildren().get(0).getDataSet();
-        DataSet nodeOneDataSet = root.getChildren().get(1).getDataSet();
+        Node nodeZeroDataSet = root.getChildren().get(0);
+        Node nodeOneDataSet = root.getChildren().get(1);
         assertEquals((int)1, nodeOneDataSet.sampleCount());
         assertEquals((int)2, nodeZeroDataSet.sampleCount());
     }

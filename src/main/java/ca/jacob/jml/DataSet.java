@@ -8,7 +8,9 @@ import ca.jacob.jml.math.Tuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static ca.jacob.jml.Util.calculateWeightedEntropy;
@@ -96,12 +98,13 @@ public class DataSet {
         return separated;
     }
 
-    public Map<Integer, DataSet> splitByDiscreteAttribute(int attribute) {
+    public Tuple<List<Integer>, List<DataSet>> splitByDiscreteAttribute(int attribute) {
         if(this.attributeType(attribute) != DISCRETE) {
             throw new AttributeException("must be discrete attribute");
         }
 
-        Map<Integer, DataSet> subsets = new HashMap<>();
+        List<Integer> values = new ArrayList<>();
+        List<DataSet> subsets = new ArrayList<>();
         for (int i = 0; i < x.rowCount(); i++) {
             LOG.trace("checking row {}", i);
             int value = x.intAt(i, attribute);
@@ -110,13 +113,14 @@ public class DataSet {
             if (subset == null) {
                 LOG.trace("adding new split based on value {}", value);
                 subset = new DataSet(this.attributeTypes.clone());
-                subsets.put(value, subset);
+                values.add(value);
+                subsets.add(subset);
             }
 
             Vector v = this.sample(i);
             subset.add(v);
         }
-        return subsets;
+        return new Tuple<>(values, subsets);
     }
 
     public Tuple<Double, Tuple<DataSet, DataSet>> splitByContinuousAttribute(int attribute) {

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static ca.jacob.jml.Util.arrayAsList;
-import static ca.jacob.jml.math.Util.calculateOccurrences;
+import static ca.jacob.jml.Util.calculateOccurrences;
 import static java.lang.Math.sqrt;
 
 public class Vector implements Iterable<Double> {
@@ -67,14 +67,6 @@ public class Vector implements Iterable<Double> {
 
     public void remove(int i) {
         data.remove(i);
-    }
-
-    public int[] tointArray() {
-        int[] arr = new int[this.length()];
-        for(int i = 0; i < this.length(); i++) {
-            arr[i] = this.intAt(i);
-        }
-        return arr;
     }
 
     public double at(int i) {

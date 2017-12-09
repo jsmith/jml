@@ -1,7 +1,7 @@
 package ca.jacob.jml.neighbors;
 
 import ca.jacob.jml.Model;
-import ca.jacob.jml.math.distance.DistanceFunction;
+import ca.jacob.jml.math.distance.Distance;
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Vector;
@@ -17,9 +17,9 @@ public class KNNModel extends Model {
     private DataSet dataset;
     private int k;
     private boolean weighted;
-    private DistanceFunction df;
+    private Distance df;
 
-    public KNNModel(DataSet dataset, int k, boolean weighted, DistanceFunction df) {
+    public KNNModel(DataSet dataset, int k, boolean weighted, Distance df) {
         this.dataset = dataset;
         this.k = k;
         this.weighted = weighted;
@@ -57,7 +57,7 @@ public class KNNModel extends Model {
             i++;
         }
 
-        int prediction = (int)votes.valueOfMaxOccurrence();
+        int prediction = votes.valueOfMaxOccurrence();
         LOG.debug("predicting: {}", prediction);
         return prediction;
     }

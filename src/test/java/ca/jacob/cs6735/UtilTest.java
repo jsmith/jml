@@ -1,8 +1,6 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.jml.DataSet;
-import ca.jacob.jml.tree.ID3;
-import ca.jacob.jml.tree.Node;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Vector;
 import junit.framework.Assert;
@@ -16,7 +14,7 @@ import static ca.jacob.jml.DataSet.DISCRETE;
 import static ca.jacob.jml.Util.generateIndices;
 import static ca.jacob.jml.Util.replaceWithMostCommonFromClass;
 import static ca.jacob.jml.Util.toIntegers;
-import static ca.jacob.jml.math.Util.calculateOccurrences;
+import static ca.jacob.jml.Util.calculateOccurrences;
 import static ca.jacob.jml.math.Util.ln;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

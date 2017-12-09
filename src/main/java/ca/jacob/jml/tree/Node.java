@@ -103,7 +103,7 @@ public class Node {
 
         attribute = bestAttribute;
 
-        List<DataSet> subsets = new ArrayList<>();
+        List<DataSet> subsets = new ArrayList<>(); // Subsets are given when splitting so that the data does not need to be stored
         if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
             Tuple<Double, Tuple<DataSet, DataSet>> split = dataSet.splitByContinuousAttribute(bestAttribute);
             LOG.debug("pivot is {}", split.first());
@@ -138,6 +138,7 @@ public class Node {
 
         if (this.leaf) {
             LOG.trace("a leaf was found, now classifying!");
+
             return this.predict();
         } else {
             try {

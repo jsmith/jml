@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static ca.jacob.jml.math.Util.calculateOccurrences;
+import static ca.jacob.jml.Util.calculateOccurrences;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertArrayEquals;
 

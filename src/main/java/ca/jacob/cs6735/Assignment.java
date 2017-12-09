@@ -45,8 +45,8 @@ public class Assignment {
         for(DataSet dataset : datasets) {
             System.out.println(dataset);
             testID3(dataset, minimumAmountOfSamples);
-            test(dataset, new NaiveBayes(new GaussianDistribution()));
-            testAdaboost(dataset, new NaiveBayes(new GaussianDistribution()), numberOfLearners, proportions);
+            test(dataset, new NaiveBayes(new Gaussian()));
+            testAdaboost(dataset, new NaiveBayes(new Gaussian()), numberOfLearners, proportions);
             testAdaboost(dataset, new ID3(ID3.MAX_LEVEL_NONE, 1), numberOfLearners, proportions);
             testRandomForest(dataset, numberOfLearners, proportions);
             testKNN(dataset, ks);
@@ -75,19 +75,19 @@ public class Assignment {
         // E Coli. Data
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 2));
-        //algorithms.add(new NaiveBayes(new GaussianDistribution()));
+        //algorithms.add(new NaiveBayes(new Gaussian()));
         //algorithms.add(new AdaBoost(new ID3(2), 200, 0.2));
-        //algorithms.add(new AdaBoost(new NaiveBayes(new GaussianDistribution()), 250, 0.10));
+        //algorithms.add(new AdaBoost(new NaiveBayes(new Gaussian()), 250, 0.10));
         //algorithms.add(new RandomForest(new ID3(), 250, 0.6));
         //algorithms.add(new KNN(1, false, new Euclidean()));
         datasetsAndAlgorithms.add(new Tuple<>(loadEColiData(Assignment.class), algorithms));
 
         // Letter Data
         algorithms = new ArrayList<>();
-        //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
-        //algorithms.add(new NaiveBayes(new GaussianDistribution()));
-        algorithms.add(new AdaBoost(new ID3(3), 7, 0.7));
-        //algorithms.add(new AdaBoost(new NaiveBayes(new GaussianDistribution()), 8, 0.7));
+        algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
+        //algorithms.add(new NaiveBayes(new Gaussian()));
+        //algorithms.add(new AdaBoost(new ID3(3), 7, 0.7));
+        //algorithms.add(new AdaBoost(new NaiveBayes(new Gaussian()), 8, 0.7));
         //algorithms.add(new RandomForest(new ID3(), 10, 0.6));
         //algorithms.add(new KNN(1, false, new Hamming()));
         datasetsAndAlgorithms.add(new Tuple<>(loadLetterData(Assignment.class), algorithms));

@@ -4,14 +4,12 @@ import ca.jacob.jml.exceptions.DataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.crypto.Data;
-
 import static java.lang.Math.PI;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
-public class GaussianDistribution implements Distribution {
-    private static final Logger LOG = LoggerFactory.getLogger(GaussianDistribution.class);
+public class Gaussian implements Distribution {
+    private static final Logger LOG = LoggerFactory.getLogger(Gaussian.class);
 
     public double probability(double x, double mean, double stdev) {
         if(pow(stdev, 2) == 0) {

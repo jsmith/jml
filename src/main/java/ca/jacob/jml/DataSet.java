@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import static ca.jacob.jml.Util.calculateWeightedEntropy;
-import static ca.jacob.jml.math.Util.calculateOccurrences;
+import static ca.jacob.jml.Util.calculateOccurrences;
 import static ca.jacob.jml.math.Util.log2;
 
 public class DataSet {

@@ -1,6 +1,6 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.jml.math.distribution.GaussianDistribution;
+import ca.jacob.jml.math.distribution.Gaussian;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +12,7 @@ public class DistributionTest {
 
     @Test
     public void testGaussianDistribution() {
-        GaussianDistribution distribution = new GaussianDistribution();
+        Gaussian distribution = new Gaussian();
         assertEquals(0, distribution.probability(0, 0, 0), 1e-10);
     }
 }

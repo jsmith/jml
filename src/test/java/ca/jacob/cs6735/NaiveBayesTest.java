@@ -3,7 +3,7 @@ package ca.jacob.cs6735;
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.math.distribution.GaussianDistribution;
+import ca.jacob.jml.math.distribution.Gaussian;
 import ca.jacob.jml.bayes.ContinuousAttribute;
 import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.bayes.NaiveBayesModel;
@@ -33,7 +33,7 @@ public class NaiveBayesTest {
         Matrix data = new Matrix(new int[][]{{1,20,1}, {2,21,0}, {3,22,1}, {4,22,0}});
         DataSet d = new DataSet(data, CONTINUOUS);
 
-        NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
+        NaiveBayes gnb = new NaiveBayes(new Gaussian());
         NaiveBayesModel m = (NaiveBayesModel) gnb.fit(d);
         List<ClassSummary> summaries = m.getSummaries();
         int i = 0;
@@ -54,7 +54,7 @@ public class NaiveBayesTest {
         Vector y = new Vector(new double[]{1, 1, 2});
         DataSet d = new DataSet(x, y, CONTINUOUS);
 
-        NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
+        NaiveBayes gnb = new NaiveBayes(new Gaussian());
         Model m = gnb.fit(d);
         int prediction = m.predict(new Vector(new double[]{1.1, 1}));
         assertEquals(1, prediction);
@@ -64,7 +64,7 @@ public class NaiveBayesTest {
     public void testGaussianNaiveBayesPredictWithData() throws Throwable {
         DataSet dataSetSet = loadEColiData(RandomForestTest.class);
 
-        NaiveBayes gnb = new NaiveBayes(new GaussianDistribution());
+        NaiveBayes gnb = new NaiveBayes(new Gaussian());
         NaiveBayesModel m = (NaiveBayesModel)gnb.fit(dataSetSet);
 
         List<ClassSummary> summaries = m.getSummaries();
@@ -81,7 +81,7 @@ public class NaiveBayesTest {
     public void testNaiveBayes() throws Throwable {
         DataSet dataSetSet = loadEColiData(RandomForestTest.class);
 
-        Algorithm naiveBayes = new NaiveBayes(new GaussianDistribution());
+        Algorithm naiveBayes = new NaiveBayes(new Gaussian());
 
         KFold kFold = new KFold(5);
         Report r = kFold.generateReport(naiveBayes, dataSetSet);
@@ -94,7 +94,7 @@ public class NaiveBayesTest {
     public void testNaiveBayesWithBreastCancer() throws Throwable {
         DataSet dataSetSet = loadBreastCancerData(RandomForestTest.class);
 
-        Algorithm naiveBayes = new NaiveBayes(new GaussianDistribution());
+        Algorithm naiveBayes = new NaiveBayes(new Gaussian());
 
         KFold kFold = new KFold(5);
         Report r = kFold.generateReport(naiveBayes, dataSetSet);

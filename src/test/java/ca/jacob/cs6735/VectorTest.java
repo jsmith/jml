@@ -5,8 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
 
 public class VectorTest {
     private static final double DELTA = 1e-10;
@@ -37,11 +35,6 @@ public class VectorTest {
         Vector v1 = new Vector(new int[]{1, 2, 3, 4});
         v1.add(4);
         assertEquals(v, v1);
-    }
-
-    @Test
-    public void testTointArray() {
-        assertArrayEquals(new int[]{1, 2, 3, 4, 4}, v.tointArray());
     }
 
     @Test

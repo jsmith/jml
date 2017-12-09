@@ -7,34 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Matrix {
-    private static final Logger LOG = LoggerFactory.getLogger(Matrix.class);
-
     private List<Vector> data;
 
     public Matrix(double[][] data) {
-        this.data = new ArrayList<Vector>();
+        this.data = new ArrayList<>();
         for(double[] row : data) {
             this.data.add(new Vector(row));
         }
     }
 
     public Matrix(int[][] data) {
-        this.data = new ArrayList<Vector>();
+        this.data = new ArrayList<>();
         for(int[] row : data) {
             this.data.add(new Vector(row));
         }
     }
 
     public Matrix(String[][] data) {
-        this.data = new ArrayList<Vector>();
+        this.data = new ArrayList<>();
         for(String[] row : data) {
             this.data.add(new Vector(row));
-            LOG.debug("row from string: {}", this.row(this.rowCount()-1));
         }
     }
 
     public Matrix() {
-        data = new ArrayList<Vector>();
+        data = new ArrayList<>();
     }
 
     public Vector row(int i) {
@@ -47,10 +44,6 @@ public class Matrix {
             m.setRow(i, this.row(indices.intAt(i)));
         }
         return m;
-    }
-
-    public void pushRow(double[] row) {
-        data.add(new Vector(row));
     }
 
     public void pushRow(Vector v) {

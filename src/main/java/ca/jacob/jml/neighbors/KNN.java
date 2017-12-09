@@ -2,7 +2,7 @@ package ca.jacob.jml.neighbors;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.math.distance.DistanceFunction;
+import ca.jacob.jml.math.distance.Distance;
 import ca.jacob.jml.DataSet;
 
 public class KNN implements Algorithm {
@@ -10,9 +10,9 @@ public class KNN implements Algorithm {
 
     private int k;
     private boolean weighted;
-    private DistanceFunction df;
+    private Distance df;
 
-    public KNN(int k, boolean weighted, DistanceFunction df) {
+    public KNN(int k, boolean weighted, Distance df) {
         this.k = k;
         this.weighted = weighted;
         this.df = df;

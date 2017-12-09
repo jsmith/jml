@@ -1,6 +1,6 @@
 package ca.jacob.cs6735;
 
-import ca.jacob.jml.math.distance.DistanceFunction;
+import ca.jacob.jml.math.distance.Distance;
 import ca.jacob.jml.math.distance.Euclidean;
 import ca.jacob.jml.math.distance.Hamming;
 import ca.jacob.jml.math.Vector;
@@ -14,7 +14,7 @@ public class DistanceTest {
 
     @Test
     public void testEuclidean() {
-        DistanceFunction df = new Euclidean();
+        Distance df = new Euclidean();
         Vector one = new Vector(new int[]{1, 0, 1, 2});
         Vector two = new Vector(new int[]{1, 1, 0, 0});
         assertEquals(sqrt(6), df.distance(one, two), DELTA);
@@ -22,7 +22,7 @@ public class DistanceTest {
 
     @Test
     public void testHamming() {
-        DistanceFunction df = new Hamming();
+        Distance df = new Hamming();
         Vector one = new Vector(new int[]{1, 0, 1, 2});
         Vector two = new Vector(new int[]{1, 1, 0, 0});
         assertEquals(3, df.distance(one, two), DELTA);

@@ -191,62 +191,19 @@ public class Util {
         }
     }
 
-    public static void replaceWithMostCommonFromClass(String key, String[][] data, int classColumn) {
-        for(int i = 0; i < data.length; i++) {
-            for(int j = 0; j < data[0].length; j++) {
-                if(j == classColumn) {
-                    continue;
-                }
-
-                if(data[i][j].equals(key)) {
-                    LOG.debug("found {} on row {}, col {}", key, i, j);
-                    String classValue = data[i][classColumn];
-
-                    Map<String, Integer> counts = new HashMap<>();
-                    for(int k = 0; k < data.length; k++) {
-                        if(i == k) {
-                            LOG.trace("skipping current row");
-                            continue;
-                        }
-
-                        if(data[k][j].equals(key)) {
-                            LOG.debug("skipping row {} as it contains {}", i, key);
-                            continue;
-                        }
-
-                        if(classValue.equals(data[k][classColumn])) {
-                            String attributeValue = data[k][j];
-                            Integer count = counts.get(attributeValue);
-                            if(count == null) {
-                                count = 0;
-                                counts.put(data[k][j], count);
-                            }
-
-                            count++;
-                            counts.replace(attributeValue, count);
-                        }
-                    }
-
-                    int max = -1;
-                    String maxValue = null;
-                    for(Map.Entry<String, Integer> entry : counts.entrySet()) {
-                        String attributeValue = entry.getKey();
-                        int count = entry.getValue();
-                        if(count > max) {
-                            max = count;
-                            maxValue = attributeValue;
-                            LOG.debug("the max value is now {} with {} instances", maxValue, max);
-                        }
-                    }
-
-                    if(maxValue == null) {
-                        throw new DataException("No samples with the same class");
-                    }
-
-                    LOG.debug("replacing {} with {}", data[i][j], maxValue);
-                    data[i][j] = maxValue;
-                }
+    public static Map<Integer, Integer> calculateOccurrences(Vector v) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < v.length(); i++) {
+            LOG.debug("adding {} to map", v.intAt(i));
+            Integer count = map.get(v.intAt(i));
+            if (count == null) {
+                count = 1;
+                map.put(v.intAt(i), count);
+            } else {
+                count++;
+                map.replace(v.intAt(i), count);
             }
         }
+        return map;
     }
 }

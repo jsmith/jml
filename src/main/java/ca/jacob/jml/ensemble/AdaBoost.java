@@ -65,17 +65,8 @@ public class AdaBoost implements Algorithm {
                 LOG.warn("alpha is NaN");
             }
 
-            if(alpha < 1/classCount) {
-                //continue;
-                //throw new DataException("alpha is less than "+1/classCount+" -> " + alpha);
-            }
-
             weights = weights.mul(exp(err.mul(alpha))); //updating weights
             weights = weights.div(weights.sum()); // normalize weights
-
-            LOG.debug("err: {}", err.subVector(0, 5));
-            LOG.debug("weights: {}", weights.subVector(0, 5));
-            LOG.debug("error: {}", error);
 
             model.add(m, alpha);
         }

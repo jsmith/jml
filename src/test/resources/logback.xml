@@ -29,7 +29,7 @@
 
     <logger name="ca.jacob.jml.Util" level="info"></logger>
     <logger name="ca.jacob.jml.math.Vector" level="info"></logger>
-    <logger name="ca.jacob.jml.DataSet" level="info"></logger>
+    <logger name="ca.jacob.jml.data.DataSet" level="info"></logger>
 
     <logger name="ca.jacob.cs6735.MathTest" level="info"></logger>
     <logger name="ca.jacob.cs6735.AdaBoostTest" level="debug"></logger>

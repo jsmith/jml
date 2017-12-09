@@ -71,7 +71,6 @@ public class Children {
     public void split() {
         if (parent.getAttributeType() == DISCRETE) {
             for (Node child : discrete.values()) {
-                LOG.debug("child: {} x {}", child.sampleCount(), child.attributeCount());
                 child.split();
             }
         } else if (parent.getAttributeType() == CONTINUOUS) {

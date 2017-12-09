@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import static ca.jacob.jml.DataSet.CONTINUOUS;
 import static ca.jacob.jml.DataSet.DISCRETE;
-import static ca.jacob.jml.Util.removeSamplesWith;
-import static ca.jacob.jml.Util.replaceWithMostCommonFromClass;
 import static ca.jacob.jml.Util.toIntegers;
 
 public class DataUtil {

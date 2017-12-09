@@ -21,11 +21,41 @@ public class DataSet {
     public static final int CONTINUOUS = 1;
 
     private String name;
+    private double entropy;
     private Matrix x;
-    private final Vector attributeTypes;
+    private Vector attributeTypes;
     private Vector y;
 
     public DataSet(Matrix x, Vector y, Vector attributeTypes) {
+        this.init(x, y, attributeTypes);
+    }
+
+    public DataSet(Matrix data, Vector attributeTypes) {
+        this.init(x, x.col(x.colCount()-1), attributeTypes);
+        this.x.dropCol(x.colCount()-1);
+    }
+
+    public DataSet(Matrix data, int attributeType) {
+        this.init(x, x.col(x.colCount()-1), attributeTypes);
+        this.x.dropCol(x.colCount()-1);
+    }
+
+    public DataSet(Matrix x, Vector y, int attributeType) {
+        this.init(x, y, attributeType);
+    }
+
+    public DataSet(Vector attributeTypes) {
+        this.init(new Matrix(), new Vector(), attributeTypes);
+    }
+
+    private void init(Matrix x, Vector y, int attributeType) {
+        Vector dataTypes = new Vector(new int[x.colCount()]);
+        dataTypes.fill(attributeType);
+        this.attributeTypes = dataTypes;
+        this.init(x, y, attributeTypes);
+    }
+
+    private void init(Matrix x, Vector y, Vector attributeTypes) {
         if(x.colCount() != attributeTypes.length()) {
             LOG.error("length mismatch: attributes: {}, attribute types: {}", x.colCount(), attributeTypes.length());
             throw new DataException("attribute type vector length must match attribute count");
@@ -35,46 +65,10 @@ public class DataSet {
             throw new DataException("x row count and y length must match!");
         }
 
+        this.entropy = -1;
         this.x = x;
         this.y = y;
         this.attributeTypes = attributeTypes;
-    }
-
-    public DataSet(Matrix data, Vector attributeTypes) {
-        if(data.colCount()-1 != attributeTypes.length()) {
-            LOG.error("length mismatch: attributes: {}, attribute types: {}", data.colCount()-1, attributeTypes.length());
-            throw new DataException("attribute type vector length must match attribute count");
-        }
-
-        this.x = data;
-        this.y = x.col(x.colCount()-1);
-        x.dropCol(x.colCount()-1);
-        this.attributeTypes = attributeTypes;
-    }
-
-    public DataSet(Matrix data, int attributeType) {
-        Vector dataTypes = new Vector(new int[data.colCount()-1]);
-        dataTypes.fill(attributeType);
-        this.attributeTypes = dataTypes;
-
-        this.x = data;
-        this.y = x.col(x.colCount()-1);
-        this.x.dropCol(x.colCount()-1);
-    }
-
-    public DataSet(Matrix x, Vector y, int attributeType) {
-        Vector dataTypes = new Vector(new int[x.colCount()]);
-        dataTypes.fill(attributeType);
-        this.attributeTypes = dataTypes;
-
-        this.x = x;
-        this.y = y;
-    }
-
-    public DataSet(Vector attributeTypes) {
-        this.attributeTypes = attributeTypes;
-        this.x = new Matrix();
-        this.y = new Vector();
     }
 
     public int sampleCount() {
@@ -253,6 +247,11 @@ public class DataSet {
     }
 
     public double entropy() {
+        // Have we already calculated entropy?
+        if(entropy > 0) {
+            return entropy;
+        }
+
         Map<Integer, Integer> classes = calculateOccurrences(this.classes());
         LOG.trace("there are {} different class", classes.size());
         LOG.debug("classes: {}", classes);
@@ -263,7 +262,7 @@ public class DataSet {
         }
         LOG.trace("sum is " + sum);
 
-        double entropy = 0.;
+        entropy = 0;
         for (int count : classes.values()) {
             entropy -= count / sum * log2(count / sum);
         }

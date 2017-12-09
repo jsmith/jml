@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 
 import static ca.jacob.jml.Util.arrayAsList;
-import static ca.jacob.jml.Util.toPrimitiveArray;
 import static ca.jacob.jml.math.Util.calculateOccurrences;
 import static java.lang.Math.sqrt;
 
@@ -46,6 +45,11 @@ public class Vector implements Iterable<Double> {
         this.data = data;
     }
 
+    public Vector(Vector vector) {
+        this.data = new ArrayList<>(vector.data.size());
+        Collections.copy(this.data, vector.data);
+    }
+
     public void add(int value) {
         data.add((double)value);
     }
@@ -64,10 +68,6 @@ public class Vector implements Iterable<Double> {
 
     public void remove(int i) {
         data.remove(i);
-    }
-
-    public double[] toArray() {
-        return toPrimitiveArray(data);
     }
 
     public int[] tointArray() {
@@ -165,7 +165,7 @@ public class Vector implements Iterable<Double> {
     }
 
     public Vector clone() {
-        return new Vector(this.toArray().clone());
+        return new Vector(this);
     }
 
     public void set(int i, double value) {

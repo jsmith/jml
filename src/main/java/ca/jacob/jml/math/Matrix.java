@@ -54,7 +54,7 @@ public class Matrix {
     }
 
     public void pushRow(Vector v) {
-        this.pushRow(v.toArray());
+        data.add(v);
     }
 
     public void setRow(int i, Vector v) {
@@ -94,32 +94,6 @@ public class Matrix {
             return 0;
         }
         return data.get(0).length();
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        if (object == null) {
-            return false;
-        }
-        if (!(object instanceof Matrix)) {
-            return false;
-        }
-
-        Matrix other = (Matrix) object;
-        if (this.rowCount() != other.rowCount()) {
-            return false;
-        }
-        if (this.colCount() != other.colCount()) {
-            return false;
-        }
-
-        for (int i = 0; i < this.rowCount(); i++) {
-            if(!this.row(i).equals(other.row(i))) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     @Override

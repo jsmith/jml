@@ -26,6 +26,7 @@ public class ID3 implements Algorithm {
         this.maxLevel = maxLevel;
     }
 
+    @Override
     public Model fit(DataSet dataSet) {
         Node root = new Node(dataSet, maxLevel, minNumberOfSamples);
         root.split();

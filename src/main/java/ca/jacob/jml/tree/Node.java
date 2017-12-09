@@ -21,53 +21,38 @@ public class Node {
     private Node parent;
     private int attribute;
     private boolean leaf;
-    private DataSet dataSet;
+    private Vector classes;
+    private Vector attributeTypes;
     private Children children;
     private int level;
     private int maxLevel;
     private int minNumberOfSamples;
-    private double entropy;
 
-    public Node(DataSet dataSet, int maxLevel, int minNumberOfSamples) {
-        this.dataSet = dataSet;
+    public Node(int maxLevel, int minNumberOfSamples) {
         this.parent = null;
         this.init(0, maxLevel, minNumberOfSamples);
     }
 
-    public Node(Matrix data, Vector attributeTypes, int maxLevel, int minNumberOfSamples) {
-        this.dataSet = new DataSet(data, attributeTypes);
-        this.parent = null;
-        this.init(0, maxLevel, minNumberOfSamples);
-    }
-
-    public Node(DataSet dataSet, Node parent) {
-        this.dataSet = dataSet;
+    public Node(Node parent) {
         this.parent = parent;
         this.init(parent.level+1, parent.maxLevel, parent.minNumberOfSamples);
     }
 
-    public void init(int level, int maxLevel, int minNumberOfSamples) {
+    private void init(int level, int maxLevel, int minNumberOfSamples) {
         leaf = false;
         this.level = level;
         this.maxLevel = maxLevel;
         this.minNumberOfSamples = minNumberOfSamples;
         this.attribute = -1;
-        this.entropy = -1;
     }
 
-    public double entropy() {
-        if(this.entropy < 0) {
-            this.entropy = dataSet.entropy();
-        }
-        return entropy;
-    }
-
-    public void split() {
+    public void split(DataSet dataSet) {
         LOG.info("split - starting for level {}", level);
-        LOG.debug("the total entropy of the current node is " + this.entropy());
+        classes = dataSet.classes();
+        attributeTypes = dataSet.getAttributeTypes();
 
-        if(level == maxLevel || this.entropy() == 0 || this.sampleCount() <= 1 || this.sampleCount() < minNumberOfSamples) {
-            LOG.debug("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, this.entropy(), this.sampleCount());
+        if(level == maxLevel || dataSet.entropy() == 0 || dataSet.sampleCount() <= 1 || dataSet.sampleCount() < minNumberOfSamples) {
+            LOG.debug("found leaf - level: {}, entropy: {}, numOfSamples: {}", this.level, dataSet.entropy(), dataSet.sampleCount());
             this.leaf = true;
             return;
         }
@@ -110,8 +95,8 @@ public class Node {
             return;
         }
 
-        if(this.entropy() <= minEntropy) {
-            LOG.debug("children have {} entropy while current model has {} entropy! Creating a leaf!", minEntropy, this.entropy());
+        if(dataSet.entropy() <= minEntropy) {
+            LOG.debug("children have {} entropy while current model has {} entropy! Creating a leaf!", minEntropy, dataSet.entropy());
             this.leaf = true;
             return;
         }
@@ -119,11 +104,14 @@ public class Node {
         attribute = bestAttribute;
 
         if(dataSet.attributeType(bestAttribute) == CONTINUOUS) {
-            Tuple<Double, Tuple<DataSet, DataSet>> subsets = dataSet.splitByContinuousAttribute(bestAttribute);
-            subsets.last().first().dropAttribute(attribute);
-            subsets.last().last().dropAttribute(attribute);
-            LOG.debug("pivot is {}", subsets.first());
-            children = new Children(this, subsets);
+            Tuple<Double, Tuple<DataSet, DataSet>> split = dataSet.splitByContinuousAttribute(bestAttribute);
+            LOG.debug("pivot is {}", split.first());
+
+            Tuple<DataSet, DataSet> subsets = split.last();
+            subsets.first().dropAttribute(attribute);
+            subsets.last().dropAttribute(attribute);
+
+            children = new Children(this, split);
         } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
             Map<Integer, DataSet> subsets = dataSet.splitByDiscreteAttribute(bestAttribute);
             for(Map.Entry<Integer, DataSet> subset : subsets.entrySet()) {
@@ -140,14 +128,9 @@ public class Node {
         return children;
     }
 
-    public int sampleCount() {
-        return dataSet.sampleCount();
-    }
-
-    public int classify(Vector e) {
+    int classify(Vector e) {
         LOG.trace("classify - starting for level {} and attribute {}", level, attribute);
 
-        LOG.trace("sample attributes: {} vs data attributes: {}", e.length(), dataSet.attributeCount());
         if (this.leaf) {
             LOG.trace("a leaf was found, now classifying!");
             return this.predict();
@@ -163,24 +146,19 @@ public class Node {
 
     public int predict() {
         LOG.trace("predicting starting on level {}", level);
-        Vector classes = dataSet.classes();
-        return (int)classes.valueOfMaxOccurrence();
+        return classes.valueOfMaxOccurrence();
     }
 
     public int getAttribute() {
         return attribute;
     }
 
-    public DataSet getDataSet() {
-        return dataSet;
-    }
-
     public boolean isLeaf() {
         return leaf;
     }
 
-    public int getAttributeType() {
-        return dataSet.attributeType(attribute);
+    int getAttributeType() {
+        return attributeTypes.intAt(attribute);
     }
 
     public int depth() {
@@ -200,13 +178,10 @@ public class Node {
         this.attribute = attribute;
     }
 
-    public boolean isRoot() {
+    boolean isRoot() {
         return parent == null;
     }
 
-    public int attributeCount() {
-        return dataSet.attributeCount();
-    }
 
     @Override
     public String toString() {

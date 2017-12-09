@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.DataUtil.*;
 import static ca.jacob.jml.DataSet.DISCRETE;
-import static ca.jacob.jml.Util.removeSamplesWith;
 import static junit.framework.Assert.assertEquals;
 
 public class ID3Test {
@@ -75,10 +74,7 @@ public class ID3Test {
 
     @Test
     public void testWithData() throws Throwable {
-        String[][] data = Util.readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = removeSamplesWith("?", data);
-
-        DataSet d = new DataSet(new Matrix(data), DISCRETE);
+        DataSet d = loadBreastCancerData(ID3Test.class);
 
         ID3 id3 = new ID3(2);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -110,11 +106,7 @@ public class ID3Test {
 
     @Test
     public void testDepthOne() throws Throwable {
-        String[][] data = Util.readCSV(this.getClass().getResourceAsStream("/data/breast-cancer-wisconsin.data"));
-        data = removeSamplesWith("?", data);
-
-        Matrix m = new Matrix(data);
-        DataSet d = new DataSet(m, DISCRETE);
+        DataSet d = loadBreastCancerData(ID3Test.class);
 
         ID3 id3 = new ID3(1);
         ID3Model model = (ID3Model) id3.fit(d);

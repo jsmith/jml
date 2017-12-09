@@ -58,7 +58,7 @@ public class KFold {
 
         // List of indices ex. 1, 2, 3 ... n-1, n
         Vector indices = range(0, numberOfSamples);
-        shuffle(indices, seed); // shuffle that list
+        shuffle(indices, seed); // shuffle the list
 
         List<Tuple<Vector, Vector>> trainTestIndices = new ArrayList<>();
         for(int split = 0; split < numberOfSplits-1; split++) {

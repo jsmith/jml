@@ -20,30 +20,6 @@ import static java.lang.Math.random;
 public class Util {
     private static final Logger LOG = LoggerFactory.getLogger(Util.class);
 
-    public static String[][] removeSamplesWith(String key, String[][] data) {
-        ArrayList<String[]> modified = new ArrayList<String[]>();
-        for(int i = 0; i < data.length; i++) {
-            boolean containsKey = false;
-            for(int j = 0; j < data[0].length; j++) {
-                if(data[i][j].contains(key)) {
-                   containsKey = true;
-                }
-            }
-            if(!containsKey) {
-                modified.add(data[i]);
-            }
-        }
-
-        return modified.toArray(new String[modified.get(0).length][modified.get(0).length]);
-    }
-
-    public static int sign(double n) {
-        if(n >= 0) {
-            return 1;
-        } else {
-            return -1;
-        }
-    }
 
     public static Vector generateIndices(Vector weights, int numberOfIndices) {
         Vector probabilities = new Vector(new double[weights.length()]);
@@ -122,19 +98,8 @@ public class Util {
         return error;
     }
 
-    public static double[] toPrimitiveArray(List<Double> list) {
-        if(list == null) {
-            return null;
-        }
-        double[] result = new double[list.size()];
-        for(int i = 0; i < list.size(); i++) {
-            result[i] = list.get(i);
-        }
-        return result;
-    }
-
     public static List<Double> arrayAsList(double[] array) {
-        List<Double> result = new ArrayList<Double>();
+        List<Double> result = new ArrayList<>();
         for(int i = 0; i < array.length; i++) {
             result.add(array[i]);
         }
@@ -157,7 +122,7 @@ public class Util {
     }
 
     public static double calculateWeightedEntropy(Collection<DataSet> subsets) {
-        return calculateWeightedEntropy(new ArrayList<DataSet>(subsets));
+        return calculateWeightedEntropy(new ArrayList<>(subsets));
     }
 
     public static double calculateWeightedEntropy(Tuple<DataSet, DataSet> subsets) {

@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 import static ca.jacob.cs6735.DataUtil.*;
-import static ca.jacob.jml.Util.removeSamplesWith;
-import static ca.jacob.jml.Util.shuffle;
 import static junit.framework.Assert.assertEquals;
 
 public class KFoldTest {
@@ -27,7 +25,7 @@ public class KFoldTest {
 
     @Before
     public void init() {
-        kFold = new KFold(5, 23l);
+        kFold = new KFold(5);
         x = new Matrix(new int[][]{{1}, {0}, {1}, {0}, {1}, {1}});
         y = new Vector(new int[]{1, 0, 1, 0, 1, 1});
         dataset = new DataSet(x, y, DataSet.DISCRETE);
@@ -70,12 +68,10 @@ public class KFoldTest {
     public void testKFoldProcessWithMushroom() throws Throwable {
         DataSet dataset = loadMushroomData(KFoldTest.class);
 
-        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 20);
+        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 1);
 
         Report r = kFold.generateReport(a, dataset);
-        Vector accuracies = r.getAccuracies();
-
-        LOG.info("KFold test accuracy for mushroom data: {}", accuracies.mean());
+        LOG.info("KFold test accuracy for mushroom data: {}", r.mean());
     }
 
     @Test
@@ -85,9 +81,7 @@ public class KFoldTest {
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
 
         Report r = kFold.generateReport(a, dataset);
-        Vector accuracies = r.getAccuracies();
-
-        LOG.info("KFold test accuracy for car data: {}", accuracies.mean());
+        LOG.info("KFold test accuracy for car data: {}", r.mean());
     }
 
     @Test

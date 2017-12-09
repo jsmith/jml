@@ -119,6 +119,9 @@ public class Node {
         } else if(dataSet.attributeType(bestAttribute) == DISCRETE) {
             Tuple<List<Integer>, List<DataSet>> split = dataSet.splitByDiscreteAttribute(bestAttribute);
             subsets = split.last();
+            for(DataSet subset : subsets) {
+                subset.dropAttribute(attribute);
+            }
             children = new DiscreteChildren(this, split.first());
         }
         LOG.debug("there will be {} children", children.size());
@@ -191,10 +194,6 @@ public class Node {
 
     @Override
     public String toString() {
-        if(parent == null) {
-            return "\nRoot Node: attribute - >" + attribute;
-        } else {
-            return parent.toString() + "\nNode Level {}: attribute -> " + attribute;
-        }
+        return "Node Level "+level;
     }
 }

@@ -12,6 +12,7 @@
 
     <logger name="ca.jacob.jml.tree.Node" level="warn"></logger>
     <logger name="ca.jacob.jml.tree.Children" level="info"></logger>
+    <logger name="ca.jacob.jml.tree.DiscreteChildren" level="debug"></logger>
 
     <logger name="ca.jacob.jml.bayes.NaiveBayesModel" level="info"></logger>
     <logger name="ca.jacob.jml.bayes.NaiveBayes" level="info"></logger>

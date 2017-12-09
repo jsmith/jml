@@ -32,14 +32,17 @@ public class DataSet {
         this.init(x, y, attributeTypes);
     }
 
-    public DataSet(Matrix data, Vector attributeTypes) {
-        this.init(x, x.col(x.colCount()-1), attributeTypes);
-        this.x.dropCol(x.colCount()-1);
+    public DataSet(Matrix x, Vector attributeTypes) {
+        Vector y = x.col(x.colCount()-1);
+        x.dropCol(x.colCount()-1);
+        this.init(x, y, attributeTypes);
     }
 
-    public DataSet(Matrix data, int attributeType) {
-        this.init(x, x.col(x.colCount()-1), attributeTypes);
-        this.x.dropCol(x.colCount()-1);
+    public DataSet(Matrix x, int attributeType) {
+        Vector y = x.col(x.colCount()-1);
+        x.dropCol(x.colCount()-1);
+        this.init(x, y, attributeType);
+
     }
 
     public DataSet(Matrix x, Vector y, int attributeType) {
@@ -58,7 +61,7 @@ public class DataSet {
     }
 
     private void init(Matrix x, Vector y, Vector attributeTypes) {
-        if(x.colCount() != attributeTypes.length()) {
+        if(x.colCount() != 0 && x.colCount() != attributeTypes.length()) {
             LOG.error("length mismatch: attributes: {}, attribute types: {}", x.colCount(), attributeTypes.length());
             throw new DataException("attribute type vector length must match attribute count");
         }
@@ -109,13 +112,14 @@ public class DataSet {
             LOG.trace("checking row {}", i);
             int value = x.intAt(i, attribute);
 
-            DataSet subset = subsets.get(value);
-            if (subset == null) {
+            int index = values.indexOf(value);
+            if (index < 0) {
                 LOG.trace("adding new split based on value {}", value);
-                subset = new DataSet(this.attributeTypes.clone());
                 values.add(value);
-                subsets.add(subset);
+                subsets.add(new DataSet(attributeTypes.clone()));
+                index = subsets.size()-1;
             }
+            DataSet subset = subsets.get(index);
 
             Vector v = this.sample(i);
             subset.add(v);

@@ -40,13 +40,6 @@ public class VectorTest {
     }
 
     @Test
-    public void testDropAndToArray() {
-        v.remove(3);
-        v.remove(0);
-        assertArrayEquals(new double[]{2, 3, 4}, v.toArray(), DELTA);
-    }
-
-    @Test
     public void testTointArray() {
         assertArrayEquals(new int[]{1, 2, 3, 4, 4}, v.tointArray());
     }

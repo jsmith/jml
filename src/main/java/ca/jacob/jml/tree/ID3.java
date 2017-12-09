@@ -28,8 +28,8 @@ public class ID3 implements Algorithm {
 
     @Override
     public Model fit(DataSet dataSet) {
-        Node root = new Node(dataSet, maxLevel, minNumberOfSamples);
-        root.split();
+        Node root = new Node(maxLevel, minNumberOfSamples);
+        root.split(dataSet);
         return new ID3Model(root);
     }
 

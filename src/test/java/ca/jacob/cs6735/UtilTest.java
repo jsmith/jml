@@ -1,5 +1,6 @@
 package ca.jacob.cs6735;
 
+import ca.jacob.jml.DataSet;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.tree.Node;
 import ca.jacob.jml.math.Matrix;
@@ -59,8 +60,8 @@ public class UtilTest {
     public void testEntropy() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
         Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
-        Node node = new Node(data, attributeTypes, ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
-        Assert.assertEquals(1, node.entropy(), DELTA);
+        DataSet dataSet = new DataSet(data, attributeTypes);
+        Assert.assertEquals(1, dataSet.entropy(), DELTA);
     }
 
     @Test

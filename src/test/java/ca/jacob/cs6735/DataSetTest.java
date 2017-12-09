@@ -7,6 +7,7 @@ import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.Vector;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static ca.jacob.cs6735.DataUtil.loadLetterData;
@@ -57,8 +58,8 @@ public class DataSetTest {
     public void testSplitByDiscrete() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
         DataSet d = new DataSet(data, DISCRETE);
-        Map<Integer, DataSet> subsets = d.splitByDiscreteAttribute(1);
-        assertEquals(2, subsets.size());
+        Tuple<List<Integer>, List<DataSet>> subsets = d.splitByDiscreteAttribute(1);
+        assertEquals(2, subsets.first().size());
     }
 
     @Test

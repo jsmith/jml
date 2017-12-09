@@ -4,6 +4,7 @@ import ca.jacob.jml.DataSet;
 import ca.jacob.jml.exceptions.AttributeException;
 import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.exceptions.PredictionException;
+import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,18 +19,17 @@ import static ca.jacob.jml.DataSet.DISCRETE;
 public class DiscreteChildren extends Children {
     private static final Logger LOG = LoggerFactory.getLogger(DiscreteChildren.class);
 
-    private Map<Integer, Node> nodes;
+    private List<Tuple<Integer, Node>> nodes;
 
-    DiscreteChildren(Node parent, List<Integer> values) {
+    public DiscreteChildren(Node parent, List<Integer> values) {
         super(parent);
         if(parent.getAttributeType() != DISCRETE) {
             throw new AttributeException();
         }
 
-        this.nodes = new HashMap<>();
+        this.nodes = new ArrayList<>();
         for(Integer value : values) {
-            Node child = new Node(parent);
-            this.nodes.put(value, child);
+            this.nodes.add(new Tuple<>(value, new Node(parent)));
         }
         this.parent = parent;
     }
@@ -46,16 +46,17 @@ public class DiscreteChildren extends Children {
         }
 
         for (int i = 0; i < nodes.size(); i++) {
-            nodes.get(i).split(subsets.get(i));
+            Node node = nodes.get(i).last();
+            node.split(subsets.get(i));
         }
     }
 
     @Override
     public int predict(Vector e) {
         int attribute = parent.getAttribute();
-        for (Map.Entry<Integer, Node> entry : nodes.entrySet()) {
-            int value = entry.getKey();
-            Node child = entry.getValue();
+        for (Tuple<Integer, Node> entry : nodes) {
+            int value = entry.first();
+            Node child = entry.last();
             if (e.intAt(attribute) == value) {
                 e = e.clone();
                 e.remove(attribute);
@@ -69,8 +70,8 @@ public class DiscreteChildren extends Children {
     @Override
     public int maxDepth() {
         int max = 0;
-        for(Node child : nodes.values()) {
-            int depth = child.depth();
+        for(Tuple<Integer, Node> child : nodes) {
+            int depth = child.last().depth();
             if(depth > max) {
                 max = depth;
             }
@@ -80,14 +81,14 @@ public class DiscreteChildren extends Children {
 
     @Override
     public Node get(int i) {
-        return new ArrayList<>(nodes.values()).get(i);
+        return nodes.get(i).last();
     }
 
     public void put(int value, Node n) {
         if(nodes == null) {
-            nodes = new HashMap<>();
+            nodes = new ArrayList<>();
         }
 
-        nodes.put(value, n);
+        nodes.add(new Tuple<>(value, n));
     }
 }

@@ -120,4 +120,30 @@ public class Matrix {
         this.setCol(i, this.col(j));
         this.setCol(j, temp);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null) {
+            return false;
+        }
+        if (!(object instanceof Matrix)) {
+            return false;
+        }
+
+        Matrix other = (Matrix) object;
+        if (this.rowCount() != other.rowCount()) {
+            return false;
+        }
+        if (this.colCount() != other.colCount()) {
+            return false;
+        }
+
+        for (int i = 0; i < this.rowCount(); i++) {
+            if(!this.row(i).equals(other.row(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

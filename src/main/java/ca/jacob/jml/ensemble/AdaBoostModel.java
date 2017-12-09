@@ -12,8 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ca.jacob.jml.Util.sign;
-
 public class AdaBoostModel extends Model {
     private Vector alphas;
     private Vector uniqueClasses;

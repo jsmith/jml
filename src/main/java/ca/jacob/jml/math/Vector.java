@@ -46,8 +46,7 @@ public class Vector implements Iterable<Double> {
     }
 
     public Vector(Vector vector) {
-        this.data = new ArrayList<>(vector.data.size());
-        Collections.copy(this.data, vector.data);
+        this.data = new ArrayList<>(vector.data);
     }
 
     public void add(int value) {

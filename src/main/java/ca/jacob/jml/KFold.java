@@ -5,6 +5,7 @@ import ca.jacob.jml.math.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static ca.jacob.jml.Util.range;
 import static ca.jacob.jml.Util.shuffle;
@@ -12,13 +13,13 @@ import static ca.jacob.jml.Util.shuffle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ca.jacob.jml.Util.shuffle;
-
-public class KFold {
+public class KFold implements Callable<Report> {
     private static final Logger LOG = LoggerFactory.getLogger(KFold.class);
 
     private int numberOfSplits;
     private Long seed;
+    private Algorithm algorithm;
+    private DataSet dataSet;
 
     public KFold(int numberOfSplits) {
         this.numberOfSplits = numberOfSplits;
@@ -93,5 +94,15 @@ public class KFold {
         trainTestIndices.add(new Tuple<>(trainIndices, testIndices));
 
         return trainTestIndices;
+    }
+
+    public void init(Algorithm algorithm, DataSet dataSet) {
+        this.algorithm = algorithm;
+        this.dataSet = dataSet;
+    }
+
+    @Override
+    public Report call() throws Exception {
+        return this.generateReport(algorithm, dataSet);
     }
 }

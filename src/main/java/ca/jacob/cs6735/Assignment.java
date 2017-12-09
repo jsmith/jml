@@ -8,7 +8,7 @@ import ca.jacob.jml.math.distance.Euclidean;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.RandomForest;
 import ca.jacob.jml.neighbors.KNN;
-import ca.jacob.jml.data.DataSet;
+import ca.jacob.jml.DataSet;
 import ca.jacob.jml.Report;
 
 import java.util.ArrayList;

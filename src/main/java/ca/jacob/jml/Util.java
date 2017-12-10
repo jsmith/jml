@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
+import static ca.jacob.jml.math.Util.log2;
 import static java.lang.Math.random;
 
 public class Util {
@@ -205,5 +206,26 @@ public class Util {
             }
         }
         return map;
+    }
+
+    public static double entropy(Vector values) {
+        Map<Integer, Integer> occurrences = calculateOccurrences(values);
+
+        double sum = 0.;
+        for (int count : occurrences.values()) {
+            sum += count;
+        }
+        LOG.trace("sum is " + sum);
+
+        double entropy = 0;
+        for (int count : occurrences.values()) {
+            entropy -= count / sum * log2(count / sum);
+        }
+
+        return entropy;
+    }
+
+    public static double calculateWeightedEntropy(Vector one, Vector two) {
+        return (entropy(one) + entropy(two)) / ((one.length() + two.length())*2);
     }
 }

@@ -2,6 +2,7 @@ package ca.jacob.jml.tree;
 
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.exceptions.AttributeException;
+import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.exceptions.PredictionException;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Tuple;
@@ -73,7 +74,13 @@ public class Node {
                 entropy = calculateWeightedEntropy(subsets.last());
 
             } else if(dataSet.attributeType(j) == CONTINUOUS) {
-                Tuple<Double, Tuple<DataSet, DataSet>> subsets = dataSet.splitByContinuousAttribute(j);
+                Tuple<Double, Tuple<DataSet, DataSet>> subsets;
+                try {
+                    subsets = dataSet.splitByContinuousAttribute(j);
+                } catch (DataException e) {
+                    continue;
+                }
+
                 if(subsets == null) {
                     LOG.debug("no possible subsets for attribute {}", j);
                     continue;

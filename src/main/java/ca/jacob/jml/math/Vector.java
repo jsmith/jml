@@ -336,12 +336,37 @@ public class Vector implements Iterable<Double> {
         return v;
     }
 
-    public void sort(Vector basedOn) {
-        Map<Double, Double> pairs = new TreeMap<>();
-        for(int i = 0; i < basedOn.length(); i++) {
-            pairs.put(basedOn.at(i), this.at(i));
+    public void sortBasedOn(Vector other) {
+        Map<Double, List<Double>> pairs = new TreeMap<>();
+        for(int i = 0; i < other.length(); i++) {
+            List<Double> values = pairs.get(other.at(i));
+            if(values == null) {
+                values = new ArrayList<>();
+                pairs.put(other.at(i), values);
+            }
+
+            values.add(this.at(i));
         }
 
-        this.data = new ArrayList<>(pairs.values());
+        this.data = new ArrayList<>();
+        for(List<Double> values : pairs.values()) {
+            this.data.addAll(values);
+        }
+    }
+
+    public Tuple<Vector,Vector> splitBasedOn(Vector values, double pivot) {
+        Vector under = new Vector();
+        Vector over = new Vector();
+        for(int i = 0; i < values.length(); i++) {
+            if(values.at(i) < pivot) {
+                under.add(this.at(i));
+            } else if(values.at(i) > pivot) {
+                over.add(this.at(i));
+            } else {
+                throw new DataException("given pivot must not match value from values");
+            }
+        }
+
+        return new Tuple<>(under, over);
     }
 }

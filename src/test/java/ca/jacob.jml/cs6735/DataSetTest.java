@@ -78,7 +78,11 @@ public class DataSetTest {
 
     @Test
     public void testSplitByContinuous() {
-        Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}, {0, -1, 0, 0}});
+        Matrix data = new Matrix(new int[][]{
+                {0, 1, 1, 1},
+                {0, 0, 0, 0},
+                {0, -1, 0, 0}
+        });
         DataSet d = new DataSet(data, CONTINUOUS);
         Tuple<Double, Tuple<DataSet, DataSet>> subsets = d.splitByContinuousAttribute(1);
         assertEquals(2, subsets.last().first().sampleCount());
@@ -86,7 +90,7 @@ public class DataSetTest {
         assertEquals(0.5, subsets.first(), DELTA);
 
         data = new Matrix(new int[][]{
-                {0, 0, 1, 1},
+                {0, 0, 2, 0},
                 {0, 0, 1, 0},
                 {0, 0, 1, 0},
                 {0, 0, 0, 1}

@@ -134,29 +134,49 @@ public class DataSet {
 
         Vector values = x.col(attribute);
         Vector classes = y.clone();
-        classes.sort(values);
+        classes.sortBasedOn(values);
         values.sort();
 
+        LOG.debug("splitting with attribute -> {}", attribute);
 
-        LOG.debug("splitting with attribute -> {}", values);
-
-        Tuple<Double, Tuple<DataSet, DataSet>> bestSubsets = null;
-        double minimumEntropy = 0;
+        double bestPivot = -1;
+        double minimumEntropy = -1;
+        LOG.debug("{}", classes);
+        LOG.debug("{}", values);
         for (int i = 0; i < values.length()-1; i++) {
+            if(classes.intAt(i) == classes.intAt(i+1)) {
+                LOG.debug("skipping as classes at({}) == at({}+1)", i, i);
+                continue;
+            }
+
             if(values.at(i) == values.at(i+1)) {
+                LOG.debug("skipping as values at({}) == at({}+1)", i, i);
                 continue;
             }
 
             double pivot = (values.at(i) + values.at(i+1)) / 2;
-            Tuple<DataSet, DataSet> subsets = splitAt(attribute, pivot);
+            LOG.debug("testing split at {}", pivot);
 
-            double entropy = calculateWeightedEntropy(subsets);
-            if(bestSubsets == null || entropy < minimumEntropy) {
-                bestSubsets = new Tuple<>(pivot, subsets);
+            Tuple<Vector, Vector> split = classes.splitBasedOn(values, pivot);
+            LOG.debug("under: {}, over: {}", split.first(), split.last());
+
+            double entropy = calculateWeightedEntropy(split.first(), split.last());
+            if(minimumEntropy < 0 ||  entropy < minimumEntropy) {
+                LOG.debug("best pivot is now {} with {} entropy", pivot, entropy);
                 minimumEntropy = entropy;
+                bestPivot = pivot;
+
             }
         }
-        return bestSubsets;
+
+        if(minimumEntropy < 0) {
+            LOG.warn("no possible pivots found for {} -> {}", attribute, dataToString());
+            throw new DataException("no possible places to split found");
+        }
+
+        LOG.debug("the best pivot is {}", bestPivot);
+        Tuple<DataSet, DataSet> subsets = splitAt(attribute, bestPivot);
+        return new Tuple<>(bestPivot, subsets);
     }
 
     public Tuple<DataSet, DataSet> splitAt(int attribute, double pivot) {
@@ -263,21 +283,7 @@ public class DataSet {
             return entropy;
         }
 
-        Map<Integer, Integer> classes = calculateOccurrences(this.classes());
-        LOG.trace("there are {} different class", classes.size());
-        LOG.debug("classes: {}", classes);
-
-        double sum = 0.;
-        for (int count : classes.values()) {
-            sum += count;
-        }
-        LOG.trace("sum is " + sum);
-
-        entropy = 0;
-        for (int count : classes.values()) {
-            entropy -= count / sum * log2(count / sum);
-        }
-
+        entropy = ca.jacob.jml.Util.entropy(this.classes());
         return entropy;
     }
 

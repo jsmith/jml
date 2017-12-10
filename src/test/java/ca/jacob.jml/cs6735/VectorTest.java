@@ -102,11 +102,14 @@ public class VectorTest {
     }
 
     @Test
-    public void testSort() {
+    public void testSortBasedOn() {
         Vector one = new Vector(new int[]{1, 3, 2});
         Vector two = new Vector(new int[]{3, 2, 1});
-        two.sort(one);
+        two.sortBasedOn(one);
         assertEquals(new Vector(new int[]{3, 1, 2}), two);
         assertEquals(new Vector(new int[]{1, 3, 2}), one);
+        one = new Vector(new int[]{2, 1, 1});
+        two.sortBasedOn(one);
+        assertEquals(new Vector(new int[]{1, 2, 3}), two);
     }
 }

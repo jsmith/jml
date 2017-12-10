@@ -132,19 +132,22 @@ public class DataSet {
             throw new DataException("must be continuous attribute");
         }
 
-        Vector c = x.col(attribute);
-        c.sort();
+        Vector values = x.col(attribute);
+        Vector classes = y.clone();
+        classes.sort(values);
+        values.sort();
 
-        LOG.debug("splitting with attribute -> {}", c);
+
+        LOG.debug("splitting with attribute -> {}", values);
 
         Tuple<Double, Tuple<DataSet, DataSet>> bestSubsets = null;
         double minimumEntropy = 0;
-        for (int i = 0; i < c.length()-1; i++) {
-            if(c.at(i) == c.at(i+1)) {
+        for (int i = 0; i < values.length()-1; i++) {
+            if(values.at(i) == values.at(i+1)) {
                 continue;
             }
 
-            double pivot = (c.at(i) + c.at(i+1)) / 2;
+            double pivot = (values.at(i) + values.at(i+1)) / 2;
             Tuple<DataSet, DataSet> subsets = splitAt(attribute, pivot);
 
             double entropy = calculateWeightedEntropy(subsets);

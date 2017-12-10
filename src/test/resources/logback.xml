@@ -18,6 +18,7 @@
     <logger name="ca.jacob.jml.bayes.NaiveBayes" level="info"></logger>
     <logger name="ca.jacob.jml.bayes.ClassSummary" level="info"></logger>
     <logger name="ca.jacob.jml.bayes.Discrete" level="info"></logger>
+    <logger name="ca.jacob.jml.bayes.Continuous" level="info"></logger>
 
     <logger name="ca.jacob.jml.ensemble.AdaBoostModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.AdaBoost" level="info"></logger>

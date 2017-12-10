@@ -32,17 +32,16 @@ public class NaiveBayes implements Algorithm {
     public Model fit(DataSet dataSet) {
         Map<Integer, DataSet> separated = dataSet.splitByClass();
 
-        List<ClassSummary> summaries = new ArrayList<ClassSummary>();
+        List<ClassSummary> summaries = new ArrayList<>();
         int classCount = separated.size();
         for(Map.Entry<Integer, DataSet> entry : separated.entrySet()) {
             LOG.debug("starting summary for class {}", entry.getKey());
-            List<Attribute> attributes = new ArrayList<Attribute>();
+            List<Attribute> attributes = new ArrayList<>();
 
             int classValue = entry.getKey();
             DataSet d = entry.getValue();
             double classProbability = ((double)d.sampleCount()) / dataSet.sampleCount();
 
-            LOG.debug("dataset: {}", d);
             for(int j = 0; j < d.attributeCount(); j++) {
                 Vector attributeValues = d.attribute(j);
                 if(d.attributeType(j) == CONTINUOUS) {
@@ -53,7 +52,7 @@ public class NaiveBayes implements Algorithm {
                 } else if(d.attributeType(j) == DISCRETE) {
                     attributes.add(new Discrete(attributeValues, classCount));
                 } else {
-                    throw new AttributeException();
+                    throw new AttributeException("unknown attribute type");
                 }
 
             }

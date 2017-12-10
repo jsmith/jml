@@ -22,7 +22,7 @@ public class KNNTest {
         LOG.info("dataSet samples: {}, attributes: {}", dataSet.sampleCount(), dataSet.attributeCount());
 
         int k = 3;
-        Algorithm knn = new KNN(k, false, new Hamming());
+        Algorithm knn = new KNN(k, new Hamming());
 
         KFold kFold = new KFold(5);
         Report r = kFold.generateReport(knn, dataSet);

@@ -49,6 +49,10 @@ public class Vector implements Iterable<Double> {
         this.data = new ArrayList<>(vector.data);
     }
 
+    public Vector(Collection<Double> values) {
+        this.data = new ArrayList<>(values);
+    }
+
     public void add(int value) {
         data.add((double)value);
     }
@@ -330,5 +334,14 @@ public class Vector implements Iterable<Double> {
             v.set(i, this.at(i)+vector.at(i));
         }
         return v;
+    }
+
+    public void sort(Vector basedOn) {
+        Map<Double, Double> pairs = new TreeMap<>();
+        for(int i = 0; i < basedOn.length(); i++) {
+            pairs.put(basedOn.at(i), this.at(i));
+        }
+
+        this.data = new ArrayList<>(pairs.values());
     }
 }

@@ -27,6 +27,7 @@ public class Node {
     private int level;
     private int maxLevel;
     private int minNumberOfSamples;
+    private int prediction;
 
     public Node(int maxLevel, int minNumberOfSamples) {
         this.parent = null;
@@ -44,11 +45,13 @@ public class Node {
         this.maxLevel = maxLevel;
         this.minNumberOfSamples = minNumberOfSamples;
         this.attribute = -1;
+        this.prediction = -1;
     }
 
     public void split(DataSet dataSet) {
         LOG.info("split - starting for level {}", level);
         classes = dataSet.classes();
+        prediction = classes.valueOfMaxOccurrence();
         attributeTypes = dataSet.getAttributeTypes();
 
         if(level == maxLevel || dataSet.entropy() == 0 || dataSet.sampleCount() <= 1 || dataSet.sampleCount() < minNumberOfSamples) {
@@ -138,7 +141,6 @@ public class Node {
 
         if (this.leaf) {
             LOG.trace("a leaf was found, now classifying!");
-
             return this.predict();
         } else {
             try {
@@ -152,7 +154,7 @@ public class Node {
 
     public int predict() {
         LOG.trace("predicting starting on level {}", level);
-        return classes.valueOfMaxOccurrence();
+        return prediction;
     }
 
     public int getAttribute() {

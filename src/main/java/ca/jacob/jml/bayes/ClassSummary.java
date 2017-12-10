@@ -13,7 +13,7 @@ public class ClassSummary {
     private double classProbability;
     private List<Attribute> attributes;
 
-    public ClassSummary(int classValue, double classProbability, List<Attribute> attributes) {
+    ClassSummary(int classValue, double classProbability, List<Attribute> attributes) {
         this.classValue = classValue;
         this.classProbability = classProbability;
         this.attributes = attributes;
@@ -21,18 +21,17 @@ public class ClassSummary {
 
     public double probability(Vector e) {
         LOG.debug("probability for class value: {}", classValue);
-        Vector conditionalProbabilities = new Vector(new double[attributes.size()]);
+        double probability = classProbability;
         for(int i = 0; i < attributes.size(); i++) {
-            double attributeValue = e.at(i);
-            double probability = attributes.get(i).probability(attributeValue);
-            LOG.debug("probability for attribute {} is {}", i, probability);
-            conditionalProbabilities.set(i, probability);
+            double conditionalProbability = attributes.get(i).probability(e.at(i));
+            LOG.debug("Conditional probability for attribute {} is {}", i, conditionalProbability);
+
+            probability *= conditionalProbability;
         }
-        LOG.debug("conditional probabilities -> {}", conditionalProbabilities);
-        return conditionalProbabilities.prod() * classProbability;
+        return probability;
     }
 
-    public int getClassValue() {
+    int getClassValue() {
         return classValue;
     }
 

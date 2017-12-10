@@ -59,7 +59,6 @@ public class AdaBoostTest {
     @Test
     public void testMultiClass() throws Throwable {
         Algorithm adaBoost = new AdaBoost(new ID3(2), 100, 0.7);
-        //adaBoost = new ID3(ID3.MAX_LEVEL_NONE);
 
         Report r = kFold.generateReport(adaBoost, loadCarData(AdaBoostTest.class));
 

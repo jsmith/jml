@@ -12,6 +12,7 @@ import ca.jacob.jml.DataSet;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.Report;
 import ca.jacob.jml.math.Vector;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
 import static ca.jacob.cs6735.DataUtil.loadEColiData;
+import static ca.jacob.cs6735.DataUtil.loadLetterData;
 import static ca.jacob.jml.DataSet.CONTINUOUS;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
@@ -27,6 +29,12 @@ import static junit.framework.Assert.assertTrue;
 public class NaiveBayesTest {
     private static final Logger LOG = LoggerFactory.getLogger(NaiveBayesTest.class);
     private static final double DELTA = 1e-5;
+    private KFold kFold;
+
+    @Before
+    public void init() {
+        kFold = new KFold(5);
+    }
 
     @Test
     public void testGaussianNaiveBayesTrain() {
@@ -79,27 +87,26 @@ public class NaiveBayesTest {
 
     @Test
     public void testNaiveBayes() throws Throwable {
-        DataSet dataSetSet = loadEColiData(NaiveBayesTest.class);
-
-        Algorithm naiveBayes = new NaiveBayes(new Gaussian());
-
-        KFold kFold = new KFold(5);
-        Report r = kFold.generateReport(naiveBayes, dataSetSet);
+        Report r = kFold.generateReport(new NaiveBayes(new Gaussian()), loadEColiData(NaiveBayesTest.class));
         Vector accuracies = r.getAccuracies();
-
         LOG.info("NaiveBayes accuracy: {}%", accuracies.mean());
     }
 
     @Test
     public void testNaiveBayesWithBreastCancer() throws Throwable {
-        DataSet dataSetSet = loadBreastCancerData(NaiveBayesTest.class);
-
-        Algorithm naiveBayes = new NaiveBayes(new Gaussian());
-
-        KFold kFold = new KFold(5);
-        Report r = kFold.generateReport(naiveBayes, dataSetSet);
+        Report r = kFold.generateReport(new NaiveBayes(new Gaussian()), loadBreastCancerData(NaiveBayesTest.class));
         Vector accuracies = r.getAccuracies();
-
         LOG.info("NaiveBayes Accuracy: {}%", accuracies.mean());
+    }
+
+    @Test
+    public void testBigContinuousDataSet() throws Throwable {
+        DataSet dataSet = loadLetterData(NaiveBayesTest.class);
+        LOG.info("{}", dataSet);
+        Report r = kFold.generateReport(new NaiveBayes(new Gaussian()), dataSet);
+        LOG.info("NaiveBayes Accuracy: {}%", r.mean());
+
+        r = kFold.generateReport(new NaiveBayes(new Gaussian()), loadEColiData(NaiveBayesTest.class));
+        LOG.info("NaiveBayes Accuracy: {}%", r.mean());
     }
 }

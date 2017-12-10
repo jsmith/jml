@@ -10,11 +10,13 @@ import java.util.Map;
 public class Discrete implements Attribute {
     private static final Logger LOG = LoggerFactory.getLogger(Discrete.class);
 
-    private int valuesClassCount;
+    private double unseenConditionalProbability;
     private Map<Integer, Double> conditionalProbabilities;
 
     public Discrete(Vector values, int classCount) {
-        this.valuesClassCount = values.length() + classCount; // Only value.length() + classCount stored for performance reasons
+        int valuesClassCount = values.length() + classCount; // Only value.length() + classCount stored for performance reasons
+        unseenConditionalProbability = ((double)1)/(valuesClassCount);
+
 
         Vector unique = values.unique();
         conditionalProbabilities = new HashMap<>();
@@ -29,8 +31,8 @@ public class Discrete implements Attribute {
     public double probability(double value) {
         Double probability = conditionalProbabilities.get((int)value);
         if(probability  == null) {
-            conditionalProbabilities.put((int)value, ((double)1)/(valuesClassCount)); // values.count(value) would be 0 so it is omitted
-            probability = conditionalProbabilities.get((int)value);
+            conditionalProbabilities.put((int)value, unseenConditionalProbability); // values.count(value) would be 0 so it is omitted
+            probability = unseenConditionalProbability;
         }
 
         return probability;

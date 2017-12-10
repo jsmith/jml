@@ -16,13 +16,11 @@ public class KNNModel extends Model {
 
     private DataSet dataset;
     private int k;
-    private boolean weighted;
     private Distance df;
 
-    public KNNModel(DataSet dataset, int k, boolean weighted, Distance df) {
+    public KNNModel(DataSet dataset, int k, Distance df) {
         this.dataset = dataset;
         this.k = k;
-        this.weighted = weighted;
         this.df = df;
     }
 
@@ -47,10 +45,7 @@ public class KNNModel extends Model {
             int classValue = dataset.classValue(index);
 
             double distance = entry.getKey();
-            if(weighted) {
-                //TODO
-            }
-            LOG.debug("{}: index: {}; distance: {}, vote: {}", new Object[]{i, index, distance, classValue});
+            LOG.debug("{}: index: {}; distance: {}, vote: {}", i, index, distance, classValue);
 
             votes.add(classValue);
 

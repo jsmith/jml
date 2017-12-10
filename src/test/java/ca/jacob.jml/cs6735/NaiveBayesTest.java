@@ -4,7 +4,7 @@ import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.KFold;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.math.distribution.Gaussian;
-import ca.jacob.jml.bayes.ContinuousAttribute;
+import ca.jacob.jml.bayes.Continuous;
 import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.bayes.NaiveBayesModel;
 import ca.jacob.jml.bayes.ClassSummary;
@@ -39,7 +39,7 @@ public class NaiveBayesTest {
         int i = 0;
         for(ClassSummary s : summaries) {
             if(i == 0) {
-                ContinuousAttribute a = (ContinuousAttribute) s.getAttributes().get(0);
+                Continuous a = (Continuous) s.getAttributes().get(0);
                 assertEquals(3, a.getMean(), DELTA);
                 assertEquals(1.4142135623730951, a.getStdev(), DELTA);
             }
@@ -62,7 +62,7 @@ public class NaiveBayesTest {
 
     @Test
     public void testGaussianNaiveBayesPredictWithData() throws Throwable {
-        DataSet dataSetSet = loadEColiData(RandomForestTest.class);
+        DataSet dataSetSet = loadEColiData(NaiveBayesTest.class);
 
         NaiveBayes gnb = new NaiveBayes(new Gaussian());
         NaiveBayesModel m = (NaiveBayesModel)gnb.fit(dataSetSet);
@@ -79,7 +79,7 @@ public class NaiveBayesTest {
 
     @Test
     public void testNaiveBayes() throws Throwable {
-        DataSet dataSetSet = loadEColiData(RandomForestTest.class);
+        DataSet dataSetSet = loadEColiData(NaiveBayesTest.class);
 
         Algorithm naiveBayes = new NaiveBayes(new Gaussian());
 
@@ -92,7 +92,7 @@ public class NaiveBayesTest {
 
     @Test
     public void testNaiveBayesWithBreastCancer() throws Throwable {
-        DataSet dataSetSet = loadBreastCancerData(RandomForestTest.class);
+        DataSet dataSetSet = loadBreastCancerData(NaiveBayesTest.class);
 
         Algorithm naiveBayes = new NaiveBayes(new Gaussian());
 

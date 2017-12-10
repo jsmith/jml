@@ -5,19 +5,17 @@ import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ContinuousAttribute implements Attribute {
-    private static final Logger LOG = LoggerFactory.getLogger(ContinuousAttribute.class);
+public class Continuous implements Attribute {
+    private static final Logger LOG = LoggerFactory.getLogger(Continuous.class);
 
-    private Vector values;
     private Distribution distribution;
     private double mean;
     private double stdev;
 
-    public ContinuousAttribute(Vector values, Distribution distribution) {
-        this.values = values;
+    public Continuous(Vector values, Distribution distribution) {
         this.distribution = distribution;
-        this.mean = this.values.mean();
-        this.stdev = this.values.stdev();
+        this.mean = values.mean();
+        this.stdev = values.stdev();
         LOG.debug("mean -> {}; stdev -> {}", mean, stdev);
     }
 

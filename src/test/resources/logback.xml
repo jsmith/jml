@@ -17,14 +17,14 @@
     <logger name="ca.jacob.jml.bayes.NaiveBayesModel" level="info"></logger>
     <logger name="ca.jacob.jml.bayes.NaiveBayes" level="info"></logger>
     <logger name="ca.jacob.jml.bayes.ClassSummary" level="info"></logger>
-    <logger name="ca.jacob.jml.bayes.DiscreteAttribute" level="info"></logger>
+    <logger name="ca.jacob.jml.bayes.Discrete" level="info"></logger>
 
     <logger name="ca.jacob.jml.ensemble.AdaBoostModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.AdaBoost" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.MultiAdaBoost" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.MultiAdaBoostModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForestModel" level="info"></logger>
-    <logger name="ca.jacob.jml.ensemble.RandomForest" level="info"></logger>
+    <logger name="ca.jacob.jml.ensemble.RandomForest" level="debug"></logger>
 
     <logger name="ca.jacob.jml.neighbors.KNNModel" level="info"></logger>
 
@@ -34,7 +34,7 @@
 
     <logger name="ca.jacob.jml.cs6735.MathTest" level="info"></logger>
     <logger name="ca.jacob.jml.cs6735.AdaBoostTest" level="debug"></logger>
-    <logger name="ca.jacob.cs6735" level="info"></logger>
+    <logger name="ca.jacob.jml" level="info"></logger>
 
     <root level="warn">
         <appender-ref ref="STDOUT" />

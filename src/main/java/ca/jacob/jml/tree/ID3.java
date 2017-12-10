@@ -1,8 +1,8 @@
 package ca.jacob.jml.tree;
 
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.Algorithm;
-import ca.jacob.jml.DataSet;
 
 public class ID3 implements Algorithm {
     public static final int MAX_LEVEL_NONE = Integer.MAX_VALUE;
@@ -32,9 +32,9 @@ public class ID3 implements Algorithm {
     }
 
     @Override
-    public Model fit(DataSet dataSet) {
+    public Model fit(Dataset dataset) {
         Node root = new Node(maxLevel, minNumberOfSamples);
-        root.split(dataSet);
+        root.split(dataset);
         return new ID3Model(root);
     }
 

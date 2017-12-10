@@ -20,9 +20,9 @@ public abstract class Model {
         return predictions;
     }
 
-    public double accuracy(DataSet dataSet) {
-        Matrix x = dataSet.getX();
-        Vector y = dataSet.getY();
+    public double accuracy(Dataset dataset) {
+        Matrix x = dataset.getX();
+        Vector y = dataset.getY();
         Vector yHat = predict(x);
         LOG.trace("yHat {}", yHat.subVector(0, 5));
         Vector err = error(y, yHat);

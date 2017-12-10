@@ -3,7 +3,7 @@ package ca.jacob.jml.neighbors;
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.math.distance.Distance;
-import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Dataset;
 
 public class KNN implements Algorithm {
     private static final String NAME = "K-Nearest Neighbour";
@@ -17,7 +17,7 @@ public class KNN implements Algorithm {
     }
 
     @Override
-    public Model fit(DataSet d) {
+    public Model fit(Dataset d) {
         if(k > d.sampleCount()) {
             throw new KNNException("k must be smaller or equal to data set sample count");
         }

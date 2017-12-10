@@ -7,7 +7,7 @@ A machine library built in pure Java. This library was built for the CS6735 assi
 Conduct an experimental study on the following machine learning ca.jacob.cs6735.assignment.utils.algorithms: (1) ID3; (2) Adaboost on ID3; (3) Random Forest; (4) Naïve Bayes; (5) Adaboost on naïve Bayes; (6) K-nearest neighbors (kNN).
 
 1. Implement the six ca.jacob.cs6735.assignment.utils.algorithms using Java.
-2. Evaluate your implementation on the datasets in dataSet.zip using 10 times 5-fold cross-validation, and report the average accuracy and standard deviation.
+2. Evaluate your implementation on the datasets in dataset.zip using 10 times 5-fold cross-validation, and report the average accuracy and standard deviation.
 3. Compare and discuss your algorithms (implementations) based on your experimental results.
 
 ### Data
@@ -28,8 +28,8 @@ Target Variables
 ### Report
 1. Description of the learning ca.jacob.cs6735.assignment.utils.algorithms you implement.  
 1. Description of the datasets you use (number of examples, number of attribute, number of classes, type of attributes, etc.).  
-1. Technical details of your implementation: pre-processing of dataSet sets (discretization, etc.), parameter setting, etc.  
-1. Design of your programming implementation (dataSet structures, overall program structure).  
+1. Technical details of your implementation: pre-processing of dataset sets (discretization, etc.), parameter setting, etc.  
+1. Design of your programming implementation (dataset structures, overall program structure).  
 1. Report and analysis of your experimental results.  
 
 ### Submission

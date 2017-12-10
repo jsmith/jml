@@ -1,6 +1,6 @@
 package ca.jacob.jml.cs6735;
 
-import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Vector;
 import junit.framework.Assert;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
-import static ca.jacob.jml.DataSet.DISCRETE;
+import static ca.jacob.jml.Dataset.DISCRETE;
 import static ca.jacob.jml.Util.generateIndices;
 import static ca.jacob.jml.Util.toIntegers;
 import static ca.jacob.jml.Util.calculateOccurrences;
@@ -57,8 +57,8 @@ public class UtilTest {
     public void testEntropy() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
         Vector attributeTypes = new Vector(new int[]{DISCRETE, DISCRETE, DISCRETE});
-        DataSet dataSet = new DataSet(data, attributeTypes);
-        Assert.assertEquals(1, dataSet.entropy(), DELTA);
+        Dataset dataset = new Dataset(data, attributeTypes);
+        Assert.assertEquals(1, dataset.entropy(), DELTA);
     }
 
     @Test

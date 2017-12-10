@@ -1,7 +1,7 @@
 package ca.jacob.jml.cs6735;
 
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.math.distribution.Gaussian;
-import ca.jacob.jml.DataSet;
 import ca.jacob.jml.math.Vector;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class MathTest {
 
     @Test
     public void testStdDevAndMeanWithData() throws Throwable {
-        DataSet data = loadEColiData(RandomForestTest.class);
+        Dataset data = loadEColiData(RandomForestTest.class);
         Vector v = data.getX().col(0);
         LOG.debug("v -> {}", v.subVector(0, 5));
         double stdev = v.stdev();

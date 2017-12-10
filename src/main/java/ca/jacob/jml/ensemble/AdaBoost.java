@@ -1,8 +1,8 @@
 package ca.jacob.jml.ensemble;
 
 import ca.jacob.jml.Algorithm;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.DataSet;
 import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
@@ -28,20 +28,20 @@ public class AdaBoost implements Algorithm {
         this.proportionOfSamples = proportionOfSamples;
     }
 
-    public Model fit(DataSet dataSet) {
-        int numberOfSamples = (int)(dataSet.sampleCount() * proportionOfSamples);
+    public Model fit(Dataset dataset) {
+        int numberOfSamples = (int)(dataset.sampleCount() * proportionOfSamples);
         LOG.debug("number of samples for each training iteration: {}", numberOfSamples);
 
-        AdaBoostModel model = new AdaBoostModel(dataSet.classes());
+        AdaBoostModel model = new AdaBoostModel(dataset.classes());
 
-        Vector weights = new Vector(new double[dataSet.sampleCount()]);
-        weights.fill(1./ dataSet.sampleCount());
+        Vector weights = new Vector(new double[dataset.sampleCount()]);
+        weights.fill(1./ dataset.sampleCount());
 
         if(weights.length() == 0) {
             throw new DataException("length of weights cannot be 0");
         }
 
-        Vector classes = dataSet.classes();
+        Vector classes = dataset.classes();
         int classCount = classes.unique().length();
         LOG.debug("there are {} unique classes", classCount);
 
@@ -49,10 +49,10 @@ public class AdaBoost implements Algorithm {
             LOG.debug("starting iteration {}", i+1);
 
             Vector indices = generateIndices(weights, numberOfSamples);
-            DataSet weightedDataSet = dataSet.samples(indices);
-            Model m = algorithm.fit(weightedDataSet);
+            Dataset weightedDataset = dataset.samples(indices);
+            Model m = algorithm.fit(weightedDataset);
 
-            Vector predictions = m.predict(dataSet.getX());
+            Vector predictions = m.predict(dataset.getX());
             Vector err = error(predictions, classes); // 1 if wrong, else 0
             double error = weights.dot(err)/weights.sum();
             LOG.debug("error: {}", error);

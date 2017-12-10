@@ -20,7 +20,7 @@ public class Gaussian implements Distribution {
         double probability = (1 / (sqrt(2*PI) * stdev)) * exponent;
 
         if(Double.isNaN(probability)) {
-            LOG.error("x: {}, mean: {}, stdev: {}", x, mean, stdev);
+            LOG.error("x: {}, accuracy: {}, stdev: {}", x, mean, stdev);
             throw new DataException("something went wrong");
         }
         return probability;

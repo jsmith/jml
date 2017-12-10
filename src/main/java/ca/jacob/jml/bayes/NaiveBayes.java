@@ -1,9 +1,9 @@
 package ca.jacob.jml.bayes;
 
 import ca.jacob.jml.Algorithm;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.math.distribution.Distribution;
-import ca.jacob.jml.DataSet;
 import ca.jacob.jml.exceptions.AttributeException;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static ca.jacob.jml.DataSet.CONTINUOUS;
-import static ca.jacob.jml.DataSet.DISCRETE;
+import static ca.jacob.jml.Dataset.CONTINUOUS;
+import static ca.jacob.jml.Dataset.DISCRETE;
 
 public class NaiveBayes implements Algorithm {
     private static final Logger LOG = LoggerFactory.getLogger(NaiveBayes.class);
@@ -29,18 +29,18 @@ public class NaiveBayes implements Algorithm {
     }
 
     @Override
-    public Model fit(DataSet dataSet) {
-        Map<Integer, DataSet> separated = dataSet.splitByClass();
+    public Model fit(Dataset dataset) {
+        Map<Integer, Dataset> separated = dataset.splitByClass();
 
         List<ClassSummary> summaries = new ArrayList<ClassSummary>();
         int classCount = separated.size();
-        for(Map.Entry<Integer, DataSet> entry : separated.entrySet()) {
+        for(Map.Entry<Integer, Dataset> entry : separated.entrySet()) {
             LOG.debug("starting summary for class {}", entry.getKey());
             List<Attribute> attributes = new ArrayList<Attribute>();
 
             int classValue = entry.getKey();
-            DataSet d = entry.getValue();
-            double classProbability = ((double)d.sampleCount()) / dataSet.sampleCount();
+            Dataset d = entry.getValue();
+            double classProbability = ((double)d.sampleCount()) / dataset.sampleCount();
 
             LOG.debug("dataset: {}", d);
             for(int j = 0; j < d.attributeCount(); j++) {

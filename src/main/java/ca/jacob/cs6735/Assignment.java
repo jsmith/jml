@@ -1,17 +1,14 @@
 package ca.jacob.cs6735;
 
 import ca.jacob.jml.Algorithm;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.KFold;
-import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.distance.Euclidean;
-import ca.jacob.jml.math.distance.Hamming;
-import ca.jacob.jml.math.distribution.Gaussian;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.RandomForest;
 import ca.jacob.jml.neighbors.KNN;
-import ca.jacob.jml.DataSet;
 import ca.jacob.jml.Report;
 
 import java.util.ArrayList;
@@ -24,18 +21,18 @@ import java.util.concurrent.Future;
 import static ca.jacob.cs6735.DataUtil.*;
 
 public class Assignment {
-    private static final int NUMBER_OF_K_FOLD_ITERATIONS = 10;
+    private static final int NUMBER_OF_K_FOLD_ITERATIONS = 1;
     private static final KFold K_FOLD = new KFold(5);
     private static final boolean MULTITHREADED = false;
 
     public static void main(String[] args) throws Throwable {
-        List<Tuple<DataSet, List<Algorithm>>> datasetsAndAlgorithms  = new ArrayList<>();
+        List<Tuple<Dataset, List<Algorithm>>> datasetsAndAlgorithms  = new ArrayList<>();
 
         // init
         List<Algorithm> algorithms;
 
         // Only for testing purposes
-        /*List<DataSet> datasets = new ArrayList<>();
+        /*List<Dataset> datasets = new ArrayList<>();
         datasets.add(loadBreastCancerData(Assignment.class));
         datasets.add(loadCarData(Assignment.class));
         datasets.add(loadEColiData(Assignment.class));
@@ -45,7 +42,7 @@ public class Assignment {
         int[] numberOfLearners = new int[]{1};
         double[] proportions = new double[]{1, 0.5};
         int[] ks = new int[]{1, 2, 5, 10};
-        for(DataSet dataset : datasets) {
+        for(Dataset dataset : datasets) {
             System.out.println(dataset);
             testID3(dataset, minimumAmountOfSamples);
             test(dataset, new NaiveBayes(new Gaussian()));
@@ -79,9 +76,9 @@ public class Assignment {
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         //algorithms.add(new NaiveBayes(new Gaussian()));
-        algorithms.add(new AdaBoost(new ID3(3), 10, 0.7));
-        algorithms.add(new AdaBoost(new NaiveBayes(new Gaussian()), 10, 0.7));
-        //algorithms.add(new RandomForest(new ID3(), 10, 0.6));
+        algorithms.add(new AdaBoost(new ID3(4), 300, 0.25));
+        //algorithms.add(new AdaBoost(new NaiveBayes(new Gaussian()), 50, 0.3));
+        //algorithms.add(new RandomForest(new ID3(), 10, 0.6)); //TODO: test this
         //algorithms.add(new KNN(1, new Hamming()));
         datasetsAndAlgorithms.add(new Tuple<>(loadLetterData(Assignment.class), algorithms));
 
@@ -106,8 +103,8 @@ public class Assignment {
         datasetsAndAlgorithms.add(new Tuple<>(loadMushroomData(Assignment.class), algorithms));
 
 
-        for(Tuple<DataSet, List<Algorithm>> datasetAndAlgorithm : datasetsAndAlgorithms) {
-            DataSet d = datasetAndAlgorithm.first();
+        for(Tuple<Dataset, List<Algorithm>> datasetAndAlgorithm : datasetsAndAlgorithms) {
+            Dataset d = datasetAndAlgorithm.first();
             algorithms = datasetAndAlgorithm.last();
 
             System.out.println(d);
@@ -118,7 +115,7 @@ public class Assignment {
         }
     }
 
-    private static void test(DataSet d, Algorithm a) {
+    private static void test(Dataset d, Algorithm a) {
         Report report = new Report();
 
         if(MULTITHREADED) {
@@ -135,18 +132,16 @@ public class Assignment {
                 try {
                     Report r = tasks.get(i).get();
                     report.combine(r);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
             }
         } else {
-            //for (int i = 0; i < NUMBER_OF_K_FOLD_ITERATIONS; i++) {
+            for (int i = 0; i < NUMBER_OF_K_FOLD_ITERATIONS; i++) {
                 //System.out.print(i + 1);d
                 Report r = K_FOLD.generateReport(a, d);
                 report.combine(r);
-            //}
+            }
         }
         System.out.println();
         System.out.println(a);
@@ -154,15 +149,14 @@ public class Assignment {
         System.out.println();
     }
 
-    private static void testID3(DataSet dataset, int[] minimumNumberOfSamples) {
-        double bestMinimumAmount = -1;
+    private static void testID3(Dataset dataset, int[] minimumNumberOfSamples) {
         for (int minimumNumberOfSample : minimumNumberOfSamples) {
             test(dataset, new ID3(ID3.MAX_LEVEL_NONE, minimumNumberOfSample));
 
         }
     }
 
-    private static void testAdaboost(DataSet dataset, Algorithm base, int[] numberOfLearners, double[] proportions) {
+    private static void testAdaboost(Dataset dataset, Algorithm base, int[] numberOfLearners, double[] proportions) {
         for (int numberOfLearner : numberOfLearners) {
             for (double proportion : proportions) {
                 test(dataset, new AdaBoost(base, numberOfLearner, proportion));
@@ -170,17 +164,17 @@ public class Assignment {
         }
     }
 
-    private static void testRandomForest(DataSet dataSet, int[] numberOfLearners, double[] proportions) {
+    private static void testRandomForest(Dataset dataset, int[] numberOfLearners, double[] proportions) {
         for (int numberOfLearner : numberOfLearners) {
             for (double proportion : proportions) {
-                test(dataSet, new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), numberOfLearner, proportion));
+                test(dataset, new RandomForest(new ID3(ID3.MAX_LEVEL_NONE), numberOfLearner, proportion));
             }
         }
     }
 
-    private static void testKNN(DataSet dataSet, int[] ks) {
+    private static void testKNN(Dataset dataset, int[] ks) {
         for (int k : ks) {
-            test(dataSet, new KNN(k, new Euclidean()));
+            test(dataset, new KNN(k, new Euclidean()));
         }
     }
 }

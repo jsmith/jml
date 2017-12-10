@@ -1,7 +1,5 @@
 package ca.jacob.jml;
 
-import ca.jacob.cs6735.DataUtil;
-import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.exceptions.FileException;
 import ca.jacob.jml.math.MathException;
 import ca.jacob.jml.math.Tuple;
@@ -107,10 +105,10 @@ public class Util {
     }
 
 
-    public static double calculateWeightedEntropy(List<DataSet> subsets) {
+    public static double calculateWeightedEntropy(List<Dataset> subsets) {
         double entropy = 0;
         int sum = 0;
-        for(DataSet subset : subsets) {
+        for(Dataset subset : subsets) {
             entropy += subset.entropy() * subset.sampleCount();
             sum += subset.sampleCount();
         }
@@ -121,11 +119,11 @@ public class Util {
         return entropy;
     }
 
-    public static double calculateWeightedEntropy(Collection<DataSet> subsets) {
+    public static double calculateWeightedEntropy(Collection<Dataset> subsets) {
         return calculateWeightedEntropy(new ArrayList<>(subsets));
     }
 
-    public static double calculateWeightedEntropy(Tuple<DataSet, DataSet> subsets) {
+    public static double calculateWeightedEntropy(Tuple<Dataset, Dataset> subsets) {
         double entropy = 0;
         entropy += subsets.first().entropy() * subsets.first().sampleCount();
         entropy += subsets.last().entropy() * subsets.last().sampleCount();

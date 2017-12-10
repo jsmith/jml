@@ -19,7 +19,7 @@ public class KFoldTest {
     private static final Logger LOG = LoggerFactory.getLogger(KFoldTest.class);
 
     private KFold kFold;
-    private DataSet dataset;
+    private Dataset dataset;
     private Matrix x;
     private Vector y;
 
@@ -28,7 +28,7 @@ public class KFoldTest {
         kFold = new KFold(5);
         x = new Matrix(new int[][]{{1}, {0}, {1}, {0}, {1}, {1}});
         y = new Vector(new int[]{1, 0, 1, 0, 1, 1});
-        dataset = new DataSet(x, y, DataSet.DISCRETE);
+        dataset = new Dataset(x, y, Dataset.DISCRETE);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class KFoldTest {
 
     @Test
     public void testKFoldProcess() throws Throwable {
-        DataSet dataset = loadBreastCancerData(KFoldTest.class);
+        Dataset dataset = loadBreastCancerData(KFoldTest.class);
 
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 1);
 
@@ -55,7 +55,7 @@ public class KFoldTest {
 
     @Test
     public void testKFoldProcessContinuous() throws Throwable {
-        DataSet dataset = loadLetterData(KFoldTest.class);
+        Dataset dataset = loadLetterData(KFoldTest.class);
 
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 20);
 
@@ -66,27 +66,27 @@ public class KFoldTest {
 
     @Test
     public void testKFoldProcessWithMushroom() throws Throwable {
-        DataSet dataset = loadMushroomData(KFoldTest.class);
+        Dataset dataset = loadMushroomData(KFoldTest.class);
 
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 1);
 
         Report r = kFold.generateReport(a, dataset);
-        LOG.info("KFold test accuracy for mushroom data: {}", r.mean());
+        LOG.info("KFold test accuracy for mushroom data: {}", r.accuracy());
     }
 
     @Test
     public void testKFoldProcessWithCar() throws Throwable {
-        DataSet dataset = loadCarData(KFoldTest.class);
+        Dataset dataset = loadCarData(KFoldTest.class);
 
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
 
         Report r = kFold.generateReport(a, dataset);
-        LOG.info("KFold test accuracy for car data: {}", r.mean());
+        LOG.info("KFold test accuracy for car data: {}", r.accuracy());
     }
 
     @Test
     public void testKFoldProcessWithEcoli() throws Throwable {
-        DataSet dataset = loadEColiData(KFoldTest.class);
+        Dataset dataset = loadEColiData(KFoldTest.class);
 
         Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
 

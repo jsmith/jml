@@ -1,8 +1,8 @@
 package ca.jacob.jml.neighbors;
 
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.math.distance.Distance;
-import ca.jacob.jml.DataSet;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
@@ -14,11 +14,11 @@ import java.util.TreeMap;
 public class KNNModel extends Model {
     private static final Logger LOG = LoggerFactory.getLogger(KNNModel.class);
 
-    private DataSet dataset;
+    private Dataset dataset;
     private int k;
     private Distance df;
 
-    public KNNModel(DataSet dataset, int k, Distance df) {
+    public KNNModel(Dataset dataset, int k, Distance df) {
         this.dataset = dataset;
         this.k = k;
         this.df = df;

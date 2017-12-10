@@ -1,11 +1,11 @@
 package ca.jacob.jml.cs6735;
 
 import ca.jacob.jml.Algorithm;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.Model;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.tree.ID3Model;
 import ca.jacob.jml.tree.Node;
-import ca.jacob.jml.DataSet;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Vector;
 import org.junit.Before;
@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.DataUtil.*;
-import static ca.jacob.jml.DataSet.DISCRETE;
+import static ca.jacob.jml.Dataset.DISCRETE;
 import static junit.framework.Assert.assertEquals;
 
 public class ID3Test {
@@ -22,7 +22,7 @@ public class ID3Test {
     private static final double DELTA = 1e-5;
 
     private ID3 id3;
-    private DataSet dataset;
+    private Dataset dataset;
 
     @Before
     public void init() {
@@ -35,7 +35,7 @@ public class ID3Test {
                 1,
                 0,
                 0});
-        dataset = new DataSet(x, y, DISCRETE);
+        dataset = new Dataset(x, y, DISCRETE);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class ID3Test {
 
     @Test
     public void testWithData() throws Throwable {
-        DataSet d = loadBreastCancerData(ID3Test.class);
+        Dataset d = loadBreastCancerData(ID3Test.class);
 
         ID3 id3 = new ID3(2);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -83,7 +83,7 @@ public class ID3Test {
 
     @Test
     public void testNoLimit() throws Throwable {
-        DataSet d = loadBreastCancerData(ID3Test.class);
+        Dataset d = loadBreastCancerData(ID3Test.class);
 
         ID3 id3 = new ID3(ID3.MAX_LEVEL_NONE);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -94,7 +94,7 @@ public class ID3Test {
 
     @Test
     public void testNoLimitCarData() throws Throwable {
-        DataSet d = loadCarData(ID3Test.class);
+        Dataset d = loadCarData(ID3Test.class);
 
         ID3 id3 = new ID3(ID3.MAX_LEVEL_NONE);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -105,7 +105,7 @@ public class ID3Test {
 
     @Test
     public void testDepthOne() throws Throwable {
-        DataSet d = loadBreastCancerData(ID3Test.class);
+        Dataset d = loadBreastCancerData(ID3Test.class);
 
         ID3 id3 = new ID3(1);
         ID3Model model = (ID3Model) id3.fit(d);
@@ -117,7 +117,7 @@ public class ID3Test {
 
     @Test
     public void testContinuousData() throws Throwable {
-        DataSet letterData = loadLetterData(ID3Test.class);
+        Dataset letterData = loadLetterData(ID3Test.class);
 
         Algorithm id3 = new ID3(ID3.MAX_LEVEL_NONE, ID3.MIN_SAMPLES_NONE);
         Model model = id3.fit(letterData);

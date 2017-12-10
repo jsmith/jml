@@ -1,6 +1,6 @@
 package ca.jacob.jml.cs6735;
 
-import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.math.Matrix;
 import ca.jacob.jml.math.Tuple;
@@ -10,12 +10,12 @@ import org.junit.Test;
 import java.util.List;
 
 import static ca.jacob.cs6735.DataUtil.loadLetterData;
-import static ca.jacob.jml.DataSet.CONTINUOUS;
-import static ca.jacob.jml.DataSet.DISCRETE;
+import static ca.jacob.jml.Dataset.CONTINUOUS;
+import static ca.jacob.jml.Dataset.DISCRETE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class DataSetTest {
+public class DatasetTest {
     private static final double DELTA = 1e-5;
 
     @Test
@@ -28,7 +28,7 @@ public class DataSetTest {
                 1,
                 0,
                 0});
-        DataSet d = new DataSet(x, y, DISCRETE);
+        Dataset d = new Dataset(x, y, DISCRETE);
         assertEquals(d.attributeType(0), DISCRETE);
         assertEquals(d.attributeType(1), DISCRETE);
         assertEquals(d.attributeType(2), DISCRETE);
@@ -44,8 +44,8 @@ public class DataSetTest {
                 1,
                 0,
                 0});
-        DataSet d = new DataSet(x, y, DISCRETE);
-        DataSet e = d.samples(new Vector(new int[]{0, 1, 2}));
+        Dataset d = new Dataset(x, y, DISCRETE);
+        Dataset e = d.samples(new Vector(new int[]{0, 1, 2}));
         d.getAttributeTypes().set(0, CONTINUOUS);
         d.getAttributeTypes().remove(2);
 
@@ -56,16 +56,16 @@ public class DataSetTest {
     @Test
     public void testSplitByDiscrete() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
-        DataSet d = new DataSet(data, DISCRETE);
-        Tuple<List<Integer>, List<DataSet>> subsets = d.splitByDiscreteAttribute(1);
+        Dataset d = new Dataset(data, DISCRETE);
+        Tuple<List<Integer>, List<Dataset>> subsets = d.splitByDiscreteAttribute(1);
         assertEquals(2, subsets.first().size());
     }
 
     @Test
     public void testSplitAt() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}});
-        DataSet d = new DataSet(data, CONTINUOUS);
-        Tuple<DataSet, DataSet> subsets = d.splitAt(1, 0.5);
+        Dataset d = new Dataset(data, CONTINUOUS);
+        Tuple<Dataset, Dataset> subsets = d.splitAt(1, 0.5);
         assertEquals(1, subsets.first().sampleCount());
         assertEquals(1, subsets.last().sampleCount());
 
@@ -79,8 +79,8 @@ public class DataSetTest {
     @Test
     public void testSplitByContinuous() {
         Matrix data = new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}, {0, -1, 0, 0}});
-        DataSet d = new DataSet(data, CONTINUOUS);
-        Tuple<Double, Tuple<DataSet, DataSet>> subsets = d.splitByContinuousAttribute(1);
+        Dataset d = new Dataset(data, CONTINUOUS);
+        Tuple<Double, Tuple<Dataset, Dataset>> subsets = d.splitByContinuousAttribute(1);
         assertEquals(2, subsets.last().first().sampleCount());
         assertEquals(1, subsets.last().last().sampleCount());
         assertEquals(0.5, subsets.first(), DELTA);
@@ -91,7 +91,7 @@ public class DataSetTest {
                 {0, 0, 1, 0},
                 {0, 0, 0, 1}
         });
-        d = new DataSet(data, CONTINUOUS);
+        d = new Dataset(data, CONTINUOUS);
         subsets = d.splitByContinuousAttribute(2);
         assertEquals(1, subsets.last().first().sampleCount());
         assertEquals(3, subsets.last().last().sampleCount());
@@ -99,8 +99,8 @@ public class DataSetTest {
 
     @Test
     public void testSplitByContinuousWithRealData() throws Throwable {
-        DataSet d = loadLetterData(DataSetTest.class);
-        Tuple<DataSet, DataSet> subset = d.splitAt(15, 2.5);
+        Dataset d = loadLetterData(DatasetTest.class);
+        Tuple<Dataset, Dataset> subset = d.splitAt(15, 2.5);
         Vector under = subset.first().attribute(15);
         Vector over = subset.last().attribute(15);
 
@@ -117,7 +117,7 @@ public class DataSetTest {
 
     @Test
     public void testEntropy() throws Throwable {
-        DataSet d = loadLetterData(DataSetTest.class);
+        Dataset d = loadLetterData(DatasetTest.class);
         assertEquals(4.699811, d.entropy(), DELTA);
     }
 }

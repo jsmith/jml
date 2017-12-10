@@ -1,5 +1,5 @@
 package ca.jacob.jml;
 
 public interface Algorithm {
-    Model fit(DataSet d);
+    Model fit(Dataset d);
 }

@@ -1,17 +1,15 @@
 package ca.jacob.jml.tree;
 
-import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.exceptions.AttributeException;
 import ca.jacob.jml.exceptions.DataException;
-import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
-import static ca.jacob.jml.DataSet.CONTINUOUS;
+import static ca.jacob.jml.Dataset.CONTINUOUS;
 
 public class ContinuousChildren extends Children {
     private static final Logger LOG = LoggerFactory.getLogger(ContinuousChildren.class);
@@ -38,7 +36,7 @@ public class ContinuousChildren extends Children {
     }
 
     @Override
-    public void split(List<DataSet> subsets) {
+    public void split(List<Dataset> subsets) {
         if(subsets.size() != 2) {
             throw new DataException("There must be 2 datasets");
         }
@@ -64,8 +62,8 @@ public class ContinuousChildren extends Children {
 
     @Override
     public int maxDepth() {
-        int d1 = under.depth();
-        int d2 = over.depth();
+        int d1 = under.getLevel();
+        int d2 = over.getLevel();
         return d1 > d2 ? d2 : d1;
     }
 

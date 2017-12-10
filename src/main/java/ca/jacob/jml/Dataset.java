@@ -17,8 +17,8 @@ import static ca.jacob.jml.Util.calculateWeightedEntropy;
 import static ca.jacob.jml.Util.calculateOccurrences;
 import static ca.jacob.jml.math.Util.log2;
 
-public class DataSet {
-    private static final Logger LOG = LoggerFactory.getLogger(DataSet.class);
+public class Dataset {
+    private static final Logger LOG = LoggerFactory.getLogger(Dataset.class);
     public static final int DISCRETE = 0;
     public static final int CONTINUOUS = 1;
 
@@ -28,28 +28,28 @@ public class DataSet {
     private Vector attributeTypes;
     private Vector y;
 
-    public DataSet(Matrix x, Vector y, Vector attributeTypes) {
+    public Dataset(Matrix x, Vector y, Vector attributeTypes) {
         this.init(x, y, attributeTypes);
     }
 
-    public DataSet(Matrix x, Vector attributeTypes) {
+    public Dataset(Matrix x, Vector attributeTypes) {
         Vector y = x.col(x.colCount()-1);
         x.dropCol(x.colCount()-1);
         this.init(x, y, attributeTypes);
     }
 
-    public DataSet(Matrix x, int attributeType) {
+    public Dataset(Matrix x, int attributeType) {
         Vector y = x.col(x.colCount()-1);
         x.dropCol(x.colCount()-1);
         this.init(x, y, attributeType);
 
     }
 
-    public DataSet(Matrix x, Vector y, int attributeType) {
+    public Dataset(Matrix x, Vector y, int attributeType) {
         this.init(x, y, attributeType);
     }
 
-    public DataSet(Vector attributeTypes) {
+    public Dataset(Vector attributeTypes) {
         this.init(new Matrix(), new Vector(), attributeTypes);
     }
 
@@ -80,17 +80,17 @@ public class DataSet {
         return x.rowCount();
     }
 
-    public Map<Integer, DataSet> splitByClass() {
-        Map<Integer, DataSet> separated = new HashMap<Integer, DataSet>();
+    public Map<Integer, Dataset> splitByClass() {
+        Map<Integer, Dataset> separated = new HashMap<Integer, Dataset>();
 
         for (int i = 0; i < x.rowCount(); i++) {
             LOG.trace("checking row {}", i);
             int value = y.intAt(i);
 
-            DataSet subset = separated.get(value);
+            Dataset subset = separated.get(value);
             if (subset == null) {
                 LOG.trace("adding new split based on value {}", value);
-                subset = new DataSet(this.attributeTypes);
+                subset = new Dataset(this.attributeTypes);
                 separated.put(value, subset);
             }
 
@@ -101,13 +101,13 @@ public class DataSet {
         return separated;
     }
 
-    public Tuple<List<Integer>, List<DataSet>> splitByDiscreteAttribute(int attribute) {
+    public Tuple<List<Integer>, List<Dataset>> splitByDiscreteAttribute(int attribute) {
         if(this.attributeType(attribute) != DISCRETE) {
             throw new AttributeException("must be discrete attribute");
         }
 
         List<Integer> values = new ArrayList<>();
-        List<DataSet> subsets = new ArrayList<>();
+        List<Dataset> subsets = new ArrayList<>();
         for (int i = 0; i < x.rowCount(); i++) {
             LOG.trace("checking row {}", i);
             int value = x.intAt(i, attribute);
@@ -116,10 +116,10 @@ public class DataSet {
             if (index < 0) {
                 LOG.trace("adding new split based on value {}", value);
                 values.add(value);
-                subsets.add(new DataSet(attributeTypes.clone()));
+                subsets.add(new Dataset(attributeTypes.clone()));
                 index = subsets.size()-1;
             }
-            DataSet subset = subsets.get(index);
+            Dataset subset = subsets.get(index);
 
             Vector v = this.sample(i);
             subset.add(v);
@@ -127,7 +127,7 @@ public class DataSet {
         return new Tuple<>(values, subsets);
     }
 
-    public Tuple<Double, Tuple<DataSet, DataSet>> splitByContinuousAttribute(int attribute) {
+    public Tuple<Double, Tuple<Dataset, Dataset>> splitByContinuousAttribute(int attribute) {
         if(this.attributeType(attribute) != CONTINUOUS) {
             throw new DataException("must be continuous attribute");
         }
@@ -137,7 +137,7 @@ public class DataSet {
 
         LOG.debug("splitting with attribute -> {}", c);
 
-        Tuple<Double, Tuple<DataSet, DataSet>> bestSubsets = null;
+        Tuple<Double, Tuple<Dataset, Dataset>> bestSubsets = null;
         double minimumEntropy = 0;
         for (int i = 0; i < c.length()-1; i++) {
             if(c.at(i) == c.at(i+1)) {
@@ -145,7 +145,7 @@ public class DataSet {
             }
 
             double pivot = (c.at(i) + c.at(i+1)) / 2;
-            Tuple<DataSet, DataSet> subsets = splitAt(attribute, pivot);
+            Tuple<Dataset, Dataset> subsets = splitAt(attribute, pivot);
 
             double entropy = calculateWeightedEntropy(subsets);
             if(bestSubsets == null || entropy < minimumEntropy) {
@@ -156,13 +156,13 @@ public class DataSet {
         return bestSubsets;
     }
 
-    public Tuple<DataSet, DataSet> splitAt(int attribute, double pivot) {
+    public Tuple<Dataset, Dataset> splitAt(int attribute, double pivot) {
         if(this.attributeType(attribute) != CONTINUOUS) {
             throw new DataException("splitAt must use a continuous attribute");
         }
 
-        DataSet under = new DataSet(attributeTypes.clone());
-        DataSet over = new DataSet(attributeTypes.clone());
+        Dataset under = new Dataset(attributeTypes.clone());
+        Dataset over = new Dataset(attributeTypes.clone());
         for (int i = 0; i < x.rowCount(); i++) {
             double value = x.at(i, attribute);
 
@@ -208,8 +208,8 @@ public class DataSet {
         return attributeTypes.intAt(j);
     }
 
-    public DataSet samples(Vector indices) {
-        return new DataSet(x.rows(indices), y.at(indices), attributeTypes.clone());
+    public Dataset samples(Vector indices) {
+        return new Dataset(x.rows(indices), y.at(indices), attributeTypes.clone());
     }
 
     public Matrix getX() {

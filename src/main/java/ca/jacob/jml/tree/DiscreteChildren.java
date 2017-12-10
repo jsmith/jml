@@ -1,6 +1,6 @@
 package ca.jacob.jml.tree;
 
-import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.exceptions.AttributeException;
 import ca.jacob.jml.exceptions.DataException;
 import ca.jacob.jml.exceptions.PredictionException;
@@ -10,11 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static ca.jacob.jml.DataSet.DISCRETE;
+import static ca.jacob.jml.Dataset.DISCRETE;
 
 public class DiscreteChildren extends Children {
     private static final Logger LOG = LoggerFactory.getLogger(DiscreteChildren.class);
@@ -40,7 +38,7 @@ public class DiscreteChildren extends Children {
     }
 
     @Override
-    public void split(List<DataSet> subsets) {
+    public void split(List<Dataset> subsets) {
         if(subsets.size() != nodes.size()) {
             throw new DataException("nodes and subsets sizes must match");
         }
@@ -71,7 +69,7 @@ public class DiscreteChildren extends Children {
     public int maxDepth() {
         int max = 0;
         for(Tuple<Integer, Node> child : nodes) {
-            int depth = child.last().depth();
+            int depth = child.last().getLevel();
             if(depth > max) {
                 max = depth;
             }

@@ -5,7 +5,7 @@ import ca.jacob.jml.KFold;
 import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.bayes.NaiveBayes;
-import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.Report;
 import ca.jacob.jml.math.Vector;
 import org.junit.Before;
@@ -34,7 +34,7 @@ public class AdaBoostTest {
         ID3 id3 = new ID3(1); // stumps
         AdaBoost adaBoost = new AdaBoost(id3, 50, 0.3);
 
-        DataSet dataset = loadBreastCancerData(AdaBoostTest.class);
+        Dataset dataset = loadBreastCancerData(AdaBoostTest.class);
 
         Report r = kFold.generateReport(adaBoost, dataset);
 
@@ -47,7 +47,7 @@ public class AdaBoostTest {
     public void testNaiveBayesWithData() throws Throwable {
         NaiveBayes nb = new NaiveBayes();
         AdaBoost adaBoost = new AdaBoost(nb, 50, 0.3);
-        DataSet dataset = loadBreastCancerData(AdaBoostTest.class);
+        Dataset dataset = loadBreastCancerData(AdaBoostTest.class);
 
         Report r = kFold.generateReport(adaBoost, dataset);
 

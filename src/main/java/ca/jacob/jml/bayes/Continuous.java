@@ -16,7 +16,7 @@ public class Continuous implements Attribute {
         this.distribution = distribution;
         this.mean = values.mean();
         this.stdev = values.stdev();
-        LOG.debug("mean -> {}; stdev -> {}", mean, stdev);
+        LOG.debug("accuracy -> {}; stdev -> {}", mean, stdev);
     }
 
     @Override

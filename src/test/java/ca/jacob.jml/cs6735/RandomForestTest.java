@@ -1,10 +1,10 @@
 package ca.jacob.jml.cs6735;
 
 import ca.jacob.jml.Algorithm;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.KFold;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.RandomForest;
-import ca.jacob.jml.DataSet;
 import ca.jacob.jml.Report;
 import ca.jacob.jml.math.Vector;
 import org.junit.Test;
@@ -20,14 +20,14 @@ public class RandomForestTest {
 
     @Test
     public void testRandomForest() throws Throwable {
-        DataSet dataSet = loadBreastCancerData(RandomForestTest.class);
-        LOG.info("dataSet samples: {}, attributes: {}", dataSet.sampleCount(), dataSet.attributeCount());
+        Dataset dataset = loadBreastCancerData(RandomForestTest.class);
+        LOG.info("dataset samples: {}, attributes: {}", dataset.sampleCount(), dataset.attributeCount());
 
         Algorithm id3 = new ID3(ID3.MAX_LEVEL_NONE);
         RandomForest rf = new RandomForest(id3, 500, 0.6);
 
         KFold kFold = new KFold(5);
-        Report r = kFold.generateReport(rf, dataSet);
+        Report r = kFold.generateReport(rf, dataset);
         Vector accuracies = r.getAccuracies();
 
         assertTrue(accuracies.mean() > 95);
@@ -36,14 +36,14 @@ public class RandomForestTest {
 
     @Test
     public void testWithCarData() throws Throwable {
-        DataSet dataSet = loadCarData(RandomForestTest.class);
-        LOG.info("dataSet samples: {}, attributes: {}", dataSet.sampleCount(), dataSet.attributeCount());
+        Dataset dataset = loadCarData(RandomForestTest.class);
+        LOG.info("dataset samples: {}, attributes: {}", dataset.sampleCount(), dataset.attributeCount());
 
         Algorithm id3 = new ID3(ID3.MAX_LEVEL_NONE);
         RandomForest rf = new RandomForest(id3, 500, 0.6);
 
         KFold kFold = new KFold(5);
-        Report r = kFold.generateReport(rf, dataSet);
+        Report r = kFold.generateReport(rf, dataset);
         Vector accuracies = r.getAccuracies();
 
         assertTrue(accuracies.mean() > 88);

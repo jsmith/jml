@@ -24,11 +24,11 @@ public class Report {
     @Override
     public String toString() {
         return ""
-                .concat("Mean Accuracy: ").concat(String.format("%.3f",this.mean())).concat("\n")
+                .concat("Mean Accuracy: ").concat(String.format("%.3f",this.accuracy())).concat("\n")
                 .concat("Standard Devi: ").concat(String.format("%.3f",this.stdev())).concat("\n");
     }
 
-    public double mean() {
+    public double accuracy() {
         return accuracies.mean();
     }
 

@@ -1,16 +1,13 @@
 package ca.jacob.jml.cs6735;
 
-import ca.jacob.jml.Algorithm;
-import ca.jacob.jml.KFold;
-import ca.jacob.jml.Model;
+import ca.jacob.jml.*;
 import ca.jacob.jml.math.distribution.Gaussian;
 import ca.jacob.jml.bayes.Continuous;
 import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.bayes.NaiveBayesModel;
 import ca.jacob.jml.bayes.ClassSummary;
-import ca.jacob.jml.DataSet;
+import ca.jacob.jml.Dataset;
 import ca.jacob.jml.math.Matrix;
-import ca.jacob.jml.Report;
 import ca.jacob.jml.math.Vector;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,7 +17,7 @@ import java.util.List;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
 import static ca.jacob.cs6735.DataUtil.loadEColiData;
-import static ca.jacob.jml.DataSet.CONTINUOUS;
+import static ca.jacob.jml.Dataset.CONTINUOUS;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
@@ -31,7 +28,7 @@ public class NaiveBayesTest {
     @Test
     public void testGaussianNaiveBayesTrain() {
         Matrix data = new Matrix(new int[][]{{1,20,1}, {2,21,0}, {3,22,1}, {4,22,0}});
-        DataSet d = new DataSet(data, CONTINUOUS);
+        Dataset d = new Dataset(data, CONTINUOUS);
 
         NaiveBayes gnb = new NaiveBayes(new Gaussian());
         NaiveBayesModel m = (NaiveBayesModel) gnb.fit(d);
@@ -52,7 +49,7 @@ public class NaiveBayesTest {
     public void testGaussianNaiveBayesPredict() {
         Matrix x = new Matrix(new double[][]{{1, 0.5},{1.2, 0.7},{20, 5}});
         Vector y = new Vector(new double[]{1, 1, 2});
-        DataSet d = new DataSet(x, y, CONTINUOUS);
+        Dataset d = new Dataset(x, y, CONTINUOUS);
 
         NaiveBayes gnb = new NaiveBayes(new Gaussian());
         Model m = gnb.fit(d);
@@ -62,10 +59,10 @@ public class NaiveBayesTest {
 
     @Test
     public void testGaussianNaiveBayesPredictWithData() throws Throwable {
-        DataSet dataSetSet = loadEColiData(NaiveBayesTest.class);
+        Dataset dataset = loadEColiData(NaiveBayesTest.class);
 
         NaiveBayes gnb = new NaiveBayes(new Gaussian());
-        NaiveBayesModel m = (NaiveBayesModel)gnb.fit(dataSetSet);
+        NaiveBayesModel m = (NaiveBayesModel)gnb.fit(dataset);
 
         List<ClassSummary> summaries = m.getSummaries();
         Vector classProbabilities = new Vector();
@@ -74,17 +71,17 @@ public class NaiveBayesTest {
         }
         assertEquals(1, classProbabilities.sum(), DELTA);
 
-        LOG.info("NaiveBayes Accuracy: {}%", m.accuracy(dataSetSet));
+        LOG.info("NaiveBayes Accuracy: {}%", m.accuracy(dataset));
     }
 
     @Test
     public void testNaiveBayes() throws Throwable {
-        DataSet dataSetSet = loadEColiData(NaiveBayesTest.class);
+        Dataset dataset = loadEColiData(NaiveBayesTest.class);
 
         Algorithm naiveBayes = new NaiveBayes(new Gaussian());
 
         KFold kFold = new KFold(5);
-        Report r = kFold.generateReport(naiveBayes, dataSetSet);
+        Report r = kFold.generateReport(naiveBayes, dataset);
         Vector accuracies = r.getAccuracies();
 
         LOG.info("NaiveBayes accuracy: {}%", accuracies.mean());
@@ -92,12 +89,12 @@ public class NaiveBayesTest {
 
     @Test
     public void testNaiveBayesWithBreastCancer() throws Throwable {
-        DataSet dataSetSet = loadBreastCancerData(NaiveBayesTest.class);
+        Dataset dataset = loadBreastCancerData(NaiveBayesTest.class);
 
         Algorithm naiveBayes = new NaiveBayes(new Gaussian());
 
         KFold kFold = new KFold(5);
-        Report r = kFold.generateReport(naiveBayes, dataSetSet);
+        Report r = kFold.generateReport(naiveBayes, dataset);
         Vector accuracies = r.getAccuracies();
 
         LOG.info("NaiveBayes Accuracy: {}%", accuracies.mean());

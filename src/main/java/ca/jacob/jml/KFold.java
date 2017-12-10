@@ -19,7 +19,7 @@ public class KFold implements Callable<Report> {
     private int numberOfSplits;
     private Long seed;
     private Algorithm algorithm;
-    private DataSet dataSet;
+    private Dataset dataset;
 
     public KFold(int numberOfSplits) {
         this.numberOfSplits = numberOfSplits;
@@ -30,31 +30,31 @@ public class KFold implements Callable<Report> {
         this.seed = seed;
     }
 
-    public Report generateReport(Algorithm a, DataSet dataSet) {
+    public Report generateReport(Algorithm a, Dataset dataset) {
         LOG.debug("generate report starting");
-        LOG.debug("dataset types: {}", dataSet.getAttributeTypes());
+        LOG.debug("dataset types: {}", dataset.getAttributeTypes());
 
         Vector accuracies = new Vector();
-        List<Tuple<Vector, Vector>> indices = this.generateIndices(dataSet);
+        List<Tuple<Vector, Vector>> indices = this.generateIndices(dataset);
         for(Tuple<Vector, Vector> tuple : indices) {
             LOG.info("starting kFold iteration {}", accuracies.length());
             Vector trainIndices = tuple.first();
             Vector testIndices = tuple.last();
 
-            DataSet trainingDataSet = dataSet.samples(trainIndices);
-            LOG.debug("training dataset types: {}", trainingDataSet.getAttributeTypes());
-            Model m = a.fit(trainingDataSet);
+            Dataset trainingDataset = dataset.samples(trainIndices);
+            LOG.debug("training dataset types: {}", trainingDataset.getAttributeTypes());
+            Model m = a.fit(trainingDataset);
 
-            DataSet testDataSet = dataSet.samples(testIndices);
+            Dataset testDataset = dataset.samples(testIndices);
 
-            double accuracy = m.accuracy(testDataSet);
+            double accuracy = m.accuracy(testDataset);
             accuracies.add(accuracy);
         }
         return new Report(accuracies);
     }
 
-    public List<Tuple<Vector, Vector>> generateIndices(DataSet dataSet) {
-        int numberOfSamples = dataSet.sampleCount();
+    public List<Tuple<Vector, Vector>> generateIndices(Dataset dataset) {
+        int numberOfSamples = dataset.sampleCount();
         int splitLength = numberOfSamples / numberOfSplits;
 
         // List of indices ex. 1, 2, 3 ... n-1, n
@@ -96,13 +96,13 @@ public class KFold implements Callable<Report> {
         return trainTestIndices;
     }
 
-    public void init(Algorithm algorithm, DataSet dataSet) {
+    public void init(Algorithm algorithm, Dataset dataset) {
         this.algorithm = algorithm;
-        this.dataSet = dataSet;
+        this.dataset = dataset;
     }
 
     @Override
     public Report call() throws Exception {
-        return this.generateReport(algorithm, dataSet);
+        return this.generateReport(algorithm, dataset);
     }
 }

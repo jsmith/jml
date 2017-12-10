@@ -58,13 +58,13 @@ public class AdaBoostTest {
 
     @Test
     public void testMultiClass() throws Throwable {
-        Algorithm adaBoost = new AdaBoost(new ID3(1), 400, 0.4);
+        Algorithm adaBoost = new AdaBoost(new ID3(2), 100, 0.7);
         //adaBoost = new ID3(ID3.MAX_LEVEL_NONE);
 
         Report r = kFold.generateReport(adaBoost, loadCarData(AdaBoostTest.class));
 
         Vector accuracies = r.getAccuracies();
         LOG.info("Car Multi Class AdaBoost KFold Test accuracy: {}", accuracies.mean());
-        //assertTrue(accuracies.mean() > 90);
+        assertTrue(accuracies.mean() > 80);
     }
 }

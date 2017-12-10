@@ -9,12 +9,10 @@ public class KNN implements Algorithm {
     private static final String NAME = "K-Nearest Neighbour";
 
     private int k;
-    private boolean weighted;
     private Distance df;
 
-    public KNN(int k, boolean weighted, Distance df) {
+    public KNN(int k, Distance df) {
         this.k = k;
-        this.weighted = weighted;
         this.df = df;
     }
 
@@ -23,11 +21,11 @@ public class KNN implements Algorithm {
         if(k > d.sampleCount()) {
             throw new KNNException("k must be smaller or equal to data set sample count");
         }
-        return new KNNModel(d, k, weighted, df);
+        return new KNNModel(d, k, df);
     }
 
     @Override
     public String toString() {
-        return NAME + "(k:"+k+", weighted:"+weighted+")";
+        return NAME + "(k:"+k+")";
     }
 }

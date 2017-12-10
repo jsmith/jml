@@ -22,6 +22,11 @@ public class ID3 implements Algorithm {
         this.minNumberOfSamples = MIN_SAMPLES_NONE;
     }
 
+    public ID3() {
+        this.maxLevel = MAX_LEVEL_NONE;
+        this.minNumberOfSamples = MIN_SAMPLES_NONE;
+    }
+
     public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
     }

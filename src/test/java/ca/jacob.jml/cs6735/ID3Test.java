@@ -1,8 +1,7 @@
-package ca.jacob.cs6735;
+package ca.jacob.jml.cs6735;
 
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Model;
-import ca.jacob.jml.Util;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.tree.ID3Model;
 import ca.jacob.jml.tree.Node;
@@ -50,8 +49,8 @@ public class ID3Test {
 
         Node nodeZeroDataSet = root.getChildren().get(0);
         Node nodeOneDataSet = root.getChildren().get(1);
-        assertEquals((int)1, nodeOneDataSet.sampleCount());
-        assertEquals((int)2, nodeZeroDataSet.sampleCount());
+        assertEquals(2, nodeOneDataSet.sampleCount());
+        assertEquals(1, nodeZeroDataSet.sampleCount());
     }
 
     @Test

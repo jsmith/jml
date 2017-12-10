@@ -1,4 +1,4 @@
-package ca.jacob.cs6735;
+package ca.jacob.jml.cs6735;
 
 import ca.jacob.jml.DataSet;
 import ca.jacob.jml.exceptions.DataException;
@@ -8,7 +8,6 @@ import ca.jacob.jml.math.Vector;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Map;
 
 import static ca.jacob.cs6735.DataUtil.loadLetterData;
 import static ca.jacob.jml.DataSet.CONTINUOUS;

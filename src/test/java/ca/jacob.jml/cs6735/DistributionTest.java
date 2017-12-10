@@ -1,4 +1,4 @@
-package ca.jacob.cs6735;
+package ca.jacob.jml.cs6735;
 
 import ca.jacob.jml.math.distribution.Gaussian;
 import org.junit.Test;

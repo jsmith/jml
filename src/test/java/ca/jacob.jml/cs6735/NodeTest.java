@@ -1,4 +1,4 @@
-package ca.jacob.cs6735;
+package ca.jacob.jml.cs6735;
 
 import ca.jacob.jml.tree.*;
 import ca.jacob.jml.DataSet;

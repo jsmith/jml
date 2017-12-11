@@ -24,7 +24,7 @@
     <logger name="ca.jacob.jml.ensemble.MultiAdaBoost" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.MultiAdaBoostModel" level="info"></logger>
     <logger name="ca.jacob.jml.ensemble.RandomForestModel" level="info"></logger>
-    <logger name="ca.jacob.jml.ensemble.RandomForest" level="debug"></logger>
+    <logger name="ca.jacob.jml.ensemble.RandomForest" level="warn"></logger>
 
     <logger name="ca.jacob.jml.neighbors.KNNModel" level="info"></logger>
 

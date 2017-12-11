@@ -7,7 +7,8 @@ import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 import static ca.jacob.jml.Dataset.CONTINUOUS;
 
@@ -62,8 +63,8 @@ public class ContinuousChildren extends Children {
 
     @Override
     public int maxDepth() {
-        int d1 = under.getLevel();
-        int d2 = over.getLevel();
+        int d1 = under.depth();
+        int d2 = over.depth();
         return d1 > d2 ? d2 : d1;
     }
 
@@ -80,5 +81,24 @@ public class ContinuousChildren extends Children {
 
     public double getPivot() {
         return pivot;
+    }
+
+
+
+    @Override
+    public Iterator<Node> iterator() {
+        return new Iterator<Node>() {
+            private Integer index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return index < 2;
+            }
+
+            @Override
+            public Node next() {
+                return index++ == 0 ? under : over;
+            }
+        };
     }
 }

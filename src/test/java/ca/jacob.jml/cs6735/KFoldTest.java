@@ -54,17 +54,6 @@ public class KFoldTest {
     }
 
     @Test
-    public void testKFoldProcessContinuous() throws Throwable {
-        Dataset dataset = loadLetterData(KFoldTest.class);
-
-        Algorithm a = new ID3(ID3.MAX_LEVEL_NONE, 20);
-
-        Report r = kFold.generateReport(a, dataset);
-        Vector accuracies = r.getAccuracies();
-        LOG.info("KFold test accuracy for letter data: {}", accuracies.mean());
-    }
-
-    @Test
     public void testKFoldProcessWithMushroom() throws Throwable {
         Dataset dataset = loadMushroomData(KFoldTest.class);
 

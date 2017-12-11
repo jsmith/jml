@@ -20,6 +20,6 @@ public class ID3Model extends Model {
     }
 
     public int depth() {
-        return root.getLevel();
+        return root.depth();
     }
 }

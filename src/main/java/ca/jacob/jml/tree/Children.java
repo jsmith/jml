@@ -3,10 +3,11 @@ package ca.jacob.jml.tree;
 import ca.jacob.jml.Dataset;
 import ca.jacob.jml.math.Vector;
 
+import java.util.Iterator;
 import java.util.List;
 
 
-public abstract class Children {
+public abstract class Children implements Iterable<Node> {
     Node parent;
 
     public Children(Node parent) {

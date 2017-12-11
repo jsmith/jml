@@ -9,8 +9,8 @@ import ca.jacob.jml.math.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
 
 import static ca.jacob.jml.Dataset.DISCRETE;
 
@@ -69,7 +69,7 @@ public class DiscreteChildren extends Children {
     public int maxDepth() {
         int max = 0;
         for(Tuple<Integer, Node> child : nodes) {
-            int depth = child.last().getLevel();
+            int depth = child.last().depth();
             if(depth > max) {
                 max = depth;
             }
@@ -88,5 +88,24 @@ public class DiscreteChildren extends Children {
         }
 
         nodes.add(new Tuple<>(value, n));
+    }
+
+    int index = 0;
+
+    @Override
+    public Iterator<Node> iterator() {
+        return new Iterator<Node>() {
+            private Integer index = 0;
+
+            @Override
+            public boolean hasNext() {
+                return index < nodes.size();
+            }
+
+            @Override
+            public Node next() {
+                return get(index++);
+            }
+        };
     }
 }

@@ -165,8 +165,19 @@ public class Node {
         return attributeType;
     }
 
-    public int getLevel() {
-        return level;
+    public int depth() {
+        if(children == null) {
+            return 0;
+        }
+
+        int max = 0;
+        for(Node node : children) {
+            int depth = node.depth();
+            if(depth > max) {
+                max = depth;
+            }
+        }
+        return max + 1;
     }
 
     public void setAttribute(int attribute) {

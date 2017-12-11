@@ -86,8 +86,11 @@ public class NodeTest {
 
     @Test
     public void testDepth() {
-        Dataset data = new Dataset(new Matrix(new int[][]{{0, 1, 1, 1}, {0, 0, 0, 0}}), DISCRETE);
+        Dataset data = new Dataset(new Matrix(new int[][]{
+                {0, 1, 1, 1},
+                {0, 0, 0, 0}
+        }), DISCRETE);
         node.split(data);
-        assertEquals(1, node.getLevel());
+        assertEquals(1, node.depth());
     }
 }

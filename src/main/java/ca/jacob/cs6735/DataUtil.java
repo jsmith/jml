@@ -66,7 +66,7 @@ public class DataUtil {
 
     public static Dataset loadEColiData(Class c) throws Throwable {
         String[][] data = Util.readCSV(c.getResourceAsStream("/data/ecoli.data"), "\\s+");
-        toIntegers(data);
+        toIntegers(data, new Vector(new int[]{0, data[0].length-1})); // toIntegers for class column
         Matrix mat = new Matrix(data);
 
         mat.dropCol(4); //removing 0.48s

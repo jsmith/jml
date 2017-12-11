@@ -79,7 +79,7 @@ public class ID3Test {
         ID3 id3 = new ID3(2);
         ID3Model model = (ID3Model) id3.fit(d);
 
-        assertEquals((int) 2, model.depth());
+        assertEquals(2, model.depth());
     }
 
     @Test
@@ -124,6 +124,6 @@ public class ID3Test {
         Model model = id3.fit(letterData);
 
         double accuracy = model.accuracy(letterData);
-        assertEquals(93.15, accuracy, DELTA);
+        assertEquals(93.16, accuracy, 0.01);
     }
 }

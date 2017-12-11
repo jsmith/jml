@@ -32,13 +32,13 @@ public class Vector implements Iterable<Double> {
 
     public Vector(String[] data) {
         this.data = new ArrayList<Double>();
-            for(int i = 0; i < data.length; i++) {
-                try {
-                    this.data.add(Double.parseDouble(data[i]));
-                } catch (NumberFormatException e) {
-                    throw new DataException("data must all be integers or doubles, not " + data[i]);
-                }
+        for(String aData : data) {
+            try {
+                this.data.add(Double.parseDouble(aData));
+            } catch (NumberFormatException e) {
+                throw new DataException("data must all be integers or doubles, not " + aData);
             }
+        }
     }
 
     public Vector(List<Double> data) {
@@ -245,7 +245,7 @@ public class Vector implements Iterable<Double> {
         return false;
     }
 
-    public boolean contains(double num) {
+    private boolean contains(double num) {
         for(int i = 0; i < data.size(); i++) {
             if(this.at(i) == num) {
                 return true;
@@ -285,7 +285,7 @@ public class Vector implements Iterable<Double> {
     public int count(double value) {
         int count = 0;
         for(Double d : this.data) {
-            if(d.doubleValue() == value) {
+            if(d == value) {
                 count++;
             }
         }

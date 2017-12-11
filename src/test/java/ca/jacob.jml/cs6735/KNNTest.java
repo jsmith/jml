@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static ca.jacob.cs6735.DataUtil.loadBreastCancerData;
+import static org.junit.Assert.assertTrue;
 
 public class KNNTest {
     private static final Logger LOG = LoggerFactory.getLogger(KNNTest.class);
@@ -28,6 +29,6 @@ public class KNNTest {
         Report r = kFold.generateReport(knn, dataset);
         Vector accuracies = r.getAccuracies();
 
-        LOG.info("KNN {} Accuracy: {}", k, accuracies.sum()/accuracies.length());
+        assertTrue(r.accuracy() > 95);
     }
 }

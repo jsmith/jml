@@ -82,8 +82,6 @@ public class NodeTest {
         node.split(dataset);
         assertEquals(2, node.getChildren().size());
         assertEquals(0.5, ((ContinuousChildren)node.getChildren()).getPivot(), DELTA);
-        assertEquals(1, node.getChildren().get(0).sampleCount());
-        assertEquals(3, node.getChildren().get(1).sampleCount());
     }
 
     @Test

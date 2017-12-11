@@ -3,9 +3,11 @@ package ca.jacob.cs6735;
 import ca.jacob.jml.Algorithm;
 import ca.jacob.jml.Dataset;
 import ca.jacob.jml.KFold;
+import ca.jacob.jml.bayes.NaiveBayes;
 import ca.jacob.jml.ensemble.AdaBoost;
 import ca.jacob.jml.math.Tuple;
 import ca.jacob.jml.math.distance.Euclidean;
+import ca.jacob.jml.math.distribution.Gaussian;
 import ca.jacob.jml.tree.ID3;
 import ca.jacob.jml.ensemble.RandomForest;
 import ca.jacob.jml.neighbors.KNN;
@@ -28,9 +30,6 @@ public class Assignment {
     public static void main(String[] args) throws Throwable {
         List<Tuple<Dataset, List<Algorithm>>> datasetsAndAlgorithms  = new ArrayList<>();
 
-        // init
-        List<Algorithm> algorithms;
-
         // Only for testing purposes
         /*List<Dataset> datasets = new ArrayList<>();
         datasets.add(loadBreastCancerData(Assignment.class));
@@ -52,6 +51,9 @@ public class Assignment {
             testKNN(dataset, ks);
         }*/
 
+        // init
+        List<Algorithm> algorithms;
+
         // Breast Cancer Data
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
@@ -66,7 +68,7 @@ public class Assignment {
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         //algorithms.add(new NaiveBayes());
-        //algorithms.add(new AdaBoost(new ID3(2), 250, 0.3));
+        algorithms.add(new AdaBoost(new ID3(3), 200, 0.3)); // TODO: test this with 4
         //algorithms.add(new AdaBoost(new NaiveBayes(), 100, 0.4));
         //algorithms.add(new RandomForest(new ID3(), 200, 0.6));
         //algorithms.add(new KNN(1, new Hamming()));
@@ -76,9 +78,9 @@ public class Assignment {
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 1));
         //algorithms.add(new NaiveBayes(new Gaussian()));
-        algorithms.add(new AdaBoost(new ID3(4), 300, 0.25));
-        //algorithms.add(new AdaBoost(new NaiveBayes(new Gaussian()), 50, 0.3));
-        //algorithms.add(new RandomForest(new ID3(), 10, 0.6)); //TODO: test this
+        //algorithms.add(new AdaBoost(new ID3(8), 300, 0.25));
+        //algorithms.add(new AdaBoost(new NaiveBayes(new Gaussian()), 10, 0.3));
+        //algorithms.add(new RandomForest(new ID3(), 50, 0.6));
         //algorithms.add(new KNN(1, new Hamming()));
         datasetsAndAlgorithms.add(new Tuple<>(loadLetterData(Assignment.class), algorithms));
 
@@ -86,7 +88,7 @@ public class Assignment {
         algorithms = new ArrayList<>();
         //algorithms.add(new ID3(ID3.MAX_LEVEL_NONE, 2));
         //algorithms.add(new NaiveBayes(new Gaussian()));
-        //algorithms.add(new AdaBoost(new ID3(2), 200, 0.2));
+        //algorithms.add(new AdaBoost(new ID3(2), 200, 0.2)); // TODO: test this with 3
         //algorithms.add(new AdaBoost(new NaiveBayes(new Gaussian()), 250, 0.10));
         //algorithms.add(new RandomForest(new ID3(), 250, 0.6));
         //algorithms.add(new KNN(1, new Euclidean()));
@@ -104,11 +106,15 @@ public class Assignment {
 
 
         for(Tuple<Dataset, List<Algorithm>> datasetAndAlgorithm : datasetsAndAlgorithms) {
-            Dataset d = datasetAndAlgorithm.first();
             algorithms = datasetAndAlgorithm.last();
+            if(algorithms.size() == 0) {
+                continue;
+            }
 
+            Dataset d = datasetAndAlgorithm.first();
             System.out.println(d);
             System.out.println("==========================");
+
             for(Algorithm a : algorithms) {
                 test(d, a);
             }

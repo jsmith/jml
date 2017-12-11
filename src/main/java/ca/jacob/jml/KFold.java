@@ -17,17 +17,18 @@ public class KFold implements Callable<Report> {
     private static final Logger LOG = LoggerFactory.getLogger(KFold.class);
 
     private int numberOfSplits;
-    private Long seed;
     private Algorithm algorithm;
     private Dataset dataset;
+    private boolean verbose;
 
     public KFold(int numberOfSplits) {
         this.numberOfSplits = numberOfSplits;
+        this.verbose = false;
     }
 
-    public KFold(int numberOfSplits, Long seed) {
+    public KFold(int numberOfSplits, boolean verbose) {
         this.numberOfSplits = numberOfSplits;
-        this.seed = seed;
+        this.verbose = verbose;
     }
 
     public Report generateReport(Algorithm a, Dataset dataset) {
@@ -36,8 +37,13 @@ public class KFold implements Callable<Report> {
 
         Vector accuracies = new Vector();
         List<Tuple<Vector, Vector>> indices = this.generateIndices(dataset);
+
+        int iteration = 0;
         for(Tuple<Vector, Vector> tuple : indices) {
-            LOG.info("starting kFold iteration {}", accuracies.length());
+            iteration++;
+            if(verbose) System.out.println("Starting k-fold iteration "  + iteration);
+            LOG.info("starting kFold iteration {}", iteration);
+
             Vector trainIndices = tuple.first();
             Vector testIndices = tuple.last();
 
@@ -59,7 +65,7 @@ public class KFold implements Callable<Report> {
 
         // List of indices ex. 1, 2, 3 ... n-1, n
         Vector indices = range(0, numberOfSamples);
-        shuffle(indices, seed); // shuffle the list
+        shuffle(indices); // shuffle the list
 
         List<Tuple<Vector, Vector>> trainTestIndices = new ArrayList<>();
         for(int split = 0; split < numberOfSplits-1; split++) {
@@ -104,5 +110,9 @@ public class KFold implements Callable<Report> {
     @Override
     public Report call() throws Exception {
         return this.generateReport(algorithm, dataset);
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 }

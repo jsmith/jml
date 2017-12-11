@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ca.jacob.cs6735</groupId>
-    <artifactId>assignment</artifactId>
+    <groupId>ca.jacob</groupId>
+    <artifactId>jml</artifactId>
     <version>1.0-SNAPSHOT</version>
          
     <properties>
@@ -50,7 +50,17 @@
                     <source>1.8</source>
                 </configuration>
             </plugin>
-                 
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <archive>
+                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

@@ -62,7 +62,7 @@ public class AdaBoost implements Algorithm {
 
             if(Double.isNaN(alpha)) {
                 alpha = log((1-error+EPSILON)/(error+EPSILON)) + log(classCount-1);
-                LOG.warn("alpha is NaN");
+                LOG.debug("alpha is NaN");
             }
 
             weights = weights.mul(exp(err.mul(alpha))); //updating weights

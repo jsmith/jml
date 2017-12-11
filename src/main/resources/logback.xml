@@ -5,12 +5,7 @@
         </encoder>
     </appender>
 
-    <logger name="ca.jacob.jml.tree.Node" level="warn"></logger>
-    <logger name="ca.jacob.jml.math.Matrix" level="info"></logger>
-    <logger name="ca.jacob.jml.KFold" level="warn"></logger>
-    <logger name="ca.jacob.jml.ensemble.AdaBoost" level="warn"></logger>
-
-    <root level="warn">
+    <root level="error">
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

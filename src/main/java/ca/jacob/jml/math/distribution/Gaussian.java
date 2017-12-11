@@ -25,4 +25,9 @@ public class Gaussian implements Distribution {
         }
         return probability;
     }
+
+    @Override
+    public String toString() {
+        return "Gaussian";
+    }
 }

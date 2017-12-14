@@ -4,7 +4,7 @@
 A machine library built in pure Java. Built for the CS6735 programming assignment.
 
 ## Algorithms
-- ID3 (& some C4.5)
+- ID3 (with C4.5 enhancements)
 - Naive Bayes
 - AdaBoost (SAMME)
 - Random Forest
@@ -38,7 +38,9 @@ public class Main() {
 		...
 		String[][] data = loadYourOwnData();
 		Matrix mat = new Matrix(data); // last column are labels
-		d = new DataSet(mat, DISCRETE); // create dataset and initilize to DISCRETE or CONTINUOUS or mixture of the two
+		
+		// create dataset and initilize to DISCRETE or CONTINUOUS or mixture of the two
+		d = new Dataset(mat, DISCRETE);
 	}
 }
 ```
@@ -63,17 +65,28 @@ public class Main() {
 	public static void main(String[] args)  {
 		DataSet d = loadBreastCancerData(Main.class);
 		algorithms = new ArrayList<>();
+		
+		// Algorithm options ...
 		Algorithm a = new ID3();
 		a = new NaiveBayes();
-		a = new AdaBoost(new ID3(1), 100, 0.1); // decision stump w/ 100 leaners and 10% of samples each time 
-		a = new AdaBoost(new NaiveBayes(), 100, 0.1);
-		a = new RandomForest(new ID3(), 100, 0.1);
-		a = new KNN(1, new Hamming()); // or Eucliden() for continuous data
 		
-		// Training
+		// AdaBoost -> decision stump w/ 100 leaners and 10% of samples each time 
+		a = new AdaBoost(new ID3(1), 100, 0.1);
+		
+		// AdaBoost -> Naive Bayes w/ 100 learners and 10% of samples each time
+		a = new AdaBoost(new NaiveBayes(), 100, 0.1);
+		
+		// Random Forest w/ 100 learners and 10% of samples each time
+		a = new RandomForest(new ID3(), 100, 0.1);
+		
+		// KNN with k=1 and the Hamming distance function
+		a = new KNN(1, new Hamming());
+		
+		// Training ...
 		Model m = a.fit(d);
 		
-		// Predicting
+		// Testing ...
+		d = loadYourTestData();
 		Vector predictions = m.predict(d);
 		double accuracy = m.accuracy(d);
 		

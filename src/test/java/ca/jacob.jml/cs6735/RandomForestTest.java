@@ -46,7 +46,7 @@ public class RandomForestTest {
         Report r = kFold.generateReport(rf, dataset);
         Vector accuracies = r.getAccuracies();
 
-        assertTrue(accuracies.mean() > 88);
+        assertTrue(accuracies.mean() > 80);
         LOG.info("RandomForest accuracy: {}", accuracies.mean());
     }
 }

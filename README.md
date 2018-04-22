@@ -3,6 +3,8 @@
 # Java Machine Learning (JML)
 A machine library built in pure Java. Built for the CS6735 programming assignment.
 
+See the [report](https://github.com/jacsmith21/school/blob/master/cs6735/assignment/code/report.pdf) for more details!
+
 ## Algorithms
 - ID3 (with C4.5 enhancements)
 - Naive Bayes

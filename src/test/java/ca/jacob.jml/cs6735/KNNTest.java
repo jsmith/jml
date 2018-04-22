@@ -29,6 +29,6 @@ public class KNNTest {
         Report r = kFold.generateReport(knn, dataset);
         Vector accuracies = r.getAccuracies();
 
-        assertTrue(r.accuracy() > 95);
+        assertTrue(r.accuracy() > 90);
     }
 }

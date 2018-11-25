@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jacsmith21/jml.png?branch=master)](https://travis-ci.org/jacsmith21/jml)
+[![Build Status](https://travis-ci.org/jsmith/jml.png?branch=master)](https://travis-ci.org/jacsmith21/jml)
 
 # Java Machine Learning (JML)
 A machine library built in pure Java. Built for the CS6735 programming assignment.
